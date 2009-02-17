@@ -1,0 +1,561 @@
+/* @group DEFAULTS */
+
+a img,:link img,:visited img {
+	border: none
+}
+
+a,a:link {
+	outline: none !important;
+}
+
+ul,ol {
+	list-style: none
+}
+
+h1,h2,h3,h4,h5,h6,pre,code {
+	font-size: 1em;
+	font-weight: normal;
+}
+
+ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,p,blockquote,fieldset,input {
+	margin: 0;
+	padding: 0
+}
+
+address {
+	font-style: normal
+}
+
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+.clearfix {
+	display: inline-block;
+}
+
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+
+/* @end */
+
+/* @group BASICS */
+
+html,body {
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+	font-size: 12px;
+	color: #22272D;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	background: #ccc url(../../files/admin/main/header_bg.gif) repeat-x 0 top;
+}
+
+a,a:link,a:active,a:visited {
+	color: #000;
+}
+
+a:hover {
+	color: #999;
+}
+
+.hr {
+	width: 100%;
+	height: 1px;
+	overflow: hidden;
+	background-color: #ccc;
+	margin-bottom: 20px;
+}
+
+.hr hr {
+	display: none;
+}
+
+.auto_height {
+	height: auto !important;
+}
+
+/* @end */
+
+/* @group MESSAGES */
+
+.info, .success, .warning, .error, .validation {
+    border: 1px solid;
+    margin: 10px 0px;
+    padding:15px 10px 15px 60px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    list-style-type: disc;
+}
+.info li, .success li, .warning li, .error li, .validation li {
+	margin-left: 10px;
+}
+.info {
+    color: #00529B;
+    background-color: #BDE5F8;
+    background-image: url('../../files/messages/info.png');
+}
+.info a,.info a:link {
+	color: #00529B !important;
+}
+.success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+    background-image:url('../../files/messages/success.png');
+}
+.success a,.success a:link {
+	color: #4F8A10 !important;
+}
+.warning {
+    color: #9F6000;
+    background-color: #FEEFB3;
+    background-image: url('../../files/messages/warning.png');
+}
+.warning a,.warning a:link {
+	color: #9F6000 !important;
+}
+.error {
+    color: #D8000C;
+    background-color: #FFBABA;
+    background-image: url('../../files/messages/error.png');
+}
+.error a,.error a:link {
+	color: #D8000C !important;
+}
+
+.validation {
+    color: #D63301;
+    background-color: #FFCCBA;
+    background-image: url('../../files/messages/validation.png');
+}
+
+/* @end */
+
+/* @group HEADER */
+
+#header {
+	width: 990px;
+	height: 50px;
+	overflow: hidden;
+	margin: 0 auto 20px;
+	color: #fff;
+}
+
+#header h1 {
+	font-size: 1.7em;
+	margin-top: 13px;
+	float: left;
+}
+
+#header ul {
+	float: right;
+}
+
+#header ul li {
+	float: left;
+	font-size: 1.1em;
+	margin-left: 10px;
+}
+
+#header ul li a,#header ul li a:link,#header ul li a:active,#header ul li a:visited {
+	color: #fff;
+	display: block;
+	float: left;
+	text-decoration: none;
+	padding: 17px 10px;
+}
+
+#header ul li.highlight a,#header ul li.highlight a:link,#header ul li.highlight a:active,#header ul li.highlight a:visited {
+	color: #FFEA8F;
+}
+
+#header ul li a:hover,#header ul li.highlight a:hover {
+	color: #bcbcbc;
+}
+
+/* @end */
+
+/* @group NAVIGATION */
+
+#navigation {
+	width: 990px;
+	margin: 0 auto;
+	height: 30px;
+	overflow: hidden;
+}
+
+ul#main {
+	float: left;
+}
+
+ul#main li {
+	float: left;
+	margin-right: 5px;
+}
+
+ul#main li a,ul#main li a:link,ul#main li a:active,ul#main li a:visited {
+	background: url(../../files/admin/main/tab_nactive.gif) repeat-x;
+	height: 23px;
+	overflow: hidden;
+	color: #fff;
+	display: block;
+	padding: 7px 10px;
+	text-decoration: none;
+}
+
+ul#main li.active a,ul#main li.active a:link,ul#main li.active a:active,ul#main li.active a:visited {
+	background-color: #fff;
+	background-image: none;
+	height: 23px;
+	overflow: hidden;
+	color: #22272D;
+	display: block;
+	padding: 7px 10px;
+	text-decoration: none;
+}
+
+ul#main li a:hover {
+	background: url(../../files/admin/main/tab_hover.gif) repeat-x;
+}
+
+/* @end */
+
+/* @group CONTENT */
+
+#container {
+	width: 990px;
+	margin: 0 auto;
+	background-color: #fff;
+}
+
+#container p {
+	margin-bottom: 20px;
+}
+
+#container ul {
+	margin-bottom: 15px;
+}
+
+#container .inner {
+	margin: 15px;
+}
+
+#container ul li {
+	margin-bottom: 5px;
+}
+
+#container ul li a,#container ul li a:link {
+	display: block;
+}
+
+/* @end */
+
+/* @group FORMS */
+
+.current {
+	display: block;
+}
+
+div.input_row label {
+	width: 130px;
+	float: left;
+	font-weight: bold;
+}
+
+div.input_row div.input_field {
+	width: 558px;
+	float: right;
+	overflow: hidden;
+}
+
+input,textarea {
+	padding: 6px 8px;
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+	font-size: 1em;
+	border: 1px solid #ccc;
+}
+
+select {
+	padding: 4px;
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+	font-size: 1em;
+	border: 1px solid #ccc;
+}
+
+input.submit {
+	color: #fff;
+	border: 0;
+	text-transform: uppercase;
+	padding: 6px 20px 6px 10px;
+	background: #22272D url(../../files/icons/arrow_white.png) no-repeat 90% center;
+}
+
+.input_default {
+	width: 400px;
+}
+
+.input_full {
+	width: 540px;
+}
+
+.input_timestamp {
+	width: 150px;
+}
+
+.input_date {
+	width: 80px;
+}
+
+.input_row {
+	margin-bottom: 20px;
+}
+
+.html_editor {
+	height: 200px;
+	width: 540px;
+}
+
+textarea.objects {
+	width: 700px;
+	height: 300px;
+}
+
+/* @end */
+
+/* @group FULL */
+
+#container #full {
+	padding: 10px;
+}
+
+#container #full h3 {
+	font-size: 1.3em;
+	margin-bottom: 10px;
+}
+
+#container #full ul {
+	margin-bottom: 20px;
+}
+
+#container #full .manage_table {
+	width: 100%;
+	padding-bottom: 10px;
+}
+
+#container #full .manage_table tr:hover {
+	background-color: #efefef;
+}
+
+#container #full .manage_table th {
+	text-transform: uppercase;
+	font-size: .9em;
+	text-align: left;
+	background-color: #7D7B84;
+	color: #fff;
+	padding: 10px;
+}
+
+#container #full .manage_table td {
+	padding: 10px;
+	border-bottom: 1px solid #eee;
+	vertical-align: top;
+}
+
+#container #full .manage_table .edit_delete {
+	width: 40px;
+	overflow: hidden;
+}
+
+#container #full .manage_table .edit_delete a:link,#container #full .manage_table .edit_delete a:active,#container #full .manage_table .edit_delete a:visited {
+	color: #fff;
+	background: #22272D url(../../files/admin/main/tab_hover.gif) repeat-x 0 center;
+	padding: 4px 8px;
+	text-decoration: none;
+	text-transform: uppercase;
+	font-size: .8em;
+}
+
+#container #full .manage_table .edit_delete a:hover {
+	color: #fff;
+	background: #22272D url(../../files/admin/main/tab_nactive.gif) repeat-x 0 center;
+	padding: 4px 8px;
+	text-decoration: none;
+	text-transform: uppercase;
+	font-size: .8em;
+}
+
+#container #full #header_button {
+	position: absolute;
+	margin: 25px 0 0 880px;
+}
+
+#container #full #header_button a:link,#container #full #header_button a:active,#container #full #header_button a:visited {
+	color: #fff;
+	padding: 6px 10px;
+	font-size: .8em;
+	text-transform: uppercase;
+	text-decoration: none;
+	background: #22272D url(../../files/admin/main/tab_hover.gif) repeat-x 0 center;
+}
+
+#container #full #header_button a:hover {
+	background: url(../../files/admin/main/tab_nactive.gif) repeat-x 0 center;
+}
+
+/* @group LEFT */
+
+#container #left h2,#container #full h2 {
+	background: url(../../files/admin/main/title_left_bg.png) repeat-x;
+	height: 39px;
+	overflow: hidden;
+	margin: 10px 0 20px;
+	font-size: 1.5em;
+	padding: 12px 0 0 20px;
+}
+
+#container #left {
+	padding: 10px;
+	width: 720px;
+	float: left;
+}
+
+#container #left #iterations {
+	position: absolute;
+	margin: 20px 0 0 580px;
+}
+
+#container #left #iterations li a:link,#container #left #iterations li a:active,#container #left #iterations li a:visited {
+	color: #fff;
+	padding: 6px 10px;
+	font-size: .8em;
+	text-transform: uppercase;
+	text-decoration: none;
+	background: #22272D url(../../files/admin/main/tab_hover.gif) repeat-x 0 center;
+}
+
+#container #left #iterations li a:hover {
+	background: url(../../files/admin/main/tab_nactive.gif) repeat-x 0 center;
+}
+
+#container #left #iterations li ul {
+	background-color: #4C4B4F;
+	width: 300px;
+	position: absolute;
+	border: 1px solid #4C4B4F;
+	padding: 5px;
+}
+
+#container #left #iterations li li a,#container #left #iterations li li a:link,#container #left #iterations li li a:visited,#container #left #iterations li li a:active {
+	background:none;
+	background-color: #4C4B4F;
+	color: #fff;
+	padding: 4px 10px;
+	float: left;
+	margin: 0;
+}
+
+#container #left #iterations li li a:hover {
+	background-color: #ccc;
+	color: #4C4B4F;
+}
+
+#container #left #iterations .show {
+	display: none;
+}
+
+/* @end */
+
+/* @end */
+
+/* @group RIGHT */
+
+/* @group ICONS */
+
+#container #right ul li.add a,#container #right ul li.add a:link {
+	background: url(../../files/icons/add.png) no-repeat left center;
+	padding: 3px 0 3px 23px;
+}
+
+#container #right ul li.pencil a,#container #right ul li.pencil a:link {
+	background: url(../../files/icons/pencil.png) no-repeat left center;
+	padding: 3px 0 3px 23px;
+}
+
+/* @end */
+
+#container #right {
+	width: 209px;
+	padding: 20px;
+	float: right;
+	border-left: 1px solid #ccc;
+	background-color: #ececec;
+}
+
+#container #right h2 {
+	text-transform: uppercase;
+	padding-bottom: 4px;
+	margin-bottom: 20px;
+	border-bottom: 1px solid #ccc;
+	font-weight: bold;
+}
+
+#container #right ul input {
+	float: left;
+	margin: 1px 10px 0 0;
+}
+
+/* @end */
+
+/* @group MANAGE SPECIFIC */
+
+#pager {
+	margin: 20px 0;
+}
+
+#pager a:link,#pager a:active,#pager a:visited {
+	padding: 4px 6px;
+	margin-right: 1px;
+	background-color: #22272D;
+	color: #fff;
+	text-decoration:none;
+	display: block;
+	float: left;
+}
+
+#pager a:hover {
+	background-color: #7D7B84;
+}
+
+#confirm {
+	text-align: center;
+	margin: 20px;
+}
+
+#confirm h2 {
+	font-size: 1.2em;
+	height: 50px;
+}
+
+#confirm a:link,#pager a:active,#confirm a:visited {
+	padding: 10px 15px;
+	margin: 5px;
+	background-color: #22272D;
+	color: #fff;
+	text-decoration:none;
+	text-transform: uppercase;
+	font-size: 1.2em;
+}
+
+#confirm a:hover {
+	background-color: #7D7B84;
+}
+
+/* @end */
+
+

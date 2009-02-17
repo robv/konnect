@@ -1,0 +1,134 @@
+<?php include 'templates/admin/_header.thtml'; ?>
+
+	<div id="full" class="match">
+		
+		<?php if(is_null($show_add_entry->id)){ ?>
+			<div id="header_button"><a href="<?= WEB_ROOT; ?>admin/add/<?= $url_structure['2']; ?>/">Add Entry</a></div>
+		<?php } ?>
+		
+		<h2><?= $pageTitle; ?></h2>
+		
+		<?php 
+			$Flash->show();
+		?>
+			
+		<?php if(empty($entries)){ ?>
+			
+			<p class="info">Sorry, no entries exist.</p>
+			
+		<?php } else { ?>
+			
+			<table class="manage_table" cellspacing="0">
+		
+		<?php		
+					$seperators = array('-','+','_',' '); // used later when uppercasing field names
+		?>
+				
+				<tr>
+					
+		<?php	
+			foreach($columns as $name => $value):
+				
+				if(isset($field_info[$name])){ //view info exists
+					if($field_info[$name]->type !== 'hidden'){
+		?>
+				
+					<th><?= ucfirst(str_replace($seperators,' ',$name)); ?></th>
+				
+		<?php
+					}
+					
+				}
+				
+				else
+				{
+		?>
+					
+					<th><?= ucfirst(str_replace($seperators,' ',$name)); ?></th>
+				
+		<?php			
+				}
+				
+			endforeach;
+		?>
+				
+					<th colspan="2"></th>
+				</tr>
+				
+		<?php
+			
+			foreach($entries as $entry):
+		?>
+	
+				<tr>
+			
+		<?php		
+					oreach($columns as $name => $value):
+					
+						if($name === 'timestamp')
+							$entry->$name = dater($entry->$name,'m/d/Y @ h:i a');
+					
+						if(isset($field_info[$name])): //no view information exists
+						/*
+							TODO: Add special views for different type of information
+						*/
+						
+							if($field_info[$name]->type === 'image'):
+		?>
+					<td><img src="<?= WEB_ROOT; ?>files/uploads/small/<?= $entry->$name; ?>" alt="<?= $entry->$name; ?>" /></td>
+		<?php
+							elseif($field_info[$name]->type === 'file'):
+		?>
+					<td><a href="<?= WEB_ROOT; ?>files/uploads/original/<?= $entry->$name; ?>"><?= $entry->$name; ?></a></td>
+		<?php											
+							elseif($field_info[$name]->type !== 'hidden'):
+		?>
+		
+					<td><?= strip_tags($entry->$name); ?></td>
+		
+		<?php
+							endif;
+							
+						else :
+		?>
+		
+					<td><?= truncate_string(strip_tags($entry->$name),'300','[...]'); ?></td>
+		
+		<?php
+							
+						endif;
+						
+					endforeach;
+					/*<?= WEB_ROOT; ?>admin/delete/<?= $table_name; ?>/<?= $entry->id; ?>*/
+		?>
+		
+				<td class="edit_delete"><a href="<?= WEB_ROOT; ?>admin/edit/<?= $table_name; ?>/<?= $entry->id; ?>/">Edit</a></td>
+				<td class="edit_delete"><a href="<?= WEB_ROOT; ?>admin/confirm/?delete=<?= $entry->id; ?>&table_name=<?= $table_name; ?>" rel="facebox">Delete</a></td>
+				</tr>
+				
+		<?php
+			endforeach;
+	
+		?>
+		
+			</table>
+			
+		<?php 
+			$pager->calculate();
+			if($pager->numPages > 1){
+		?>
+			
+			<div id="pager" class="clearfix">
+				
+				<?= $pager->advanced(); ?>
+				
+			</div>
+		
+		<?php } ?>
+		
+		<?php } ?>
+		
+
+	</div>
+				
+<?php include 'templates/admin/_footer.thtml'; ?>

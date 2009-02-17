@@ -1,0 +1,51 @@
+<?php include 'templates/admin/_header.thtml'; ?>
+
+<script type="text/javascript">Site.edit_save_start();</script>
+
+	<div id="left" class="match clearfix">
+		
+		<?php if($url_structure['1'] === 'add'){ ?>
+		<ul id="iterations">
+			<li><a href="#" class="dd">Add Multiple Entries</a><ul class="show"><li>
+				<?php
+					for($i=1;$i<21;$i++):
+						echo '<a href="'.WEB_ROOT.'admin/add/'.$url_structure['2'].'/'.$i.'/">'.$i.'</a>';
+					endfor;
+				?>
+			</li></ul></li>
+		</ul>	
+		<?php } ?>
+		
+		<h2><?= $pageTitle; ?></h2>
+		
+		<?php 
+			$Flash->show();
+			echo $Error;
+		?>
+		
+		<div class="inner">
+			<form action="" method="post" enctype="multipart/form-data">				
+				<?= $form; ?>
+				<p><input type="submit" name="submit" value="Save" class="submit" /></p>
+		</div>
+
+	</div>
+
+	<div id="right" class="match clearfix">
+		
+		<?php if($url_structure['1'] === 'add'){ ?>
+		
+			<h2>After Save</h2>
+
+			<ul>
+				<li><input type="radio" name="next" value="edit" id="next_edit" /> <label for="next_edit">Edit Entry</label></li>
+				<li><input type="radio" name="next" value="add" id="next_add" checked="checked" /> <label for="next_add">Add Another Entry</label></li>
+			</ul>
+			
+		<?php } ?>
+		
+	</form>
+
+	</div>
+				
+<?php include 'templates/admin/_footer.thtml'; ?>

@@ -1,0 +1,36 @@
+<?php include 'templates/admin/_header.thtml'; ?>
+
+	<div id="left" class="match">
+			
+		<h2><?= $pageTitle; ?></h2>
+		
+		<div class="inner">
+			
+			<?php
+			
+				foreach($dash_log as $log):
+				
+					echo '<div class="dash_row">';
+					
+					echo '<div class="dash_type">'.$log->action.'</div>';
+					
+					if($log->action === 'add')
+						echo '<div class="dash_desc"><a href="'.WEB_ROOT.'admin/edit/'.$log->table.'/'.$log->entry.'/">New entry added to '.$log->table.'</a>.</div>';
+					
+					echo '</div>';
+				
+				endforeach;
+			
+			?>
+	
+		</div>
+
+	</div>
+
+	<div id="right" class="match">
+
+
+
+	</div>
+				
+<?php include 'templates/admin/_footer.thtml'; ?>

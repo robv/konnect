@@ -1,0 +1,24 @@
+
+
+
+============================================
+	ADMIN URL STRUCTURE
+============================================
+
+MANAGE:
+"manage/table name/" or optionally "manage/table name/column/value/"
+
+ADD:
+"add/table name/" or optionally "add/table name/iterations/"
+
+EDIT:
+"edit/table name/entry id/"
+
+
+
+============================================
+	ADMIN MANAGE VIEW
+============================================
+
+DISABLE "ADD ENTRY" BUTTON:
+Add entry into "view_information" where "table_name" is the table n question and "name" is "add entry"

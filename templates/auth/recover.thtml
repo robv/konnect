@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Login</title>
+	<?= cssFile('admin/screen'); ?>
+</head>
+<body>
+	
+	<div id="header">
+		<h1>Website Administration</h1>
+	</div>
+	
+	<div id="container">
+	
+		<div id="full">
+			
+			<h2>Recover Your Password</h2>
+			
+			<div class="inner">
+			
+				<form action="" method="post">
+				
+					<?PHP $Flash->show(); ?>
+					
+					<p class="info">
+						Enter the email address you signed up with below and a new password will be emailed to you.
+					</p>
+					<p>
+						<label for="email">Email Address:</label>
+						<input type="text" name="email" value="<?PHP echo $email;?>" id="username" />
+					</p>
+					<p><a href="<?PHP WEBROOT(); ?>login/">I remembered, let me login!</a></p>
+					<p><input type="submit" value="Recover" class="submit" /></p>
+			
+				</form>
+				
+			</div>
+			
+		</div>
+		
+	</div>
+	
+
+</body>
+</html>

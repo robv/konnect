@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title><?= isset($pageTitle) ? $pageTitle.' - ' : ''; ?>Website Manager</title>
+	<?= cssFile('admin/screen'); ?>
+	<?= jquery('equalHeight,wymeditor,datepicker,slug,facebox,adminjcommon,tinymce'); ?>
+</head>
+<body>
+	
+	<div id="header">
+		<h1>Website Administration</h1>
+		<ul>
+			<?php if($Auth->level === 'admin'){ ?>
+				<li><a href="<?= WEB_ROOT; ?>admin/manage/CMS-Links/">Links</a></li>
+				<li><a href="<?= WEB_ROOT; ?>admin/manage/Field-Information/">Forms</a></li>
+				<li><a href="<?= WEB_ROOT; ?>admin/manage/View-Information/">Views</a></li>
+				<li><a href="<?= WEB_ROOT; ?>admin/Database-Objects/">DB Objects</a></li>
+			<?php 
+				}
+				if($Auth->level === 'admin' || $Auth->level === 'owner'){
+			?>
+				<li><a href="<?= WEB_ROOT; ?>admin/manage/Users/">Users</a></li>
+			<?php } ?>
+			<li class="highlight"><a href="<?= WEB_ROOT; ?>logout/">Logout</a></li>
+		</ul>
+	</div>
+	
+	<div id="navigation" class="clearfix">
+	
+		<ul id="main">
+			<li class="active"><a href="<?= WEB_ROOT; ?>admin/">Dashboard</a></li>
+			<?php
+				foreach($header_links as $header_link):
+					echo '<li><a href="'.WEB_ROOT.'admin/'.$header_link->link.'">'.$header_link->name.'</a></li>';
+				endforeach;
+			?>
+		</ul>
+	
+	</div>
+	
+	<div id="container" class="clearfix">

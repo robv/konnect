@@ -1,0 +1,63 @@
+/* @group RESET */
+
+a,a:link { outline: none !important; }
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td { margin: 0; padding: 0; }
+
+table { border-collapse: collapse; border-spacing: 0; }
+
+fieldset, img, abbr, acronym { border: 0; }
+
+address, caption, cite, code, dfn, em, strong, th, var { font-style: normal; font-weight: normal; }
+
+ol, ul { list-style: none; }
+
+caption, th { text-align: left; }
+
+h1, h2, h3, h4, h5, h6 { font-size: 1em; font-weight: normal; }
+
+select, option, input, textarea { font-family: inherit; font-size: inherit; font-weight: inherit; }
+
+body { font-size: 62.5% }
+
+/* slightly enhanced, universal clearfix hack */
+
+.clearfix:after { visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }
+
+.clearfix { display: inline-block; }
+
+/* start commented backslash hack \*/
+
+* html .clearfix { height: 1%; }
+
+.clearfix { display: block; }
+
+/* close commented backslash hack */
+
+/* @end */
+
+/* @group MESSAGES */
+
+.info, .success, .warning, .error, .validation { border: 1px solid; margin: 10px 0px; padding: 15px 10px 15px 50px; background-repeat: no-repeat; background-position: 10px center; }
+
+.info { color: #00529B; background-color: #BDE5F8; background-image: url('../files/messages/info.png'); }
+
+.success { color: #4F8A10; background-color: #DFF2BF; background-image: url('../files/messages/success.png'); }
+
+.warning { color: #9F6000; background-color: #FEEFB3; background-image: url('../files/messages/warning.png'); }
+
+.error { color: #D8000C; background-color: #FFBABA; background-image: url('../files/messages/error.png'); }
+
+.validation { color: #D63301; background-color: #FFCCBA; background-image: url('../files/messages/validation.png'); }
+
+/* @end */
+
+/* @group BASICS */
+
+html,body { font-family: "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif; color: #555; background-color: #fff; margin: 0; padding: 0; width: 100%; }
+
+a,a:link,a:active,a:visited { color: #000; }
+
+a:hover { color: #cb0000; }
+
+/* @end */
