@@ -63,7 +63,7 @@
 				<tr>
 			
 		<?php		
-					oreach($columns as $name => $value):
+					foreach($columns as $name => $value):
 					
 						if($name === 'timestamp')
 							$entry->$name = dater($entry->$name,'m/d/Y @ h:i a');
