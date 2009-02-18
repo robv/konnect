@@ -16,12 +16,6 @@
 		exit;
 	}
 	
-	/*if(!mysql_is_table('users') && $_SERVER['REQUEST_URI'] !== 'install/'){
-				include 'install/install.control.php';
-				$load->view('../install/install');
-				exit;
-		}*/
-	
 	// If there is no controller set, set it to your default controller
 	if(empty($data['pick_off']['0']))
 		$data['pick_off']['0'] = $data['config']->defaultController;

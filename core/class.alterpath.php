@@ -24,7 +24,7 @@ class AlterPath {
 			endforeach;
 			
 			// If the current path matches one that needs to be rewritten
-			if($original === $current_path)
+			if(preg_match('#^'.$original.'$#',$current_path))
 				$this->return_array = explode($this->seperator,trim($path,$this->seperator));
 		
 		endforeach;

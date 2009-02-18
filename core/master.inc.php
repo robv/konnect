@@ -1,6 +1,6 @@
 <?PHP
     // Application flag
-    define('SPF', true);
+    define('kt', true);
 
     // Determine our absolute document root
     define('DOC_ROOT', realpath(dirname(__FILE__) . '/../'));
@@ -25,7 +25,7 @@
 	TODO: Refactor so namespace is not polluted, should call these methods every time you need to use them
 */
     // Load our config settings
-    $Config = Config::getConfig();
+	$Config = Config::getConfig();
 
     // Store session info in the database if table exists
     if($Config->useDBSessions === true && mysql_is_table('sessions'))

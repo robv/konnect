@@ -85,20 +85,6 @@
 	-------------------------------------------------------------------------------
 */	
 	
-
-	// Simple check to see if a table exists in the database
-	function mysql_is_table($tbl)
-	{
-		$db = Database::getDatabase();
-
-	    $tables = array();
-	    $q = $db->query('SHOW TABLES');
-	    while ($r = mysql_fetch_array($q)) { $tables[] = $r[0]; }
-
-	    if (in_array($tbl, $tables)) { return true; }
-	    else { return false; }
-	}
-	
 	function users_exist()
 	{
 		$db = Database::getDatabase();
