@@ -59,7 +59,8 @@ class Forms {
 
 		// This is just to ensure these required fields are set
 		$this->fields['0'][$name]['display'] = (isset($info['display'])) ? $info['display'] : ucwords(str_replace('_',' ',$name));
-		$this->fields['0'][$name]['id'] = (isset($info['id'])) ? $info['id'] : str_replace('_',' ',$name);
+		//$this->fields['0'][$name]['id'] = (isset($info['id'])) ? $info['id'] : str_replace('_',' ',$name);
+		$this->fields['0'][$name]['id'] = (isset($info['id'])) ? $info['id'] : $name;
 		$this->fields['0'][$name]['value'] = (isset($info['value'])) ? $info['value'] : '';
 		
 	}
@@ -80,6 +81,7 @@ class Forms {
 					$this->fields[$i][$name]['id'] = $value['id'].'_'.$i;
 					$this->fields[$i][$name]['name'] = $value['name'].'_'.$i;
 					$this->fields[$i][$name]['value'] = isset($_POST[$name.'_'.$i]) ? $_POST[$name.'_'.$i] : $value['value'];
+					$this->fields[$i][$name]['iteration'] = $i;
 					
 					if(isset($value['options']['title'])) // This is specifically for slug as of now because it needs to replace %n% with iteration
 						$this->fields[$i][$name]['options']['title'] = str_replace('%n%',$i,$value['options']['title']);
@@ -275,26 +277,85 @@ class Forms {
 	}
 
 	// Build a select menu using the get_options function in functions.inc
-	function related($name){
+	function related($info){
 
-		$out = '<select name="'.$name.'" id="'.$this->fields['0'][$name]['id'].'">';
+		$out = '<select name="'.$info['name'].'" id="'.$info['id'].'">';
 
 		// Pass selectName as option to change default view
-		if(isset($this->fields['0'][$name]['options']['selectName']))
-			$out .= '<option value="">'.$this->fields['0'][$name]['options']['selectName'].'</option>';
+		if(isset($info['options']['selectName']))
+			$out .= '<option value="">'.$info['options']['selectName'].'</option>';
 
-			if(!isset($this->fields['0'][$name]['sql']))
-				$this->fields['0'][$name]['sql'] = '';
+			if(!isset($info['sql']))
+				$info['sql'] = '';
 
-			$out .=  get_options($this->fields['0'][$name]['options']['table'],$this->fields['0'][$name]['options']['val'],$this->fields['0'][$name]['options']['text'],$this->fields['0'][$name]['value']);
+			$out .=  $this->get_options($info['options']['table'],$info['options']['val'],$info['options']['text'],$info['value']);
 
 		$out .= '</select>';
 
-		if(isset($this->fields['0'][$name]['options']['extra']))
-			$out .= $this->fields['0'][$name]['options']['extra'];
-			
+		if(isset($info['options']['extra']))
+			$out .= $info['options']['extra'];
+
 		return $out;
 	}
+
+	// Build a select menu using the get_options function in functions.inc
+	function related_dependent($info){
+
+		$out = '<script language="javascript">
+			$(document).ready(function()
+			{
+				makeSublist(\''.$info['options']['parent'].'_'.$info['iteration'].'\',\''.$info['id'].'\', false, \'\');	
+			});
+		</script>';
+
+		$out .= '<select name="'.$info['name'].'" id="'.$info['id'].'">';
+
+		// Pass selectName as option to change default view
+		if(isset($info['options']['selectName']))
+			$out .= '<option value="">'.$info['options']['selectName'].'</option>';
+
+			if(!isset($info['sql']))
+				$info['sql'] = '';
+			$out .=  $this->get_options($info['options']['table'],$info['options']['val'],$info['options']['text'],$info['value'],$info['options']['dependent']);
+
+		$out .= '</select>';
+
+		if(isset($info['options']['extra']))
+			$out .= $info['options']['extra'];
+
+		return $out;
+	}
+
+		// This is used in related() function
+		function get_options($table, $val, $text, $default = null, $class = null, $sql = '')
+	    {
+	        $db = Database::getDatabase(true);
+	        $out = '';
+			
+	        $rows = $db->getRows("SELECT * FROM `$table` $sql");
+	        foreach($rows as $row)
+	        {
+				if(!is_null($class))
+					$option_class = ' class="sub_' . $row[$class] . '"';
+				else
+					$option_class = '';
+				
+	            $the_text = '';
+	            if(!is_array($text)) $text = array($text); // Allows you to concat multiple fields for display
+	            foreach($text as $t)
+	                $the_text .= $row[$t] . ' ';
+	            $the_text = htmlspecialchars(trim($the_text));
+
+	            if(!is_null($default) && $row[$val] == $default)
+	                $out .= '<option value="' . htmlspecialchars($row[$val], ENT_QUOTES) . '"'.$option_class.' selected="selected">' . $the_text . '</option>';
+	            elseif(is_array($default) && in_array($row[$val],$default))
+	                $out .= '<option value="' . htmlspecialchars($row[$val], ENT_QUOTES) . '"'.$option_class.' selected="selected">' . $the_text . '</option>';
+	            else
+	                $out .= '<option value="' . htmlspecialchars($row[$val], ENT_QUOTES) . '"'.$option_class.'>' . $the_text . '</option>';
+	        }
+	        return $out;
+	    }
+	
 	
 ///////////////// FUNCTIONS THAT USE OTHER FORM TYPES ////////////////////////////////
 

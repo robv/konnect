@@ -12,11 +12,11 @@
 			$Flash->show();
 		?>
 			
-		<?php if(empty($entries)){ ?>
+		<?php if(empty($entries)): ?>
 			
 			<p class="info">Sorry, no entries exist.</p>
 			
-		<?php } else { ?>
+		<?php else: ?>
 			
 			<table class="manage_table" cellspacing="0">
 		
@@ -29,25 +29,21 @@
 		<?php	
 			foreach($columns as $name => $value):
 				
-				if(isset($field_info[$name])){ //view info exists
-					if($field_info[$name]->type !== 'hidden'){
+				if(isset($field_info[$name])): //view info exists
+					if($field_info[$name]->type !== 'hidden'):
 		?>
 				
 					<th><?= ucfirst(str_replace($seperators,' ',$name)); ?></th>
 				
 		<?php
-					}
-					
-				}
-				
-				else
-				{
+					endif;
+				else:
 		?>
 					
 					<th><?= ucfirst(str_replace($seperators,' ',$name)); ?></th>
 				
 		<?php			
-				}
+				endif;
 				
 			endforeach;
 		?>
@@ -115,18 +111,19 @@
 			
 		<?php 
 			$pager->calculate();
-			if($pager->numPages > 1){
+					if($pager->numPages > 1):
 		?>
+		
+				<div id="pager" class="clearfix">
 			
-			<div id="pager" class="clearfix">
-				
-				<?= $pager->advanced(); ?>
-				
-			</div>
-		
-		<?php } ?>
-		
-		<?php } ?>
+					<?= $pager->advanced(); ?>
+			
+				</div>
+	
+		<?php
+				endif;
+			endif;
+		?>
 		
 
 	</div>

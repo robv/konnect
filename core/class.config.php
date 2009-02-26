@@ -15,7 +15,7 @@
         // Add your server names to the appropriate arrays.
         private $productionServers = array();
         private $stagingServers    = array();
-        private $localServers      = array('createpath.dev');
+        private $localServers      = array('konnect.dev');
 
         // Standard Config Options...
 
@@ -107,12 +107,12 @@
             ini_set('display_errors', '1');
             ini_set('error_reporting', E_ALL);
 
-            define('WEB_ROOT', 'http://createpath.dev/');
+            define('WEB_ROOT', 'http://konnect.dev/');
 
             $this->dbHost       = 'localhost';
-            $this->dbName       = 'createpath';
+            $this->dbName       = 'konnect';
             $this->dbUsername   = 'root';
-            $this->dbPassword   = 'ruv1523';
+            $this->dbPassword   = 'rootpassword';
             $this->dbDieOnError = true;
         }
 
