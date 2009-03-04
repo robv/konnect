@@ -2,9 +2,9 @@
 
 	<div id="full" class="match">
 		
-		<?php if(is_null($show_add_entry->id)){ ?>
+		<?php if(is_null($show_add_entry->id)): ?>
 			<div id="header_button"><a href="<?= WEB_ROOT; ?>admin/add/<?= $url_structure['2']; ?>/">Add Entry</a></div>
-		<?php } ?>
+		<?php endif; ?>
 		
 		<h2><?= $pageTitle; ?></h2>
 		

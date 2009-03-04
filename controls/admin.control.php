@@ -182,19 +182,18 @@ class Admin_controller extends Controller {
 		//////
 		
 		
+		// This is filling $this->data['columns] with current object sets
 		$get_table_info = new $obj_name();
 		$this->data['entries'] = DBObject::glob($obj_name,$where.' ORDER BY '.$get_table_info->idColumnName.' DESC LIMIT '.$start.','.$this->data['pager']->perPage);
 		$this->data['columns'] = new $obj_name();
 		$this->data['columns'] = $this->data['columns']->getCols();
 		
+			// Collecting view information for each column type
 			foreach($this->data['columns'] as $column => $column_value):
-		
 				$field_info = new View_information();
 				$field_info->select(array($column,$this->data['table_name']),array('name','table_name'));
-				
-				if(!is_null($field_info->type))
-					$this->data['field_info'][$column] = $field_info;
-		
+					if(!is_null($field_info->type))
+						$this->data['field_info'][$column] = $field_info;
 			endforeach;	
 		
 		// This will determin whether or not to display the "ADD ENTRY" button
