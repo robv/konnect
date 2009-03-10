@@ -1,28 +1,66 @@
 <?PHP
 
-	class Cms_links extends DBObject
+	class Konnect_links extends DBObject
 	{
 		function __construct($id = "")
 		{
-			parent::__construct('cms_links', 'id', array('name', 'link', 'authorized_groups'), $id);
-		}
-	}
-	
-	class Dashboard_log extends DBObject
-	{
-		function __construct($id = "")
-		{
-			parent::__construct('dashboard_log', 'id', array('table', 'entry', 'action'), $id);
+			parent::__construct('konnect_links', 'id', array('name', 'link', 'authorized_groups'), $id);
 		}
 	}
 
-	class Field_information extends DBObject
+	class Konnect_field_information extends DBObject
 	{
 		function __construct($id = "")
 		{
-			parent::__construct('field_information', 'id', array('table_name', 'name', 'type', 'options'), $id);
+			parent::__construct('konnect_field_information', 'id', array('table_name', 'name', 'type', 'options'), $id);
 		}
 	}
+
+
+	class Konnect_sessions extends DBObject
+	{
+		function __construct($id = "")
+		{
+			parent::__construct('konnect_sessions', 'id', array('data', 'updated_on'), $id);
+		}
+	}
+
+
+	class Konnect_view_information extends DBObject
+	{
+		function __construct($id = "")
+		{
+			parent::__construct('konnect_view_information', 'id', array('table_name', 'name', 'type', 'options'), $id);
+		}
+	}
+
+
+	class Users extends DBObject
+	{
+		function __construct($id = "")
+		{
+			parent::__construct('users', 'id', array('username', 'password', 'level', 'email'), $id);
+		}
+	
+		function insert()
+		{
+			global $Auth;
+				$this->password = $Auth->createHashedPassword($this->password);
+			parent::insert();
+		}
+	
+		function update()
+		{
+			global $Auth;
+			$thisUser = new Users();
+			$thisUser->select($this->id);
+			// BECAUSE PASSWORDS ARE STORED HASHED DON'T WANT TO HASH A HASH
+			if($thisUser->password !== $this->password)
+				$this->password = $Auth->createHashedPassword($this->password);
+			parent::update();
+		}
+	}
+
 
 
 	class Galleries extends DBObject
@@ -57,59 +95,6 @@
 		function __construct($id = "")
 		{
 			parent::__construct('pages', 'id', array('title', 'slug', 'content'), $id);
-		}
-	}
-
-
-	class Sessions extends DBObject
-	{
-		function __construct($id = "")
-		{
-			parent::__construct('sessions', 'id', array('data', 'updated_on'), $id);
-		}
-	}
-
-
-	class Users extends DBObject
-	{
-		function __construct($id = "")
-		{
-			parent::__construct('users', 'id', array('username', 'password', 'level', 'email'), $id);
-		}
-	
-		function insert()
-		{
-			global $Auth;
-				$this->password = $Auth->createHashedPassword($this->password);
-			parent::insert();
-		}
-	
-		function update()
-		{
-			global $Auth;
-			$thisUser = new Users();
-			$thisUser->select($this->id);
-			// BECAUSE PASSWORDS ARE STORED HASHED DON'T WANT TO HASH A HASH
-			if($thisUser->password !== $this->password)
-				$this->password = $Auth->createHashedPassword($this->password);
-			parent::update();
-		}
-	}
-
-
-	class View_information extends DBObject
-	{
-		function __construct($id = "")
-		{
-			parent::__construct('view_information', 'id', array('table_name', 'name', 'type', 'options'), $id);
-		}
-	}
-
-	class Blog_categories extends DBObject
-	{
-		function __construct($id = "")
-		{
-			parent::__construct('blog_categories', 'id', array('blog_category','slug', 'name'), $id);
 		}
 	}
 
@@ -228,6 +213,15 @@
 			endforeach;
 		
 			return parent::update();;
+		}
+	}
+
+
+	class Blog_categories extends DBObject
+	{
+		function __construct($id = "")
+		{
+			parent::__construct('blog_categories', 'id', array('name' ,'slug'), $id);
 		}
 	}
 

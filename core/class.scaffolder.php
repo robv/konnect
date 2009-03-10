@@ -53,7 +53,7 @@ class Scaffolder extends Forms {
 				
 				
 				// Grab rows where field name matches
-				$field_info = new Field_information();
+				$field_info = new Konnect_field_information();
 				$field_info->select(array($this->table,$field_name),array('table_name','name'));
 				
 				if(!is_null($field_info->type)){

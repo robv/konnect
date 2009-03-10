@@ -15,7 +15,7 @@ class Admin_controller extends Controller {
 		if(empty($controller))
 			$controller = 'dashboard';
 			
-		$data['header_links'] = DBObject::glob('Cms_links','WHERE authorized_groups LIKE "%'.$Auth->level.'%" OR authorized_groups is NULL OR authorized_groups=""');
+		$data['header_links'] = DBObject::glob('Konnect_links','WHERE authorized_groups LIKE "%'.$Auth->level.'%" OR authorized_groups is NULL OR authorized_groups=""');
 		
 		parent::__construct($controller,$data);
 		
@@ -190,14 +190,14 @@ class Admin_controller extends Controller {
 		
 			// Collecting view information for each column type
 			foreach($this->data['columns'] as $column => $column_value):
-				$field_info = new View_information();
+				$field_info = new Konnect_view_information();
 				$field_info->select(array($column,$this->data['table_name']),array('name','table_name'));
 					if(!is_null($field_info->type))
 						$this->data['field_info'][$column] = $field_info;
 			endforeach;	
 		
 		// This will determin whether or not to display the "ADD ENTRY" button
-		$this->data['show_add_entry'] = new View_information();
+		$this->data['show_add_entry'] = new Konnect_view_information();
 		$this->data['show_add_entry']->select(array('add entry',$this->data['table_name']),array('name','table_name'));
 		
 		$this->loadView('admin/manage');
