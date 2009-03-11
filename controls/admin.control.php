@@ -24,7 +24,6 @@ class Admin_controller extends Controller {
 	public function dashboard()
 	{
 			$this->data['pageTitle'] = 'Your Dashboard';
-			$this->data['dash_log'] = DBObject::glob('Dashboard_log','ORDER BY timestamp DESC LIMIT 0,20');
 			$this->loadView('admin/dashboard');
 	}
 	

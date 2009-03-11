@@ -5,23 +5,6 @@
 		<h2><?= $pageTitle; ?></h2>
 		
 		<div class="inner">
-			
-			<?php
-			
-				foreach($dash_log as $log):
-				
-					echo '<div class="dash_row">';
-					
-					echo '<div class="dash_type">'.$log->action.'</div>';
-					
-					if($log->action === 'add')
-						echo '<div class="dash_desc"><a href="'.WEB_ROOT.'admin/edit/'.$log->table.'/'.$log->entry.'/">New entry added to '.$log->table.'</a>.</div>';
-					
-					echo '</div>';
-				
-				endforeach;
-			
-			?>
 	
 		</div>
 
