@@ -31,10 +31,13 @@
 	<div id="navigation" class="clearfix">
 	
 		<ul id="main">
-			<li class="active"><a href="<?= WEB_ROOT; ?>admin/">Dashboard</a></li>
+			<li<?php if(implode('/',$url_structure).'/' === 'admin/'){ echo ' class="active"'; } ?>><a href="<?= WEB_ROOT; ?>admin/">Dashboard</a></li>
 			<?php
 				foreach($header_links as $header_link):
-					echo '<li><a href="'.WEB_ROOT.'admin/'.$header_link->link.'">'.$header_link->name.'</a></li>';
+					if(implode('/',$url_structure).'/' === 'admin/'.$header_link->link){
+						$active_insert = ' class="active"';
+					} else { $active_insert = ''; }
+					echo '<li'.$active_insert.'><a href="'.WEB_ROOT.'admin/'.$header_link->link.'">'.$header_link->name.'</a></li>';
 				endforeach;
 			?>
 		</ul>

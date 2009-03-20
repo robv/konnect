@@ -43,7 +43,7 @@ class Admin_controller extends Controller {
 
 	public function add()
 	{
-		global $Flash;
+		global $Auth,$Flash;
 		
 		$seperators = array('-','+','_',' ');
 		
@@ -66,6 +66,10 @@ class Admin_controller extends Controller {
 		$scaffold = new Scaffolder(strtolower(str_replace($seperators,'_',$this->data['url_structure']['2'])),'',$this->data['iterations']);
 		$scaffold->iterate();
 		
+		// Grab user preferences
+		$this->data['preference'] = new User_preferences();
+		$this->data['preference']->select(array($Auth->id,'next'),array('user','preference'));
+		
 			if(submit()){
 				if($scaffold->saveObject()){
 					/*
@@ -80,13 +84,43 @@ class Admin_controller extends Controller {
 						$dash_log->action = 'add';
 						$dash_log->insert();
 					*/
-					
+				
 					if(isset($_POST['next']) && $_POST['next'] === 'add'){
+						
+						// Updated or inserting user preference
+						if($this->data['preference']->value !== 'add' && $this->data['preference']->value !== 'edit'){
+							$this->data['preference']->preference = 'next';
+							$this->data['preference']->value = 'add';
+							$this->data['preference']->user = $Auth->id;
+							$this->data['preference']->insert();
+						} else {
+								$this->data['preference']->preference = 'next';
+								$this->data['preference']->value = 'add';
+								$this->data['preference']->user = $Auth->id;
+								$this->data['preference']->update();
+						}
+						
 						$Flash->set('<p class="success">You\'re entry was added successfully, you can add another below or <a href="'.WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.mysql_insert_id().'/">click here to review / edit that entry</a>.</p>');
 						redirect(WEB_ROOT.'admin/add/'.$this->data['url_structure']['2'].'/');
+				
 					}else{
+				
+						// Updated or inserting user preference
+						if($this->data['preference']->value !== 'add' && $this->data['preference']->value !== 'edit'){
+							$this->data['preference']->preference = 'next';
+							$this->data['preference']->value = 'edit';
+							$this->data['preference']->user = $Auth->id;
+							$this->data['preference']->insert();
+						} else {
+								$this->data['preference']->preference = 'next';
+								$this->data['preference']->value = 'edit';
+								$this->data['preference']->user = $Auth->id;
+								$this->data['preference']->update();
+						}
+						
 						$Flash->set('<p class="success">You\'re entry was added successfully, you can make edits below.</p>');
 						redirect(WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.mysql_insert_id().'/');
+				
 					}
 				}
 			}

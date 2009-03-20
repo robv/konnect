@@ -60,7 +60,15 @@
 			parent::update();
 		}
 	}
-
+	
+	
+	class User_preferences extends DBObject
+	{
+		function __construct($id = "")
+		{
+			parent::__construct('user_preferences', 'id', array('user', 'preference', 'value'), $id);
+		}
+	}
 
 
 	class Galleries extends DBObject

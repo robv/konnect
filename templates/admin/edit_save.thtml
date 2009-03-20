@@ -38,8 +38,8 @@
 			<h2>After Save</h2>
 
 			<ul>
-				<li><input type="radio" name="next" value="edit" id="next_edit" /> <label for="next_edit">Edit Entry</label></li>
-				<li><input type="radio" name="next" value="add" id="next_add" checked="checked" /> <label for="next_add">Add Another Entry</label></li>
+				<li><input type="radio" name="next" value="edit" id="next_edit" <?= ($preference->value === 'edit') ? 'checked="checked"' : ''; ?> /> <label for="next_edit">Edit Entry</label></li>
+				<li><input type="radio" name="next" value="add" id="next_add" <?= ($preference->value === 'add' || $preference->value !== 'edit') ? 'checked="checked"' : ''; ?> /> <label for="next_add">Add Another Entry</label></li>
 			</ul>
 			
 		<?php } ?>
