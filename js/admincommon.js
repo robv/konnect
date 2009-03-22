@@ -38,6 +38,8 @@ var Site = {
 				return false;
 			});
 			
+			$("form :input:visible:enabled:first").focus();
+			
 		});
 		
 	}
