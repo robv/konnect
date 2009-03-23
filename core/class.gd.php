@@ -132,6 +132,17 @@
             return $this->resize($new_width, $new_height);
         }
 
+        // Resizes an image and maintains aspect ratio, but also makes sure it's not upscalled so no blurring takes place
+        public function scaleSafe($new_width = null, $new_height = null)
+        {	
+			if(!is_null($new_width) && $this->width > $new_width)
+				$this->scale($new_width,$new_height);
+			elseif(!is_null($new_height) && $this->height > $new_height)
+				$this->scale($new_width,$new_height);
+				
+			return true;
+        }
+
         // Resizes an image to an exact size
         public function resize($new_width, $new_height)
         {
@@ -181,7 +192,8 @@
 		function scaleAndSave($name,$newname,$width,$height,$location)
 		{		
 				if($this->loadFile($_FILES[$name]['tmp_name'])){
-					$this->scale($width,$height);
+					// TODO: Not sure if this is correct image resize process to take
+					$this->scaleSafe($width,$height);
 					$this->saveAs($location.$newname); 
 					return true;
 				}

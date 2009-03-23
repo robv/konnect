@@ -45,6 +45,10 @@ class Admin_controller extends Controller {
 	{
 		global $Auth,$Flash;
 		
+		// If they bypassed cropping this was never unset...
+		if(isset($_SESSION['crop_images']))
+			unset($_SESSION['crop_images']);
+		
 		$seperators = array('-','+','_',' ');
 		
 		if(!isset($this->data['url_structure']['2'])){
@@ -71,6 +75,7 @@ class Admin_controller extends Controller {
 		$this->data['preference']->select(array($Auth->id,'next'),array('user','preference'));
 		
 			if(submit()){
+				
 				if($scaffold->saveObject()){
 					/*
 					// TODO: This needs to be refactored and probably incorporated into $scaffold->saveObject()
@@ -102,13 +107,18 @@ class Admin_controller extends Controller {
 								$this->data['preference']->update();
 						}
 						
-						$flash_msg = '<p class="success">You\'re entry was added successfully, you can add another below or <a href="'.WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$saved_object_id.'/">click here to review / edit that entry</a>.</p>';
-						if(isset($_SESSION['crop_images']))
-							$flash_msg .= '<p class="info">You can crop the images you just uploaded by clicking here.</p>';
-						$Flash->set($flash_msg);
-						redirect(WEB_ROOT.'admin/add/'.$this->data['url_structure']['2'].'/');
+						// We need to redirect to image cropper or we don't....
+						if(isset($_SESSION['crop_images']) && is_array($_SESSION['crop_images'])){
+							$_SESSION['crop_redirect'] = WEB_ROOT.'admin/add/'.$this->data['url_structure']['2'].'/';
+							redirect(WEB_ROOT.'admin/cropper/');
+						} else {	
+							$Flash->set('<p class="success">You\'re entry was added successfully, you can add another below'
+									   . 'or <a href="'.WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$saved_object_id.'/">'
+									   . 'click here to review / edit that entry</a>.</p>');
+							redirect(WEB_ROOT.'admin/add/'.$this->data['url_structure']['2'].'/');
+						}
 				
-					}else{
+					} else {
 				
 						// Updated or inserting user preference
 						if($this->data['preference']->value !== 'add' && $this->data['preference']->value !== 'edit'){
@@ -123,11 +133,14 @@ class Admin_controller extends Controller {
 								$this->data['preference']->update();
 						}
 						
-						$flash_msg = '<p class="success">You\'re entry was added successfully, you can make edits below.</p>';
-						if(isset($_SESSION['crop_images']))
-							$flash_msg .= '<p class="info">You can crop the images you just uploaded by clicking here.</p>';
-						$Flash->set($flash_msg);
-						redirect(WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$saved_object_id.'/');
+						// We need to redirect to image cropper or we don't....
+						if(isset($_SESSION['crop_images']) && is_array($_SESSION['crop_images'])){
+							$_SESSION['crop_redirect'] = WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$saved_object_id.'/';
+							redirect(WEB_ROOT.'admin/cropper/');
+						} else {
+							$Flash->set('<p class="success">You\'re entry was added successfully, you can make edits below.</p>');
+							redirect(WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$saved_object_id.'/');
+						}
 				
 					}
 				}
@@ -143,6 +156,10 @@ class Admin_controller extends Controller {
 	{
 		global $Flash;
 		
+		// If they bypassed cropping this was never unset...
+		if(isset($_SESSION['crop_images']))
+			unset($_SESSION['crop_images']);
+			
 		$seperators = array('-','+','_',' ');
 		
 		if(!isset($this->data['url_structure']['2'])){
@@ -249,6 +266,48 @@ class Admin_controller extends Controller {
 	{
 		$this->loadView('admin/_confirm');
 		
+	}
+	
+	public function cropper()
+	{
+		$this->data['pageTitle'] = 'Crop Your Images';
+		
+		$this->data['entries'] = isset($_SESSION['crop_images']) ? $_SESSION['crop_images'] : array();
+		
+			if(submit()){
+
+				foreach($this->data['entries'] as $entryid => $entry){
+					
+					$gd = new GD();
+					if($gd->loadFile('./files/uploads/large/'.$entry)){
+						$gd->crop($_POST[$entryid.'_x'],$_POST[$entryid.'_y'],$_POST[$entryid.'_w'],$_POST[$entryid.'_h']);
+						
+							// Delete originals so we don't have to replace them, sometimes that causes issues
+							@unlink('./files/uploads/original/'.$entry);
+								@unlink('./files/uploads/large/'.$entry);
+								@unlink('./files/uploads/medium/'.$entry);
+								@unlink('./files/uploads/small/'.$entry);
+						
+						$gd->saveAs('./files/uploads/original/'.$entry);
+						$gd->scaleSafe('700','700');
+						$gd->saveAs('./files/uploads/large/'.$entry);
+						$gd->scaleSafe('200','200');
+						$gd->saveAs('./files/uploads/medium/'.$entry);
+						$gd->scaleSafe('100','100');
+						$gd->saveAs('./files/uploads/small/'.$entry);
+					} else { echo 'what?? its '.'/files/uploads/original/'.$entry; exit(); }
+				}
+				
+				if(!isset($_SESSION['crop_redirect']))
+					$_SESSION['crop_redirect'] = WEB_ROOT.'admin/';
+					
+				$crop_redirect = $_SESSION['crop_redirect'];
+				unset($_SESSION['crop_images'],$_SESSION['crop_redirect']);
+				redirect($crop_redirect);
+			
+			}
+		
+		$this->loadView('admin/cropper');
 	}
 	
 	public function databaseobjects()

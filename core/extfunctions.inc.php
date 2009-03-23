@@ -81,6 +81,11 @@
 		. '<script src="'.WEB_ROOT.'js/plugins/jquery.pngFix.js" type="text/javascript" charset="utf-8"></script>'."\n";
 	}
 
+	function jcrop(){
+		return '<style type="text/css" media="all">@import "'.WEB_ROOT.'js/plugins/jcrop/jquery.Jcrop.css";</style>'."\n"
+		. '<script src="'.WEB_ROOT.'js/plugins/jcrop/jquery.Jcrop.js" type="text/javascript" charset="utf-8"></script>'."\n";
+	}
+
 /*
 	-------------------------------------------------------------------------------
 */	
