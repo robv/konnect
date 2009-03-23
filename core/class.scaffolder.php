@@ -100,13 +100,32 @@ class Scaffolder extends Forms {
 						foreach($this->fields[$i] as $name => $value) :
 						
 							if($value['type'] === 'file'){
+								
+								// Check if a session of images to crop already exists, if so we need to overwrite it
+								if(isset($_SESSION['crop_images']))
+									unset($_SESSION['crop_images']);
 
 								if(!empty($_FILES[$value['name']]['name'])){
 									
 									$gd = new GD();
 									
-										// rand_string() is located in core/extfunctions.inc.php
-										$newname = $object_copy->$name = rand_string().'_'.$_FILES[$value['name']]['name'];
+									// Check if file is already existing and start deleting
+									if(strlen($object_copy->$name) > 0){
+										@unlink('./files/uploads/original/'.$object_copy->$name);
+											@unlink('./files/uploads/large/'.$object_copy->$name);
+											@unlink('./files/uploads/medium/'.$object_copy->$name);
+											@unlink('./files/uploads/small/'.$object_copy->$name);
+									}
+									
+									
+										// If a file of that name already exists add random string to begining else keep same name
+										if(file_exists('./files/uploads/original/'.$_FILES[$value['name']]['name'])){
+											// rand_string() is located in core/extfunctions.inc.php
+											$newname = $object_copy->$name = rand_string().'_'.$_FILES[$value['name']]['name'];
+										} else {	
+											$newname = $object_copy->$name = $_FILES[$value['name']]['name'];
+										}
+									
 										
 										/*
 											TODO: There should be a way in options to pass multiple image locations and sizes
@@ -116,7 +135,9 @@ class Scaffolder extends Forms {
 										
 										$gd->scaleAndSave($value['name'],$newname,'600','500','./files/uploads/large/');
 										$gd->scaleAndSave($value['name'],$newname,'200','200','./files/uploads/medium/');
-										$gd->scaleAndSave($value['name'],$newname,'100','100','./files/uploads/small/');
+										// If these function are returning true then store the filename so we can crop the images
+										if($gd->scaleAndSave($value['name'],$newname,'100','100','./files/uploads/small/'))
+											$_SESSION['crop_images'][str_replace(array('.'.' '),'',$newname)] = $newname;
 
 								}
 							

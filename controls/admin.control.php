@@ -84,6 +84,8 @@ class Admin_controller extends Controller {
 						$dash_log->action = 'add';
 						$dash_log->insert();
 					*/
+					
+					$saved_object_id = mysql_insert_id();
 				
 					if(isset($_POST['next']) && $_POST['next'] === 'add'){
 						
@@ -100,7 +102,10 @@ class Admin_controller extends Controller {
 								$this->data['preference']->update();
 						}
 						
-						$Flash->set('<p class="success">You\'re entry was added successfully, you can add another below or <a href="'.WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.mysql_insert_id().'/">click here to review / edit that entry</a>.</p>');
+						$flash_msg = '<p class="success">You\'re entry was added successfully, you can add another below or <a href="'.WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$saved_object_id.'/">click here to review / edit that entry</a>.</p>';
+						if(isset($_SESSION['crop_images']))
+							$flash_msg .= '<p class="info">You can crop the images you just uploaded by clicking here.</p>';
+						$Flash->set($flash_msg);
 						redirect(WEB_ROOT.'admin/add/'.$this->data['url_structure']['2'].'/');
 				
 					}else{
@@ -118,8 +123,11 @@ class Admin_controller extends Controller {
 								$this->data['preference']->update();
 						}
 						
-						$Flash->set('<p class="success">You\'re entry was added successfully, you can make edits below.</p>');
-						redirect(WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.mysql_insert_id().'/');
+						$flash_msg = '<p class="success">You\'re entry was added successfully, you can make edits below.</p>';
+						if(isset($_SESSION['crop_images']))
+							$flash_msg .= '<p class="info">You can crop the images you just uploaded by clicking here.</p>';
+						$Flash->set($flash_msg);
+						redirect(WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$saved_object_id.'/');
 				
 					}
 				}

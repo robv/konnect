@@ -182,8 +182,9 @@
 		{		
 				if($this->loadFile($_FILES[$name]['tmp_name'])){
 					$this->scale($width,$height);
-					$this->saveAs($location.$newname);
+					$this->saveAs($location.$newname); 
+					return true;
 				}
-				return $newname;
+				return false;
 		}
     }
