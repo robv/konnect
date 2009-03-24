@@ -175,7 +175,7 @@ class Forms {
 			if($gd->loadFile('./files/uploads/large/'.$info['value']))
 				$out .= '<span class="current">Current File: <a href="'.WEB_ROOT.'files/uploads/large/'.$info['value'].'" rel="facebox">'.$info['value'].'</a></span>';
 			else
-				$out .= '<span class="current">Current File: <a href="'.WEB_ROOT.'files/uploads/original/'.$info['value'].'">'.$info['value'].'</a></span>';
+				$out .= '<span class="current">Current File: <a href="'.WEB_ROOT.'files/uploads/original/'.$info['value'].'" target="new">'.$info['value'].'</a></span>';
 		
 		}
 		
