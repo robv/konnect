@@ -110,11 +110,10 @@ class Admin_controller extends Controller {
 						// We need to redirect to image cropper or we don't....
 						if(isset($_SESSION['crop_images']) && is_array($_SESSION['crop_images'])){
 							$_SESSION['crop_redirect'] = WEB_ROOT.'admin/add/'.$this->data['url_structure']['2'].'/';
+							$_SESSION['crop_flash'] = '<p class="success">You\'re entry was added successfully, you can add another below or <a href="'.WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$saved_object_id.'/"> click here to review / edit that entry</a>.</p>';
 							redirect(WEB_ROOT.'admin/cropper/');
 						} else {	
-							$Flash->set('<p class="success">You\'re entry was added successfully, you can add another below'
-									   . 'or <a href="'.WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$saved_object_id.'/">'
-									   . 'click here to review / edit that entry</a>.</p>');
+							$Flash->set('<p class="success">You\'re entry was added successfully, you can add another below or <a href="'.WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$saved_object_id.'/"> click here to review / edit that entry</a>.</p>');
 							redirect(WEB_ROOT.'admin/add/'.$this->data['url_structure']['2'].'/');
 						}
 				
@@ -136,6 +135,7 @@ class Admin_controller extends Controller {
 						// We need to redirect to image cropper or we don't....
 						if(isset($_SESSION['crop_images']) && is_array($_SESSION['crop_images'])){
 							$_SESSION['crop_redirect'] = WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$saved_object_id.'/';
+							$_SESSION['crop_flash'] = '<p class="success">You\'re entry was added successfully, you can make edits below.</p>';
 							redirect(WEB_ROOT.'admin/cropper/');
 						} else {
 							$Flash->set('<p class="success">You\'re entry was added successfully, you can make edits below.</p>');
@@ -195,8 +195,15 @@ class Admin_controller extends Controller {
 						$dash_log->action = 'edit';
 						$dash_log->insert();
 					*/
-					$Flash->set('<p class="success">You\'re entry was saved successfully, you can make more edits below.</p>');
-					redirect(WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$this->data['url_structure']['3'].'/');
+					// We need to redirect to image cropper or we don't....
+					if(isset($_SESSION['crop_images']) && is_array($_SESSION['crop_images'])){
+						$_SESSION['crop_redirect'] = WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$this->data['url_structure']['3'].'/';
+						$_SESSION['crop_flash'] = '<p class="success">You\'re entry was saved successfully, you can make more edits below.</p>';
+						redirect(WEB_ROOT.'admin/cropper/');
+					} else {
+						$Flash->set('<p class="success">You\'re entry was saved successfully, you can make more edits below.</p>');
+						redirect(WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$this->data['url_structure']['3'].'/');
+					}
 				}
 			}
 			
@@ -270,6 +277,8 @@ class Admin_controller extends Controller {
 	
 	public function cropper()
 	{
+		global $Flash;
+		
 		$this->data['pageTitle'] = 'Crop Your Images';
 		
 		$this->data['entries'] = isset($_SESSION['crop_images']) ? $_SESSION['crop_images'] : array();
@@ -295,14 +304,17 @@ class Admin_controller extends Controller {
 						$gd->saveAs('./files/uploads/medium/'.$entry);
 						$gd->scaleSafe('100','100');
 						$gd->saveAs('./files/uploads/small/'.$entry);
-					} else { echo 'what?? its '.'/files/uploads/original/'.$entry; exit(); }
+					}
 				}
 				
 				if(!isset($_SESSION['crop_redirect']))
 					$_SESSION['crop_redirect'] = WEB_ROOT.'admin/';
+				if(isset($_SESSION['crop_flash']))
+					$Flash->set($_SESSION['crop_flash']);
 					
 				$crop_redirect = $_SESSION['crop_redirect'];
 				unset($_SESSION['crop_images'],$_SESSION['crop_redirect']);
+				
 				redirect($crop_redirect);
 			
 			}

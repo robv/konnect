@@ -134,7 +134,7 @@
       } else if (this.href.match(image_types)) {
         var image = new Image()
         image.onload = function() {
-          $.facebox.reveal('<div class="image"><img src="' + image.src + '" /></div>', klass)
+          $.facebox.reveal('<div class="image"><img src="' + image.src + '" /><div class="img_close"><a href="#" onclick="javascript: $(document).trigger(\'close.facebox\'); return false;"><img src="' + $.facebox.settings.close_image + '" /></a></div></div>', klass)
         }
         image.src = this.href
 

@@ -326,6 +326,18 @@ textarea.objects {
 	height: 300px;
 }
 
+.form_inner_form {
+	display: block;
+	margin: 5px 0 0;
+}
+
+.form_inner_form label {
+	float: none !important;
+	margin: 0 0 0 10px !important;
+	font-weight: normal !important;
+}
+
+
 /* @end */
 
 /* @group FULL */
@@ -542,7 +554,7 @@ textarea.objects {
 	height: 50px;
 }
 
-#confirm a:link,#pager a:active,#confirm a:visited {
+#confirm a:link,#confirm a:visited {
 	padding: 10px 15px;
 	margin: 5px;
 	background-color: #22272D;

@@ -169,9 +169,16 @@ class Forms {
 		
 		$out = '<input'.$attributes.' />';
 		
-		if($info['type'] === 'file' && !empty($info['value']))
-			$out .= '<span class="current">Current File: '.$info['value'].'</span>';
-
+		if($info['type'] === 'file' && !empty($info['value'])){
+			
+			$gd = new GD();
+			if($gd->loadFile('./files/uploads/large/'.$info['value']))
+				$out .= '<span class="current">Current File: <a href="'.WEB_ROOT.'files/uploads/large/'.$info['value'].'" rel="facebox">'.$info['value'].'</a></span>';
+			else
+				$out .= '<span class="current">Current File: <a href="'.WEB_ROOT.'files/uploads/original/'.$info['value'].'">'.$info['value'].'</a></span>';
+		
+		}
+		
 		if(isset($info['options']['extra']))
 			$out .= $info['options']['extra'];
 
@@ -207,6 +214,8 @@ class Forms {
 
 	function file($info){
 		$info['type'] = 'file';
+		$name = isset($info['name']) ? $info['name'] : '';
+		$info['options']['extra'] = '<p class="form_inner_form"><input type="checkbox" name="'.$name.'_crop" id="'.$name.'_crop" checked="checked" value="yes" /><label for="'.$name.'_crop">This is an image and I want to crop it after upload</label></p>';
 		return $this->basicinput($info);
 	}
 

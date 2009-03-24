@@ -136,7 +136,7 @@ class Scaffolder extends Forms {
 										$gd->scaleAndSave($value['name'],$newname,'700','700','./files/uploads/large/');
 										$gd->scaleAndSave($value['name'],$newname,'200','200','./files/uploads/medium/');
 										// If these function are returning true then store the filename so we can crop the images
-										if($gd->scaleAndSave($value['name'],$newname,'100','100','./files/uploads/small/'))
+										if($gd->scaleAndSave($value['name'],$newname,'100','100','./files/uploads/small/') && isset($_POST[$value['name'].'_crop']) && $_POST[$value['name'].'_crop'] === 'yes')
 											$_SESSION['crop_images'][str_replace(array('.',' '),'',$newname)] = $newname;
 
 								}
