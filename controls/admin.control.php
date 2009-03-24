@@ -240,10 +240,18 @@ class Admin_controller extends Controller {
 				$search = '(';
 				if($_POST['search_field'] === 'all'){
 					foreach($this->data['search_module']->options as $key => $option){
-						$search_arr[] = '`'.$option.'` LIKE \'%'.addcslashes(mysql_real_escape_string($_POST['search']), '%_').'%\' ';
+						if(strlen($_POST['search']) < 3){
+							$search_arr[] = '`'.$option.'` LIKE \''.addcslashes(mysql_real_escape_string($_POST['search']), '%_').'%\' ';
+						} else {
+							$search_arr[] = '`'.$option.'` LIKE \'%'.addcslashes(mysql_real_escape_string($_POST['search']), '%_').'%\' ';
+						}
 					}
-				} else {	
-					$search_arr[] = '`'.$_POST['search_field'].'` LIKE \'%'.addcslashes(mysql_real_escape_string($_POST['search']), '%_').'%\' ';
+				} else {		
+						if(strlen($_POST['search']) < 3){
+							$search_arr[] = '`'.$_POST['search_field'].'` LIKE \''.addcslashes(mysql_real_escape_string($_POST['search']), '%_').'%\' ';
+						} else {
+							$search_arr[] = '`'.$_POST['search_field'].'` LIKE \'%'.addcslashes(mysql_real_escape_string($_POST['search']), '%_').'%\' ';
+						}
 				}
 				$search .= implode(' OR ',$search_arr);
 				$search .= ')';
