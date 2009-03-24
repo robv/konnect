@@ -8,6 +8,21 @@
 		
 		<h2><?= $pageTitle; ?></h2>
 		
+		<?php if(!is_null($search_module->id)): ?>
+			<div id="modules">
+				<form action="" method="post" enctype="multipart/form-data" class="search">
+					<input type="text" name="search" id="search" />
+					<select name="search_field" id="search_field">
+						<option value="all">All</option>
+						<?php foreach($search_module->options as $opt): ?>
+							<option value="<?= $opt; ?>"><?= ucwords($opt); ?></option>
+						<?php endforeach; ?>
+					</select>
+					<input class="submit" type="submit" name="submit" value="Search">
+				</form>
+			</div>
+		<?php endif; ?>
+		
 		<?php 
 			$Flash->show();
 		?>
@@ -95,7 +110,7 @@
 						endif;
 						
 					endforeach;
-					/*<?= WEB_ROOT; ?>admin/delete/<?= $table_name; ?>/<?= $entry->id; ?>*/
+					
 		?>
 		
 				<td class="edit_delete"><a href="<?= WEB_ROOT; ?>admin/edit/<?= $table_name; ?>/<?= $entry->id; ?>/">Edit</a></td>

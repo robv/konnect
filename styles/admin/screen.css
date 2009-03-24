@@ -570,4 +570,26 @@ textarea.objects {
 
 /* @end */
 
+/* @group MODULES */
+
+#modules {
+	margin-top: -20px;
+	margin-bottom: 20px;
+	padding: 7px 10px;
+	font-size: .9em;
+	height: 28px;
+	background-color: #f7f7f7;
+	border-bottom: 1px solid #ddd;
+}
+
+#modules input {
+	margin-left: 10px;
+}
+
+#modules form.search {
+	float: right;
+}
+
+/* @end */
+
 

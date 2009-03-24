@@ -227,12 +227,41 @@ class Admin_controller extends Controller {
 		$this->data['table_name'] = strtolower(str_replace($seperators,'_',$this->data['url_structure']['2']));
 		$this->data['pageTitle'] = 'Manage '.ucwords(str_replace($seperators,' ',$this->data['url_structure']['2']));
 		$obj_name = ucfirst($this->data['table_name']);
+
+
+		// This will determin whether or not to display search
+		$this->data['search_module'] = new Konnect_view_information();
+		$this->data['search_module']->select(array('search',$this->data['table_name']),array('name','table_name'));
+		$search = '';
+		if(!is_null($this->data['search_module']->id)){
+			$this->data['search_module']->options = explode(',',$this->data['search_module']->options);
+			
+			if(submit()){
+				$search = '(';
+				if($_POST['search_field'] === 'all'){
+					foreach($this->data['search_module']->options as $key => $option){
+						$search_arr[] = '`'.$option.'` LIKE \'%'.addcslashes(mysql_real_escape_string($_POST['search']), '%_').'%\' ';
+					}
+				} else {	
+					$search_arr[] = '`'.$_POST['search_field'].'` LIKE \'%'.addcslashes(mysql_real_escape_string($_POST['search']), '%_').'%\' ';
+				}
+				$search .= implode(' OR ',$search_arr);
+				$search .= ')';
+			}
 		
-		if(isset($this->data['url_structure']['3']) && isset($this->data['url_structure']['4']))
-			$where = 'WHERE `'.$this->data['url_structure']['3'].'`="'.$this->data['url_structure']['4'].'"';
-		else
-			$where = '';
-		 
+		}
+		
+		
+		if(isset($this->data['url_structure']['3']) && isset($this->data['url_structure']['4'])){
+			if(!empty($search))
+				$search = ' AND '.$search;
+			$where = 'WHERE `'.$this->data['url_structure']['3'].'`="'.$this->data['url_structure']['4'].'"'.$search;
+		}else{
+			if(!empty($search))
+				$where = 'WHERE '.$search;
+		 	else
+				$where = '';
+		}
 		
 		// THIS BUILDS THE NEXT AND PREVIOUS BUTTONS
 
