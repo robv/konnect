@@ -184,7 +184,9 @@
 			endforeach;
 		
 			unset($tag);
-		
+			
+			$this->tags = trim($this->tags);
+			$this->tags = str_replace(array(', ',' ,',',',$this->tags));
 			$tags_array = explode(',',$this->tags);
 		
 			$relationships = new Blog_tag_relations;
@@ -193,7 +195,7 @@
 			unset($relationships);
 		
 			foreach($tags_array as $tag): // INSERT ALL NEW TAGS
-		
+				
 				$tags = new Blog_tags();
 				if($tags->select($tag,'name'))
 				{
