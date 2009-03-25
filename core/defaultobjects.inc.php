@@ -6,6 +6,13 @@
 		{
 			parent::__construct('konnect_links', 'id', array('name', 'link', 'authorized_groups'), $id);
 		}
+		
+		function getLinks()
+		{
+			global $Auth;
+				$db = Database::getDatabase();
+	            return DBObject::glob(get_class($this),'SELECT * FROM `Konnect_links` WHERE authorized_groups LIKE "%'.$Auth->level.'%" OR authorized_groups is NULL OR authorized_groups=""');
+		}
 	}
 
 	class Konnect_field_information extends DBObject
@@ -67,6 +74,20 @@
 		function __construct($id = "")
 		{
 			parent::__construct('user_preferences', 'id', array('user', 'preference', 'value'), $id);
+		}
+		
+		function setPreference($user_id,$value = 'add')
+		{
+			
+			$this->preference = 'next';
+			$this->value = $value;
+			$this->user = $user_id;
+			
+			if(strlen($this->value) > 1)
+				return parent::update();
+			else
+				return parent::insert();
+				
 		}
 	}
 

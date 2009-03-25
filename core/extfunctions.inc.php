@@ -128,9 +128,11 @@
 		return $string;
 	}
 
-	function deslugify($str)
+	function deslugify($str,$replace = NULL)
 	{	
 		$search = array(' ','-','/','_',':');
+		if(is_null($replace))
+			$replace = '';
 			
 		if(is_array($str)){
 
@@ -142,7 +144,7 @@
 	
 		}else{
 	
-			$str = str_replace($search,'',$str);
+			$str = str_replace($search,$replace,$str);
 			$str = strtolower($str);
 	
 		}

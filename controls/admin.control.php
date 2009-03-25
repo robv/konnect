@@ -14,8 +14,9 @@ class Admin_controller extends Controller {
 		// This is how you set your default controller I should probably think of a better method
 		if(empty($controller))
 			$controller = 'dashboard';
-			
-		$data['header_links'] = DBObject::glob('Konnect_links','WHERE authorized_groups LIKE "%'.$Auth->level.'%" OR authorized_groups is NULL OR authorized_groups=""');
+		
+		$data['header_links'] = new Konnect_links();
+		$data['header_links'] = $data['header_links']->getLinks();
 		
 		parent::__construct($controller,$data);
 		
@@ -31,122 +32,88 @@ class Admin_controller extends Controller {
 	{		
 		global $Flash;
 		
-			$seperators = array('-','+','_',' ');
-			$this->data['table_name'] = strtolower(str_replace($seperators,'_',$this->data['url_structure']['2']));
-			$this->data['pageTitle'] = 'Delete '.ucwords(str_replace($seperators,' ',$this->data['url_structure']['2']));
+			$this->data['table_name'] = deslugify($this->data['url_structure']['2'],'_');
+			$this->data['pageTitle'] = 'Delete '.ucwords(deslugify($this->data['table_name'],' '));
 			$obj_name = ucfirst($this->data['table_name']);
+			
 			$delete = new $obj_name($this->data['url_structure']['3']);
 			$delete->delete();
+			
 			$Flash->set('<p class="success">You\'re entry was deleted successfully.</p>');
 			redirect(WEB_ROOT.'admin/manage/'.$this->data['url_structure']['2'].'/');
+	
 	}
 
 	public function add()
 	{
 		global $Auth,$Flash;
 		
-		// If they bypassed cropping this was never unset...
+		// Just makes sure crop_images isn't being added to but being writen from scratch
 		if(isset($_SESSION['crop_images']))
 			unset($_SESSION['crop_images']);
 		
 		$seperators = array('-','+','_',' ');
 		
-		if(!isset($this->data['url_structure']['2'])){
-			$this->data['url_structure']['2'] = 'Pages';
-			$this->data['pageTitle'] = 'Pages';
-		}
-		else {
-			$this->data['pageTitle'] = ucwords(str_replace($seperators,' ',$this->data['url_structure']['2']));
-		}
+		// Setting the default table, really this should never be the case
+		if(!isset($this->data['url_structure']['2']))
+			$this->data['url_structure']['2'] = $this->data['pageTitle'] = 'News';
+		else
+			$this->data['pageTitle'] = ucwords(deslugify($this->data['url_structure']['2'],' '));
+			
 		
-		// Array key "3" is where iterations reside
-		if(isset($this->data['url_structure']['3']) && is_numeric($this->data['url_structure']['3'])){
+		// Array key "3" is where iterations reside, if it's not set then set it to "1"
+		if(isset($this->data['url_structure']['3']) && is_numeric($this->data['url_structure']['3']))
 			$this->data['iterations'] = $this->data['url_structure']['3'];
-		}
-		else{
+		else
 			$this->data['iterations'] = 1;
-		}	
+			
 		
-		$scaffold = new Scaffolder(strtolower(str_replace($seperators,'_',$this->data['url_structure']['2'])),'',$this->data['iterations']);
+		$scaffold = new Scaffolder(deslugify($this->data['url_structure']['2'],'_'),'',$this->data['iterations']);
 		$scaffold->iterate();
 		
-		// Grab user preferences
+		// Grab user preferences for what to do after form submit
 		$this->data['preference'] = new User_preferences();
 		$this->data['preference']->select(array($Auth->id,'next'),array('user','preference'));
 		
 			if(submit()){
 				
 				if($scaffold->saveObject()){
-					/*
-					// TODO: This needs to be refactored and probably incorporated into $scaffold->saveObject()
-						$dash_log = new Dashboard_log();
-						$dash_log->table = strtolower(str_replace($seperators,'_',$this->data['url_structure']['2']));
-						
-							TODO: Store mysql_insert_id from saveObject
-							TODO: How would this even work for multiple entries?
-						
-						$dash_log->entry = mysql_insert_id();
-						$dash_log->action = 'add';
-						$dash_log->insert();
-					*/
-					
-					$saved_object_id = mysql_insert_id();
 				
 					if(isset($_POST['next']) && $_POST['next'] === 'add'){
 						
 						// Updated or inserting user preference
-						if($this->data['preference']->value !== 'add' && $this->data['preference']->value !== 'edit'){
-							$this->data['preference']->preference = 'next';
-							$this->data['preference']->value = 'add';
-							$this->data['preference']->user = $Auth->id;
-							$this->data['preference']->insert();
-						} else {
-								$this->data['preference']->preference = 'next';
-								$this->data['preference']->value = 'add';
-								$this->data['preference']->user = $Auth->id;
-								$this->data['preference']->update();
-						}
+						$this->data['preference']->setPreference($Auth->id);
 						
 						// We need to redirect to image cropper or we don't....
 						if(isset($_SESSION['crop_images']) && is_array($_SESSION['crop_images'])){
 							$_SESSION['crop_redirect'] = WEB_ROOT.'admin/add/'.$this->data['url_structure']['2'].'/';
-							$_SESSION['crop_flash'] = '<p class="success">You\'re entry was added successfully, you can add another below or <a href="'.WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$saved_object_id.'/"> click here to review / edit that entry</a>.</p>';
+							$_SESSION['crop_flash'] = '<p class="success">You\'re entry was added successfully, you can add another below or <a href="'.WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$scaffold->currentId.'/"> click here to review / edit that entry</a>.</p>';
 							redirect(WEB_ROOT.'admin/cropper/');
 						} else {	
-							$Flash->set('<p class="success">You\'re entry was added successfully, you can add another below or <a href="'.WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$saved_object_id.'/"> click here to review / edit that entry</a>.</p>');
+							$Flash->set('<p class="success">You\'re entry was added successfully, you can add another below or <a href="'.WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$scaffold->currentId.'/"> click here to review / edit that entry</a>.</p>');
 							redirect(WEB_ROOT.'admin/add/'.$this->data['url_structure']['2'].'/');
 						}
 				
 					} else {
-				
+						
 						// Updated or inserting user preference
-						if($this->data['preference']->value !== 'add' && $this->data['preference']->value !== 'edit'){
-							$this->data['preference']->preference = 'next';
-							$this->data['preference']->value = 'edit';
-							$this->data['preference']->user = $Auth->id;
-							$this->data['preference']->insert();
-						} else {
-								$this->data['preference']->preference = 'next';
-								$this->data['preference']->value = 'edit';
-								$this->data['preference']->user = $Auth->id;
-								$this->data['preference']->update();
-						}
+						$this->data['preference']->setPreference($Auth->id,'edit');
 						
 						// We need to redirect to image cropper or we don't....
 						if(isset($_SESSION['crop_images']) && is_array($_SESSION['crop_images'])){
-							$_SESSION['crop_redirect'] = WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$saved_object_id.'/';
+							$_SESSION['crop_redirect'] = WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$scaffold->currentId.'/';
 							$_SESSION['crop_flash'] = '<p class="success">You\'re entry was added successfully, you can make edits below.</p>';
 							redirect(WEB_ROOT.'admin/cropper/');
 						} else {
 							$Flash->set('<p class="success">You\'re entry was added successfully, you can make edits below.</p>');
-							redirect(WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$saved_object_id.'/');
+							redirect(WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$scaffold->currentId.'/');
 						}
 				
 					}
 				}
 			}
 			
-		$this->setGlobal('form',$scaffold->display());
+		$this->data['form'] = $scaffold->display();
 		
 		$this->loadView('admin/edit_save');
 		
@@ -156,45 +123,30 @@ class Admin_controller extends Controller {
 	{
 		global $Flash;
 		
-		// If they bypassed cropping this was never unset...
+		// Just makes sure crop_images isn't being added to but being writen from scratch
 		if(isset($_SESSION['crop_images']))
 			unset($_SESSION['crop_images']);
 			
-		$seperators = array('-','+','_',' ');
 		
-		if(!isset($this->data['url_structure']['2'])){
-			$this->data['url_structure']['2'] = 'Pages';
-			$this->data['pageTitle'] = 'Pages';
-		}
-		else {
-			$this->data['pageTitle'] = ucwords(str_replace($seperators,' ',$this->data['url_structure']['2']));
-		}
+		// Setting default table to "News"
+		if(!isset($this->data['url_structure']['2']))
+			$this->data['url_structure']['2'] = $this->data['pageTitle'] = 'News';
+		else 
+			$this->data['pageTitle'] = ucwords(deslugify($this->data['url_structure']['2'],' '));
+			
 		
 		// Array key "3" is where row id resides
-		if(isset($this->data['url_structure']['3']) && is_numeric($this->data['url_structure']['3'])){
+		if(isset($this->data['url_structure']['3']) && is_numeric($this->data['url_structure']['3']))
 			$currentId = $this->data['url_structure']['3'];
-		}
-		else{
+		else
 			$currentId = '';
-		}
 			
-		$scaffold = new Scaffolder(strtolower(str_replace($seperators,'_',$this->data['url_structure']['2'])),$currentId);
+		$scaffold = new Scaffolder(deslugify($this->data['url_structure']['2'],'_'),$currentId);
 		$scaffold->iterate();
 		
 			if(submit()){
 				if($scaffold->saveObject()){
-					/*
-					// TODO: This needs to be refactored and probably incorporated into $scaffold->saveObject()
-						$dash_log = new Dashboard_log();
-						$dash_log->table = strtolower(str_replace($seperators,'_',$this->data['url_structure']['2']));
-						
-							TODO: Store mysql_insert_id from saveObject
-							TODO: How would this even work for multiple entries?
-						
-						$dash_log->entry = mysql_insert_id();
-						$dash_log->action = 'edit';
-						$dash_log->insert();
-					*/
+					
 					// We need to redirect to image cropper or we don't....
 					if(isset($_SESSION['crop_images']) && is_array($_SESSION['crop_images'])){
 						$_SESSION['crop_redirect'] = WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$this->data['url_structure']['3'].'/';
@@ -204,10 +156,11 @@ class Admin_controller extends Controller {
 						$Flash->set('<p class="success">You\'re entry was saved successfully, you can make more edits below.</p>');
 						redirect(WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$this->data['url_structure']['3'].'/');
 					}
+				
 				}
 			}
 			
-		$this->setGlobal('form',$scaffold->display());
+		$this->data['form'] = $scaffold->display();
 		
 		$this->loadView('admin/edit_save');
 		
@@ -220,12 +173,12 @@ class Admin_controller extends Controller {
 	
 		$seperators = array('-','+','_',' ');
 		
-		if(!isset($this->data['url_structure']['2'])){
-			$this->data['url_structure']['2'] = 'Pages';
-		}
+		// Setting default table to "news" this should never happen
+		if(!isset($this->data['url_structure']['2']))
+			$this->data['url_structure']['2'] = 'News';
 		
-		$this->data['table_name'] = strtolower(str_replace($seperators,'_',$this->data['url_structure']['2']));
-		$this->data['pageTitle'] = 'Manage '.ucwords(str_replace($seperators,' ',$this->data['url_structure']['2']));
+		$this->data['table_name'] = deslugify($this->data['url_structure']['2'],'_');
+		$this->data['pageTitle'] = 'Manage '.ucwords(deslugify($this->data['url_structure']['2'],' '));
 		$obj_name = ucfirst($this->data['table_name']);
 
 
@@ -233,6 +186,8 @@ class Admin_controller extends Controller {
 		$this->data['search_module'] = new Konnect_view_information();
 		$this->data['search_module']->select(array('search',$this->data['table_name']),array('name','table_name'));
 		$search = '';
+		
+		// If it was determined we should display search, here's where we handle that
 		if(!is_null($this->data['search_module']->id)){
 			$this->data['search_module']->options = explode(',',$this->data['search_module']->options);
 			
@@ -240,6 +195,10 @@ class Admin_controller extends Controller {
 				$search = '(';
 				if($_POST['search_field'] === 'all'){
 					foreach($this->data['search_module']->options as $key => $option){
+						
+						$field_info = new Konnect_field_information();
+						$field_info->select(array($this->data['table_name'],$option,'related'),array('table','name','type'));
+						
 						if(strlen($_POST['search']) < 3){
 							$search_arr[] = '`'.$option.'` LIKE \''.addcslashes(mysql_real_escape_string($_POST['search']), '%_').'%\' ';
 						} else {
@@ -286,7 +245,7 @@ class Admin_controller extends Controller {
 		
 		// This is filling $this->data['columns] with current object sets
 		$get_table_info = new $obj_name();
-		$this->data['entries'] = DBObject::glob($obj_name,$where.' ORDER BY '.$get_table_info->idColumnName.' DESC LIMIT '.$start.','.$this->data['pager']->perPage);
+		$this->data['entries'] = DBObject::glob($obj_name,'SELECT * FROM `'.$obj_name.'` '.$where.' ORDER BY '.$get_table_info->idColumnName.' DESC LIMIT '.$start.','.$this->data['pager']->perPage);
 		$this->data['columns'] = new $obj_name();
 		$this->data['columns'] = $this->data['columns']->getCols();
 		

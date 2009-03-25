@@ -153,7 +153,7 @@ class Scaffolder extends Forms {
 						endforeach;
 					
 					if(empty($this->currentId))
-						$object_copy->insert();
+						$this->currentId = $object_copy->insert();
 					else
 						$object_copy->update();
 						
