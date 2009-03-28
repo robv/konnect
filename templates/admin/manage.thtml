@@ -86,7 +86,7 @@
 						
 							if($field_info[$name]->type === 'image'):
 		?>
-					<td><img src="<?= WEB_ROOT; ?>files/uploads/small/<?= $entry->$name; ?>" alt="<?= $entry->$name; ?>" /></td>
+					<td><a href="<?= WEB_ROOT; ?>files/uploads/large/<?= $entry->$name; ?>" rel="facebox"><img src="<?= WEB_ROOT; ?>files/uploads/small/<?= $entry->$name; ?>" alt="<?= $entry->$name; ?>" /></a></td>
 		<?php
 							elseif($field_info[$name]->type === 'file'):
 		?>
