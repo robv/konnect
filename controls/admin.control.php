@@ -284,7 +284,11 @@ class Admin_controller extends Controller {
 				foreach($this->data['entries'] as $entryid => $entry){
 					
 					$gd = new GD();
-					if($gd->loadFile('./files/uploads/large/'.$entry)){
+					if($gd->loadFile('./files/uploads/original/'.$entry)){
+						if($gd->width > 950){
+							$_POST[$entryid.'_w'] = $_POST[$entryid.'_w'] * 2;
+							$_POST[$entryid.'_h'] = $_POST[$entryid.'_h'] * 2;
+						}
 						$gd->crop($_POST[$entryid.'_x'],$_POST[$entryid.'_y'],$_POST[$entryid.'_w'],$_POST[$entryid.'_h']);
 						
 							// Delete originals so we don't have to replace them, sometimes that causes issues
@@ -296,9 +300,9 @@ class Admin_controller extends Controller {
 						$gd->saveAs('./files/uploads/original/'.$entry);
 						$gd->scaleSafe('700','700');
 						$gd->saveAs('./files/uploads/large/'.$entry);
-						$gd->scaleSafe('200','200');
+						$gd->scaleSafe('300','300');
 						$gd->saveAs('./files/uploads/medium/'.$entry);
-						$gd->scaleSafe('100','100');
+						$gd->scaleSafe('150','150');
 						$gd->saveAs('./files/uploads/small/'.$entry);
 					}
 				}
@@ -315,6 +319,7 @@ class Admin_controller extends Controller {
 			
 			}
 		
+		$this->data['gd'] = new GD();
 		$this->loadView('admin/cropper');
 	}
 	

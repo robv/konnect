@@ -121,9 +121,9 @@ class Scaffolder extends Forms {
 										// If a file of that name already exists add random string to begining else keep same name
 										if(file_exists('./files/uploads/original/'.$_FILES[$value['name']]['name'])){
 											// rand_string() is located in core/extfunctions.inc.php
-											$newname = $object_copy->$name = rand_string().'_'.$_FILES[$value['name']]['name'];
+											$newname = $object_copy->$name = str_replace(' ','',rand_string().'_'.$_FILES[$value['name']]['name']);
 										} else {	
-											$newname = $object_copy->$name = $_FILES[$value['name']]['name'];
+											$newname = $object_copy->$name = str_replace(' ','',$_FILES[$value['name']]['name']);
 										}
 									
 										
@@ -131,14 +131,17 @@ class Scaffolder extends Forms {
 											TODO: There should be a way in options to pass multiple image locations and sizes
 										*/
 										
-										copy($_FILES[$value['name']]['tmp_name'],'./files/uploads/original/'.$newname);
-										
-										$gd->scaleAndSave($value['name'],$newname,'700','700','./files/uploads/large/');
-										$gd->scaleAndSave($value['name'],$newname,'200','200','./files/uploads/medium/');
-										// If these function are returning true then store the filename so we can crop the images
-										if($gd->scaleAndSave($value['name'],$newname,'100','100','./files/uploads/small/') && isset($_POST[$value['name'].'_crop']) && $_POST[$value['name'].'_crop'] === 'yes')
+										$gd->loadFile($_FILES[$value['name']]['tmp_name']);
+										$gd->scaleSafe('1800','1800');
+										$gd->saveAs('./files/uploads/original/'.$newname);
+										$gd->scaleSafe('700','700');
+										$gd->saveAs('./files/uploads/large/'.$newname);
+										$gd->scaleSafe('300','300');
+										$gd->saveAs('./files/uploads/medium/'.$newname);
+										$gd->scaleSafe('150','150');
+										if($gd->saveAs('./files/uploads/small/'.$newname))
 											$_SESSION['crop_images'][str_replace(array('.',' '),'',$newname)] = $newname;
-
+								
 								}
 							
 							}
