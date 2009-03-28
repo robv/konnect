@@ -90,7 +90,7 @@
 		<?php
 							elseif($field_info[$name]->type === 'file'):
 		?>
-					<td><a href="<?= WEB_ROOT; ?>files/uploads/original/<?= $entry->$name; ?>"><?= $entry->$name; ?></a></td>
+					<td><a href="<?= WEB_ROOT; ?>files/uploads/original/<?= $entry->$name; ?>" target="new"><?= $entry->$name; ?></a></td>
 		<?php
 							elseif($field_info[$name]->type === 'timestamp'):
 		?>
