@@ -189,14 +189,4 @@
             return $this->crop($x, $y, $w, $h);
         }
 
-		function scaleAndSave($name,$newname,$width,$height,$location)
-		{		
-				if($this->loadFile($_FILES[$name]['tmp_name'])){
-					// TODO: Not sure if this is correct image resize process to take
-					$this->scaleSafe($width,$height);
-					$this->saveAs($location.$newname); 
-					return true;
-				}
-				return false;
-		}
     }
