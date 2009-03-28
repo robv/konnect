@@ -91,7 +91,11 @@
 							elseif($field_info[$name]->type === 'file'):
 		?>
 					<td><a href="<?= WEB_ROOT; ?>files/uploads/original/<?= $entry->$name; ?>"><?= $entry->$name; ?></a></td>
-		<?php											
+		<?php
+							elseif($field_info[$name]->type === 'timestamp'):
+		?>
+					<td><?= dater($entry->$name,'m/d/Y @ h:i a'); ?></td>
+		<?php																						
 							elseif($field_info[$name]->type !== 'hidden'):
 		?>
 		
