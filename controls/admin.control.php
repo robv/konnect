@@ -296,12 +296,16 @@ class Admin_controller extends Controller {
 								@unlink('./files/uploads/large/'.$entry);
 								@unlink('./files/uploads/medium/'.$entry);
 								@unlink('./files/uploads/small/'.$entry);
+								@unlink('./files/uploads/cropped/'.$entry);
 						
 						$gd->saveAs('./files/uploads/original/'.$entry);
 						$gd->scaleSafe('700','700');
 						$gd->saveAs('./files/uploads/large/'.$entry);
 						$gd->scaleSafe('300','300');
 						$gd->saveAs('./files/uploads/medium/'.$entry);
+						$gd->cropCentered('200','200');
+						$gd->saveAs('./files/uploads/cropped/'.$entry);
+						$gd->loadFile('./files/uploads/original/'.$entry);
 						$gd->scaleSafe('150','150');
 						$gd->saveAs('./files/uploads/small/'.$entry);
 					}

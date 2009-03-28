@@ -138,6 +138,9 @@ class Scaffolder extends Forms {
 										$gd->saveAs('./files/uploads/large/'.$newname);
 										$gd->scaleSafe('300','300');
 										$gd->saveAs('./files/uploads/medium/'.$newname);
+										$gd->cropCentered('200','200');
+										$gd->saveAs('./files/uploads/cropped/'.$newname);
+										$gd->loadFile($_FILES[$value['name']]['tmp_name']);
 										$gd->scaleSafe('150','150');
 										if($gd->saveAs('./files/uploads/small/'.$newname))
 											$_SESSION['crop_images'][str_replace(array('.',' '),'',$newname)] = $newname;
