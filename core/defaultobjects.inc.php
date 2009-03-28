@@ -207,7 +207,7 @@
 			unset($tag);
 			
 			$this->tags = trim($this->tags);
-			$this->tags = str_replace(array(', ',' ,',',',$this->tags));
+			$this->tags = str_replace(array(', ',' ,'),',',$this->tags);
 			$tags_array = explode(',',$this->tags);
 		
 			$relationships = new Blog_tag_relations;
