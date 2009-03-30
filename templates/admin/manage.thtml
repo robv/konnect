@@ -74,37 +74,54 @@
 				<tr>
 			
 		<?php		
-					foreach($columns as $name => $value):
-					
-						if($name === 'timestamp')
-							$entry->$name = dater($entry->$name,'m/d/Y @ h:i a');
-					
-						if(isset($field_info[$name])): //no view information exists
-						/*
-							TODO: Add special views for different type of information
-						*/
-						
-							if($field_info[$name]->type === 'image'):
+	
+		foreach($columns as $name => $value):
+		
+			if($name === 'timestamp')
+				$entry->$name = dater($entry->$name,'m/d/Y @ h:i a');
+		
+			if(isset($field_info[$name])): //no view information exists
+			/*
+				TODO: Add special views for different type of information
+			*/
+				
+				if($field_info[$name]->type === 'image'):
 		?>
 					<td><a href="<?= WEB_ROOT; ?>files/uploads/large/<?= $entry->$name; ?>" rel="facebox"><img src="<?= WEB_ROOT; ?>files/uploads/small/<?= $entry->$name; ?>" alt="<?= $entry->$name; ?>" /></a></td>
 		<?php
-							elseif($field_info[$name]->type === 'file'):
+				elseif($field_info[$name]->type === 'file'):
 		?>
 					<td><a href="<?= WEB_ROOT; ?>files/uploads/original/<?= $entry->$name; ?>" target="new"><?= $entry->$name; ?></a></td>
 		<?php
-							elseif($field_info[$name]->type === 'timestamp'):
+				elseif($field_info[$name]->type === 'timestamp'):
 		?>
 					<td><?= dater($entry->$name,'m/d/Y @ h:i a'); ?></td>
-		<?php																						
-							elseif($field_info[$name]->type !== 'hidden'):
-		?>
-		
-					<td><?= strip_tags($entry->$name); ?></td>
-		
-		<?php
-							endif;
+		<?php			
+				elseif($field_info[$name]->type === 'related'):
+						// TODO: Remove logic from template, this sucks.
+						$opt_builder = $field_info[$name]->options;
+						$opt_builder = explode('|',$opt_builder);
+							foreach($opt_builder as $option):
+								if(!empty($option)){
+									$option_explode = explode(',',$option);
+									$options[$option_explode['0']] = $option_explode['1'];
+								}
+							endforeach;
 							
-						else :
+					$fclass = ucfirst($options['table']);
+					$finfo = new $fclass();
+					$finfo->select($entry->$name,$options['val']);
+		?>
+					<td><?= $finfo->$options['text']; ?></td>
+		<?php										
+				unset($finfo,$fclass,$options,$option);
+				elseif($field_info[$name]->type !== 'hidden'):
+		?>
+					<td><?= strip_tags($entry->$name); ?></td>
+		<?php
+				endif;
+							
+			else :
 		?>
 		
 					<td><?= truncate_string(strip_tags($entry->$name),'300','[...]'); ?></td>
