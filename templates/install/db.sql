@@ -163,4 +163,14 @@ CREATE TABLE `users` (
   `email` varchar(65) character set utf8 collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+#
+
+CREATE TABLE `user_preferences` (
+  `id` int(11) NOT NULL auto_increment,
+  `user` int(11) NOT NULL,
+  `preference` varchar(255) NOT NULL,
+  `value` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
