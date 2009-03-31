@@ -11,7 +11,7 @@
 		{
 			global $Auth;
 				$db = Database::getDatabase();
-	            return DBObject::glob(get_class($this),'SELECT * FROM `Konnect_links` WHERE authorized_groups LIKE "%'.$Auth->level.'%" OR authorized_groups is NULL OR authorized_groups=""');
+	            return DBObject::glob(get_class($this),'SELECT * FROM `konnect_links` WHERE authorized_groups LIKE "%'.$Auth->level.'%" OR authorized_groups is NULL OR authorized_groups=""');
 		}
 	}
 

@@ -245,7 +245,7 @@ class Admin_controller extends Controller {
 		
 		// This is filling $this->data['columns] with current object sets
 		$get_table_info = new $obj_name();
-		$this->data['entries'] = DBObject::glob($obj_name,'SELECT * FROM `'.$obj_name.'` '.$where.' ORDER BY '.$get_table_info->idColumnName.' DESC LIMIT '.$start.','.$this->data['pager']->perPage);
+		$this->data['entries'] = DBObject::glob($obj_name,'SELECT * FROM `'.$this->data['table_name'].'` '.$where.' ORDER BY '.$get_table_info->idColumnName.' DESC LIMIT '.$start.','.$this->data['pager']->perPage);
 		$this->data['columns'] = new $obj_name();
 		$this->data['columns'] = $this->data['columns']->getCols();
 		
