@@ -101,16 +101,20 @@ class Forms {
 		
 			foreach($fields as $fieldName => $field):
 			
-				$field_output .= $this->format;
-				
 				$type = $field['type'];
 				
-				$field_output = str_replace("%id%",$field['id'],$field_output);
-				$field_output = str_replace("%name%",$field['display'],$field_output);
-				$field_output = str_replace("%field%",$this->$type($field),$field_output);
+				if($type === 'hidden'){ // should not show anything for hidden fields
 				
-				if($type === 'hidden') // should not show anything for hidden fields
-					$field_output = $this->$type($field);
+					$field_output .= $this->$type($field);
+				
+				} else {
+					
+					$field_output .= $this->format;
+					$field_output = str_replace("%id%",$field['id'],$field_output);
+					$field_output = str_replace("%name%",$field['display'],$field_output);
+					$field_output = str_replace("%field%",$this->$type($field),$field_output);
+					
+				}
 			
 			endforeach;
 		
