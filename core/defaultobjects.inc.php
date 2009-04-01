@@ -260,6 +260,12 @@
 		{
 			parent::__construct('blog_categories', 'id', array('name' ,'slug'), $id);
 		}
+		
+		function grab($where='ORDER BY name ASC')
+		{
+				$db = Database::getDatabase();
+	            return DBObject::glob(get_class($this),'SELECT * FROM `blog_categories` '.$where);
+		}
 	}
 
 
@@ -277,5 +283,11 @@
 		function __construct($id = "")
 		{
 			parent::__construct('blog_tags', 'id', array('name', 'slug', 'count'), $id);
+		}
+		
+		function grab($where='ORDER BY count DESC LIMIT 0,10')
+		{
+				$db = Database::getDatabase();
+	            return DBObject::glob(get_class($this),'SELECT * FROM `blog_tags` '.$where);
 		}
 	}
