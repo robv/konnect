@@ -134,6 +134,12 @@
 		{
 			parent::__construct('blog_entries', 'id', array('timestamp', 'category', 'author', 'title', 'slug', 'content', 'tags'), $id);
 		}
+		
+		function grab($start=0,$stop=5,$where='ORDER BY timestamp DESC')
+		{
+				$db = Database::getDatabase();
+	            return DBObject::glob(get_class($this),'SELECT * FROM `blog_entries` '.$where.' LIMIT '.$start.','.$stop);
+		}
 	
 		function insert()
 		{

@@ -51,13 +51,3 @@ body { font-size: 62.5% }
 .validation { color: #D63301; background-color: #FFCCBA; background-image: url('../files/messages/validation.png'); }
 
 /* @end */
-
-/* @group BASICS */
-
-html,body { font-family: "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif; color: #555; background-color: #fff; margin: 0; padding: 0; width: 100%; }
-
-a,a:link,a:active,a:visited { color: #000; }
-
-a:hover { color: #cb0000; }
-
-/* @end */
