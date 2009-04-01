@@ -5,12 +5,13 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>Welcome</title>
-	<?= cssFile('screen'); ?>
+	<?= cssFile('main/screen'); ?>
 </head>
 
 <body>
-	<h1>Simple Fork</h1>
+	<h1>Konnect</h1>
 	<p>This is your home page.</p>
+	<p>For more information on Konnect visit <a href="http://github.com/robv/konnect">Konnect on Github</a></p>
 	<?PHP if($Auth->loggedIn()) : ?>
 	<p>You are logged in as <?PHP echo $Auth->username; ?>. <a href='<?PHP WEBROOT();?>auth/logout/'>Logout</a>.</p>
 	<?PHP else : ?>
