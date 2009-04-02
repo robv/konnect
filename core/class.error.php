@@ -247,4 +247,18 @@
             }
             return true;
         }
+
+
+		// Required Users object and table
+		public function username($val, $id, $name = null)
+		{
+			$user = new Users();
+			$user->select($val,'username');
+			
+			if(strlen($user->level) > 1){
+                $this->add($id, "The username $val is already taken.");
+                return false;
+			}
+			return true;
+		}
     }
