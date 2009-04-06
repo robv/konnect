@@ -579,13 +579,40 @@ class Forms {
 	// TINYMCE JAVASCRIPT LIBRARY IS SET UP
 	function htmleditorsimple($info){
 		
-			$out = "\n".'<script type="text/javascript"> jQuery(function() { jQuery("#'.$info['name'].'").wymeditor(); }); </script>'."\n";
-			
-		if(!isset($info['options']['cols']))
-			$info['options']['cols'] = 60;
-
-		if(!isset($info['options']['rows']))
-			$info['options']['rows'] = 15;
+			$out = '<script language="javascript" type="text/javascript">
+				tinyMCE.init({
+					mode : "exact",
+					elements : "'.$info['name'].'",
+					theme : "advanced",
+					skin:"thebigreason",
+					theme_advanced_buttons1: "formatselect,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,|,link,unlink,|,code,fullscreen",
+					theme_advanced_buttons2:"", 
+					theme_advanced_buttons3:"",
+					theme_advanced_buttons4:"", 
+					theme_advanced_toolbar_location:"top",
+					theme_advanced_toolbar_align:"left",
+					theme_advanced_statusbar_location:"bottom",
+					theme_advanced_resizing:"1",
+					theme_advanced_resize_horizontal:"",
+					dialog_type:"clearlooks2",
+					relative_urls:"",
+					remove_script_host:"", convert_urls:"",
+					apply_source_formatting:"",
+					remove_linebreaks:"1",
+					paste_convert_middot_lists:"1",
+					paste_remove_spans:"1",
+					paste_remove_styles:"1",
+					gecko_spellcheck:"1",
+					entities:"38,amp,60,lt,62,gt",
+					accessibility_focus:"1",
+					tab_focus:":prev,:next",
+					wpeditimage_disable_captions:"", 
+					plugins:"safari,inlinepopups,spellchecker,paste,media,fullscreen"
+				});
+			</script>';
+		
+		
+			$info['options']['class'] = 'html_editor_simple';
 			
 		return $out.$this->textarea($info);
 	}

@@ -276,6 +276,11 @@ input.submit {
 	width: 540px;
 }
 
+.html_editor_simple {
+	height: 100px;
+	width: 400px;
+}
+
 textarea.objects {
 	width: 700px;
 	height: 300px;
