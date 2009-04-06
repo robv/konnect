@@ -86,6 +86,10 @@
 		. '<script src="'.WEB_ROOT.'js/plugins/jcrop/jquery.Jcrop.js" type="text/javascript" charset="utf-8"></script>'."\n";
 	}
 
+	function selectboxes(){
+		return '<script src="'.WEB_ROOT.'js/plugins/jquery.selectboxes.js" type="text/javascript" charset="utf-8"></script>'."\n";
+	}
+
 /*
 	-------------------------------------------------------------------------------
 */	

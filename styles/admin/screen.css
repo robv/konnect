@@ -547,4 +547,29 @@ textarea.objects {
 
 /* @end */
 
+/* @group MODAL */
+
+h2.modal {
+	font-size: 1.8em;
+	margin-bottom:10px;
+	font-weight: bold;
+	border-bottom: 1px solid #ccc;
+	padding-bottom: 10px;
+}
+
+.modal_add {
+	margin-top: 5px;
+}
+
+.modal_add a,.modal_add a:link {
+	background: url(../../files/icons/add.png) no-repeat left top;
+	text-transform: uppercase;
+	font-size: .8em;
+	padding: 3px 0 3px 20px;
+}
+
+
+
+/* @end */
+
 

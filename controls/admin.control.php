@@ -44,7 +44,7 @@ class Admin_controller extends Controller {
 	
 	}
 
-	public function add()
+	public function add($templateFile='admin/edit_save')
 	{
 		global $Auth,$Flash;
 		
@@ -79,7 +79,20 @@ class Admin_controller extends Controller {
 				
 				if($scaffold->saveObject()){
 				
-					if(isset($_POST['next']) && $_POST['next'] === 'add'){
+					if($templateFile !== 'admin/edit_save'){
+						
+						$valueField = addslashes(mysql_real_escape_string($_GET['valueField']));
+						$textField = addslashes(mysql_real_escape_string($_GET['textField']));
+						$idField = $_GET['idField'];
+						
+						// Do Something
+						$this->data['jscript'] = '<script type="text/javascript">
+							jQuery(function($) {
+								window.parent.$("#'.$idField.'").addOption("'.$scaffold->currentData->$valueField.'", "'.$scaffold->currentData->$textField.'");
+							});
+						</script>';
+						
+					} elseif(isset($_POST['next']) && $_POST['next'] === 'add'){
 						
 						// Updated or inserting user preference
 						$this->data['preference']->setPreference($Auth->id);
@@ -115,8 +128,14 @@ class Admin_controller extends Controller {
 			
 		$this->data['form'] = $scaffold->display();
 		
-		$this->loadView('admin/edit_save');
+		$this->loadView($templateFile);
 		
+	}
+	
+
+	public function modalForm()
+	{
+		$this->add('admin/_modal_edit_save');
 	}
 
 	public function edit()

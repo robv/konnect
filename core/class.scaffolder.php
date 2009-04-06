@@ -163,6 +163,8 @@ class Scaffolder extends Forms {
 					else
 						$object_copy->update();
 						
+					$this->currentData = $object_copy;
+						
 					unset($object_copy);
 				}
 			return true; // passed validation

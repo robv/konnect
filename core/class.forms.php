@@ -307,6 +307,8 @@ class Forms {
 			$out .=  $this->get_options($info['options']['table'],$info['options']['val'],$info['options']['text'],$info['value']);
 
 		$out .= '</select>';
+		
+		$out .= '<div class="clearfix modal_add"><a href="'.WEB_ROOT.'admin/modalForm/'.deslugify($info['options']['table'],'-').'/?table='.$info['options']['table'].'&textField='.$info['options']['text'].'&valueField='.$info['options']['val'].'&idField='.$info['id'].'" rel="facebox" class="add">Add Entry</a></div>';
 
 		if(isset($info['options']['extra']))
 			$out .= $info['options']['extra'];

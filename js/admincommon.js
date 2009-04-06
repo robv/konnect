@@ -42,6 +42,24 @@ var Site = {
 			
 		});
 		
+	},
+	
+	// this method is called on edit / save pages
+	modal_edit_save_start: function() {
+		
+		// On Dom Ready
+		jQuery(function($) {
+ 			
+			$("#facebox input.slug").modalSlug();
+			$("ul#iterations .dd").click(function () { 
+			    $(".show").slideToggle(100);
+				return false;
+			});
+			
+			$("form :input:visible:enabled:first").focus();
+			
+		});
+		
 	}
 	
 };
