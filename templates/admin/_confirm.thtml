@@ -1,7 +1,6 @@
-<div id="confirm">
-<h2 class="clearfix">Are you sure you want to delete this entry?</h2>
-<p class="clearfix">
+<h3>Are you sure?</h3>
+<p>This action cannot be undone, so be careful.</p>
+<p class="block_links">
 	<a href="<?= WEB_ROOT; ?>admin/delete/<?= $_GET['table_name']; ?>/<?= isset($_GET['delete']) ? $_GET['delete'] : 0; ?>/">Yup!</a>
 	<a href="<?= WEB_ROOT; ?>admin/manage/<?= $_GET['table_name']; ?>/" onclick="javascript: $(document).trigger('close.facebox'); return false;">Cancel</a>
-	</p>
-</div>
+</p>

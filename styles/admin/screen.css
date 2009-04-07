@@ -380,6 +380,8 @@ textarea.objects {
 	background: url(../../files/admin/main/tab_nactive.gif) repeat-x 0 center;
 }
 
+/* @end */
+
 /* @group LEFT */
 
 #container #left h2,#container #full h2 {
@@ -443,8 +445,6 @@ textarea.objects {
 
 /* @end */
 
-/* @end */
-
 /* @group RIGHT */
 
 /* @group ICONS */
@@ -504,30 +504,6 @@ textarea.objects {
 	background-color: #7D7B84;
 }
 
-#confirm {
-	text-align: center;
-	margin: 20px;
-}
-
-#confirm h2 {
-	font-size: 1.2em;
-	height: 50px;
-}
-
-#confirm a:link,#confirm a:visited {
-	padding: 10px 15px;
-	margin: 5px;
-	background-color: #22272D;
-	color: #fff;
-	text-decoration:none;
-	text-transform: uppercase;
-	font-size: 1.2em;
-}
-
-#confirm a:hover {
-	background-color: #7D7B84;
-}
-
 /* @end */
 
 /* @group MODULES */
@@ -554,12 +530,50 @@ textarea.objects {
 
 /* @group MODAL */
 
-h2.modal {
-	font-size: 1.8em;
-	margin-bottom:10px;
+.modal_large {
+	width: 720px;
+}
+
+#facebox h2 {
+	font-size: 1.7em;
+	margin-bottom:15px;
+	padding: 10px 15px;
+	background-color: #22272D;
+	color: #fff;
+}
+
+#facebox h3 {
+	font-size: 1.5em;
+	margin-bottom:15px;
 	font-weight: bold;
-	border-bottom: 1px solid #ccc;
-	padding-bottom: 10px;
+}
+
+#facebox p {
+	margin-bottom: 20px;
+	font-size: 1em;
+}
+
+.block_links {
+	margin: 0;
+	padding: 0;
+}
+
+.block_links a:link,.block_links a:visited {
+	padding: 5px 10px;
+	margin: 0 5px 0 0;
+	background-color: #22272D;
+	color: #fff;
+	text-decoration:none;
+	text-transform: uppercase;
+	font-size: 1.2em;
+}
+
+.block_links a:hover {
+	background-color: #7D7B84;
+}
+
+.modal_center {
+	text-align: center;
 }
 
 .modal_add {
@@ -572,7 +586,6 @@ h2.modal {
 	font-size: .8em;
 	padding: 3px 0 3px 20px;
 }
-
 
 
 /* @end */

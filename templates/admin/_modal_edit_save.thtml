@@ -1,15 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title><?= isset($pageTitle) ? $pageTitle.' - ' : ''; ?>Website Administration</title>
-	<?= cssFile('admin/screen'); ?>
-	<?= jquery('equalHeight,wymeditor,datepicker,slug,facebox,jcrop,selectboxes,adminjcommon,tinymce'); ?>
-</head>
-<body>
-
 <script type="text/javascript">Site.modal_edit_save_start();</script>
 
 <?= isset($jscript) ? $jscript : ''; ?>
@@ -17,17 +5,11 @@
 		<h2 class="modal"><?= $pageTitle; ?></h2>
 		
 		<?php 
-			$Flash->show();
 			echo $Error;
 		?>
 		
-		<div class="inner">
-			<form action="<?= WEB_ROOT; ?>admin/modalForm/<?= deslugify(addslashes(mysql_real_escape_string($_GET['table'])),'-'); ?>/?table=<?= $_GET['table']; ?>&valueField=<?= $_GET['valueField']; ?>&textField=<?= $_GET['textField']; ?>&idField=<?= $_GET['idField']; ?>" target="iframeform" method="post" enctype="multipart/form-data">				
-				<?= $form; ?>
-				<p><input type="submit" name="submit" value="Save" class="submit" onclick="javascript: $(document).trigger('close.facebox');" /> or <a href="<?= WEB_ROOT; ?>admin/manage/<?= $_GET['table_name']; ?>/" onclick="javascript: $(document).trigger('close.facebox'); return false;">Cancel</a></p>
-		</div>
-
-		<div style="display:none;"><iframe src="<?= WEB_ROOT; ?>admin/" id="iframeform" width="1" height="1"></iframe></div>
-
-</body>
-</html>
+<form action="<?= WEB_ROOT; ?>admin/modalForm/<?= deslugify(addslashes(mysql_real_escape_string($_GET['table'])),'-'); ?>/?table=<?= $_GET['table']; ?>&valueField=<?= $_GET['valueField']; ?>&textField=<?= $_GET['textField']; ?>&idField=<?= $_GET['idField']; ?>" target="iframeform" method="post" enctype="multipart/form-data">				
+<?= $form; ?>
+<p><input type="submit" name="submit" value="Save" class="submit" onclick="javascript: $(document).trigger('close.facebox');" /> or <a href="<?= WEB_ROOT; ?>admin/manage/<?= $_GET['table_name']; ?>/" onclick="javascript: $(document).trigger('close.facebox'); return false;">Cancel</a></p>
+</form>
+<div style="display:none;"><iframe src="<?= WEB_ROOT; ?>admin/" id="iframeform" width="1" height="1"></iframe></div>

@@ -135,7 +135,7 @@
 		?>
 		
 				<td class="edit_delete"><a href="<?= WEB_ROOT; ?>admin/edit/<?= $table_name; ?>/<?= $entry->id; ?>/">Edit</a></td>
-				<td class="edit_delete"><a href="<?= WEB_ROOT; ?>admin/confirm/?delete=<?= $entry->id; ?>&table_name=<?= $table_name; ?>" rel="facebox">Delete</a></td>
+				<td class="edit_delete"><a href="<?= WEB_ROOT; ?>admin/confirm/?delete=<?= $entry->id; ?>&table_name=<?= $table_name; ?>" rel="facebox[.modal_center]">Delete</a></td>
 				</tr>
 				
 		<?php

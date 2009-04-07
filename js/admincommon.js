@@ -51,12 +51,7 @@ var Site = {
 		jQuery(function($) {
  			
 			$("#facebox input.slug").modalSlug();
-			$("ul#iterations .dd").click(function () { 
-			    $(".show").slideToggle(100);
-				return false;
-			});
-			
-			$("form :input:visible:enabled:first").focus();
+			$("#facebox form :input:visible:enabled:first").focus();
 			
 		});
 		

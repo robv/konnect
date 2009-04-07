@@ -308,7 +308,7 @@ class Forms {
 
 		$out .= '</select>';
 		
-		$out .= '<div class="clearfix modal_add"><a href="'.WEB_ROOT.'admin/modalForm/'.deslugify($info['options']['table'],'-').'/?table='.$info['options']['table'].'&textField='.$info['options']['text'].'&valueField='.$info['options']['val'].'&idField='.$info['id'].'" rel="facebox" class="add">Add Entry</a></div>';
+		$out .= '<div class="clearfix modal_add"><a href="'.WEB_ROOT.'admin/modalForm/'.deslugify($info['options']['table'],'-').'/?table='.$info['options']['table'].'&textField='.$info['options']['text'].'&valueField='.$info['options']['val'].'&idField='.$info['id'].'" rel="facebox[.modal_large]" class="add">Add Entry</a></div>';
 
 		if(isset($info['options']['extra']))
 			$out .= $info['options']['extra'];
