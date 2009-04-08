@@ -136,7 +136,7 @@
 			else :
 		?>
 		
-					<td><?= truncate_string(strip_tags($entry->$name),'300','[...]'); ?></td>
+					<td><?= truncate_string(str_replace('|',' ',strip_tags($entry->$name)),'300','[...]'); ?></td>
 		
 		<?php
 							
