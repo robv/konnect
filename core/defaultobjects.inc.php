@@ -11,10 +11,10 @@
 		{
 			global $Auth;
 			
-	            $links = DBObject::glob(get_class($this),'SELECT * FROM `konnect_links` WHERE authorized_groups LIKE "%'.$Auth->level.'%" OR authorized_groups is NULL OR authorized_groups="" AND (parent_link = "" OR parent_link IS NULL)');
+	            $links = DBObject::glob(get_class($this),'SELECT * FROM `konnect_links` WHERE (authorized_groups LIKE "%'.$Auth->level.'%" OR authorized_groups is NULL OR authorized_groups="") AND (parent_link = "" OR parent_link IS NULL)');
 				
 				foreach($links as $link){
-					$sub_links[$link->id] = DBObject::glob(get_class($this),'SELECT * FROM `konnect_links` WHERE authorized_groups LIKE "%'.$Auth->level.'%" OR authorized_groups is NULL OR authorized_groups="" AND (parent_link = "'.$link->id.'")');
+					$sub_links[$link->id] = DBObject::glob(get_class($this),'SELECT * FROM `konnect_links` WHERE (authorized_groups LIKE "%'.$Auth->level.'%" OR authorized_groups is NULL OR authorized_groups="") AND (parent_link = "'.$link->id.'")');
 				}
 				
 				$return['object'] = $links;
