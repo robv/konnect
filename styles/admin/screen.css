@@ -518,6 +518,27 @@ textarea.objects {
 	border-bottom: 1px solid #ddd;
 }
 
+#modules ul {
+	float: left;
+}
+
+#modules ul li {
+	float: left;
+	height: 25px;
+	margin-right: 15px;
+}
+
+#modules ul li a,#modules ul li a:link {
+	display: block;
+	float: left;
+	height: 17px;
+	padding: 8px 0 0 20px;
+	font-size: 1em;
+	text-transform: uppercase;
+	text-decoration: none !important;
+	background: url(../../files/icons/folder.png) no-repeat left 6px;
+}
+
 #modules input {
 	margin-left: 10px;
 }

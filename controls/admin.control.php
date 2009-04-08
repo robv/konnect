@@ -15,8 +15,10 @@ class Admin_controller extends Controller {
 		if(empty($controller))
 			$controller = 'dashboard';
 		
-		$data['header_links'] = new Konnect_links();
-		$data['header_links'] = $data['header_links']->getLinks();
+		$data['header_links_return'] = new Konnect_links();
+		$data['header_links_return'] = $data['header_links_return']->getLinks();
+		$data['header_links'] = $data['header_links_return']['object'];
+		$data['header_sub_links'] = $data['header_links_return']['sub_links'];
 		
 		parent::__construct($controller,$data);
 		

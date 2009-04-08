@@ -36,6 +36,7 @@
 				foreach($header_links as $header_link):
 					if(implode('/',$url_structure).'/' === 'admin/'.$header_link->link){
 						$active_insert = ' class="active"';
+						$current_link = $header_link->id;
 					} else { $active_insert = ''; }
 					echo '<li'.$active_insert.'><a href="'.WEB_ROOT.'admin/'.$header_link->link.'">'.$header_link->name.'</a></li>';
 				endforeach;
