@@ -131,20 +131,24 @@ class Scaffolder extends Forms {
 											TODO: There should be a way in options to pass multiple image locations and sizes
 										*/
 										
-										$gd->loadFile($_FILES[$value['name']]['tmp_name']);
-										$gd->scaleSafe('1800','1800');
-										$gd->saveAs('./files/uploads/original/'.$newname);
-										$gd->scaleSafe('700','700');
-										$gd->saveAs('./files/uploads/large/'.$newname);
-										$gd->scaleSafe('300','300');
-										$gd->saveAs('./files/uploads/medium/'.$newname);
-										$gd->cropCentered('200','200');
-										$gd->saveAs('./files/uploads/cropped/'.$newname);
-										$gd->loadFile($_FILES[$value['name']]['tmp_name']);
-										$gd->scaleSafe('150','150');
-										if($gd->saveAs('./files/uploads/small/'.$newname))
+										if($gd->loadFile($_FILES[$value['name']]['tmp_name'])){
+											$gd->scaleSafe('1800','1800');
+											$gd->saveAs('./files/uploads/original/'.$newname);
+											$gd->scaleSafe('700','700');
+											$gd->saveAs('./files/uploads/large/'.$newname);
+											$gd->scaleSafe('300','300');
+											$gd->saveAs('./files/uploads/medium/'.$newname);
+											$gd->cropCentered('200','200');
+											$gd->saveAs('./files/uploads/cropped/'.$newname);
+											$gd->loadFile($_FILES[$value['name']]['tmp_name']);
+											$gd->scaleSafe('150','150');
+											$gd->saveAs('./files/uploads/small/'.$newname);
+						
 											$_SESSION['crop_images'][str_replace(array('.',' '),'',$newname)] = $newname;
-								
+										} else {
+											move_uploaded_file($_FILES[$value['name']]['tmp_name'],'./files/uploads/original/'.$newname);
+										}
+										
 								}
 							
 							}

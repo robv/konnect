@@ -109,7 +109,7 @@
 		?>
 					<td><?= dater($entry->$name,'m/d/Y @ h:i a'); ?></td>
 		<?php			
-				elseif($field_info[$name]->type === 'related'):
+				elseif($field_info[$name]->type === 'related' || $field_info[$name]->type === 'related_dependent'):
 						// TODO: Remove logic from template, this sucks.
 						$opt_builder = $field_info[$name]->options;
 						$opt_builder = explode('|',$opt_builder);

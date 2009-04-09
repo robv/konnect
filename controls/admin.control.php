@@ -281,6 +281,14 @@ class Admin_controller extends Controller {
 				$field_form_info->select(array($this->data['table_name'],$column,'related'),array('table_name','name','type'));
 				if(strlen($field_form_info->options) > 1)
 					$field_info = $field_form_info;
+					
+				
+				// Check if it's a related field type in the forms table... if so use that info
+				$field_form_info = new Konnect_field_information();
+				$field_form_info->select(array($this->data['table_name'],$column,'related_dependent'),array('table_name','name','type'));
+				if(strlen($field_form_info->options) > 1)
+					$field_info = $field_form_info;
+					
 				
 					if(!is_null($field_info->type))
 						$this->data['field_info'][$column] = $field_info;
