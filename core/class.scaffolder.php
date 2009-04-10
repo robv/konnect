@@ -125,6 +125,8 @@ class Scaffolder extends Forms {
 										} else {	
 											$newname = $object_copy->$name = str_replace(' ','',$_FILES[$value['name']]['name']);
 										}
+										
+										$newname = str_replace(' ','',$newname);
 									
 										
 										/*
