@@ -26,7 +26,8 @@
 				jQuery(function(){
 					jQuery('#<?= $entryid; ?>').Jcrop({
 						onChange: showCoords<?= $entryid; ?>,
-						onSelect: showCoords<?= $entryid; ?>
+						onSelect: showCoords<?= $entryid; ?>,
+						boxWidth: 900
 					});
 					
 					function showCoords<?= $entryid; ?>(c)
@@ -39,16 +40,7 @@
 				});
 
 				</script>
-				
-				<?php
-					// If original is too big for the window cut it in half, should never be larger than 1800 pixels
-					$gd->loadFile('./files/uploads/original/'.$entry);
-					if($gd->width > 950)
-						$width = $gd->width / 2;
-					else
-						$width = $gd->width;
-				?>
-				<p><img src="<?= WEB_ROOT; ?>files/uploads/original/<?= $entry; ?>" id="<?= $entryid; ?>" width="<?= $width; ?>" /></p>
+				<p><img src="<?= WEB_ROOT; ?>files/uploads/original/<?= $entry; ?>" id="<?= $entryid; ?>" /></p>
 				
 					<input type="hidden" id="<?= $entryid; ?>_x" name="<?= $entryid; ?>_x" />
 					<input type="hidden" id="<?= $entryid; ?>_y" name="<?= $entryid; ?>_y" />
