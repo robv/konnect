@@ -1,4 +1,4 @@
-<?PHP
+<?php
     class Database
     {
         // Singleton object. Leave $me alone.

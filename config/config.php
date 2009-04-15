@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
     // The Config class provides a single object to store your application's settings.
     // Define your settings as public members. (We've already setup the standard options
@@ -9,15 +9,23 @@
 
     class Config
     {
-        // Singleton object. Leave $me alone.
-        private static $me;
 
         // Add your server names to the appropriate arrays.
         private $productionServers = array();
         private $stagingServers    = array();
-        private $localServers      = array('konnect.dev');
+        private $localServers      = array('konnectapps.dev');
 
-        // Standard Config Options...
+       // Add your config options here...
+        public $useDBSessions = true; // Set to true to store sessions in the database
+		public $defaultApp = 'admin'; // Set to your default controller
+		public $emailAddy = 'robert@pseudolab.com'; // During password recovery this will be the email address that is used to send mail
+  
+
+
+//////// Standard Config Options ///////////////////
+
+    // Singleton object. Leave $me alone.
+    private static $me;
 
         // ...For Auth Class
         public $authDomain;         // Domain to set for the cookie
@@ -31,11 +39,9 @@
         public $dbPassword;   // Database password
         public $dbDieOnError; // What do do on a database error (see class.database.php for details)
 
-        // Add your config options here...
-        public $useDBSessions = true; // Set to true to store sessions in the database
-		public $defaultController = 'home'; // Set to your default controller
-		public $emailAddy = 'robert@pseudolab.com'; // During password recovery this will be the email address that is used to send mail
+///////////////////////////////////////////////////
 
+ 
         // Singleton constructor
         private function __construct()
         {
@@ -107,7 +113,7 @@
             ini_set('display_errors', '1');
             ini_set('error_reporting', E_ALL);
 
-            define('WEB_ROOT', 'http://konnect.dev/');
+            define('WEB_ROOT', 'http://konnectapps.dev/');
 
             $this->dbHost       = 'localhost';
             $this->dbName       = 'konnect';

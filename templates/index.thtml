@@ -12,11 +12,11 @@
 	<h1>Konnect</h1>
 	<p>This is your home page.</p>
 	<p>For more information on Konnect visit <a href="http://github.com/robv/konnect">Konnect on Github</a></p>
-	<?PHP if($Auth->loggedIn()) : ?>
-	<p>You are logged in as <?PHP echo $Auth->username; ?>. <a href='<?PHP WEBROOT();?>auth/logout/'>Logout</a>.</p>
-	<?PHP else : ?>
-	<p>You are not logged in. <a href='<?PHP WEBROOT();?>auth/'>Login</a>.</p>
-	<?PHP endif; ?>
+	<?php if($Auth->loggedIn()) : ?>
+	<p>You are logged in as <?php echo $Auth->username; ?>. <a href='<?php WEBROOT();?>auth/logout/'>Logout</a>.</p>
+	<?php else : ?>
+	<p>You are not logged in. <a href='<?php WEBROOT();?>auth/'>Login</a>.</p>
+	<?php endif; ?>
 	
 </body>
 </html>

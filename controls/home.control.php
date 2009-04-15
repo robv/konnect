@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 class Home_controller extends Controller {
 

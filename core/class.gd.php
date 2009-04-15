@@ -1,4 +1,4 @@
-<?PHP
+<?php
     // Simple wrapper class for GD
     class GD
     {

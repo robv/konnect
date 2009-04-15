@@ -1,14 +1,22 @@
-<?PHP
+<?php
 
-class Auth_controller extends Controller {
+class Index_controller extends Controller {
+
+	public $defaultMethod = 'login';
+	public $app_name;
 	
 	function __construct($controller='',$data = '')
-	{
-		// This is how you set your default controller I should probably think of a better method
-		if(empty($controller))
-			$controller = 'login';
+	{	
 		
-		parent::__construct($controller,$data);
+		$this->app_name = $app_name;
+		
+		// Building the method name
+		if(!isset($this->data['konnect']['rewritten_path']['2']) || empty($this->data['konnect']['rewritten_path']['2']))
+			$method = $this->defaultMethod;
+		else
+			$method = $this->data['konnect']['rewritten_path']['2'];
+		
+		parent::__construct($method,$data);
 		
 	}
 	

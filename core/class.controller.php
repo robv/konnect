@@ -1,19 +1,18 @@
-<?PHP
+<?php
 
 class Controller {
 	
 	public $data;
-	private $defaultController = 'index';
 	
-	function __construct($controller='',$data = '')
+	function __construct($method='',$data = '')
 	{
-		$default_controller = $this->defaultController;
+		$defaultMethod = $this->defaultMethod;
 		$this->data = $data;
 		
-		if(empty($controller) || $controller === $data['config']->defaultController) // If no controller is set go to default
-			$this->$default_controller();
+		if(empty($method)) // If no controller is set go to default
+			$this->$defaultMethod();
 		else
-			$this->$controller();
+			$this->$method();
 		
 	}
 	
@@ -30,12 +29,8 @@ class Controller {
 				endforeach;
 			}
 			
-		include DOC_ROOT.'/templates/'.$file.'.thtml';
+		include DOC_ROOT.'/apps/'.$this->app_name.'/templates/'.$file.'.thtml';
 		
-	}
-	
-	public function setGlobal($name,$value) {
-		$this->data[$name] = $value;
 	}
 	
 }

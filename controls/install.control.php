@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 class Install_controller extends Controller {
 

@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 // This class provides a way to alter paths to controllers
 
@@ -6,33 +6,47 @@
 class AlterPath {
 	
 	public $seperator = '/';
-	public $return_array;
+	public $rewritten_path;
+	public $original_path;
 	
-	function __construct($paths)
+	function __construct($rewrites)
 	{
-		// deslugify is a custom functions located in exfunctions.inc.php
-		$act_paths = deslugify($this->pick_off());
+		if($this->pick_off()){
+			$cleaned_current_arr = explode('/',strtolower(implode('/',deslugify($this->pick_off(),'_')))); // Lowercase and deslugify(core/extfunctions.inc.php)
+		} else {
+			$cleaned_current_arr = array();
+		}
 		
-		foreach($paths as $original => $path):
+		// imploding that deslugified array so we get the path we should match
+		$current_path = implode('/',$cleaned_current_arr).'/';
+		$matches = array();
 		
-			$current_path = '';
+		foreach($rewrites as $intial_path => $destination_path){
+			if(empty($this->rewritten_path)){ // if we already matched something stop trying
+				if(preg_match('#^'.$intial_path.'$#',$current_path,$matches)){
+				
+					foreach($matches as $key => $value) // in destination path use %1%, %2%, etc as you would $1, $2, in mod_rewrite
+						$destination_path = str_replace('%'.$key.'%',$value);
+				
+					$this->rewritten_path = explode($this->seperator,deslugify(trim(strtolower($destination_path),$this->seperator),'_')); // trim seperator then explode by seperator
+				}
+			}
+		}
+		
+		// If the current path does not match anything that should be rewritten simply return the original array
+		if(empty($this->rewritten_path))
+			$this->rewritten_path = $cleaned_current_arr;
 			
-			foreach($act_paths as $act_path):
-			
-				$current_path .= $act_path.'/';
-			
-			endforeach;
-			
-			// If the current path matches one that needs to be rewritten
-			if(preg_match('#^'.$original.'$#',$current_path))
-				$this->return_array = explode($this->seperator,trim($path,$this->seperator));
+		$this->original_path = $cleaned_current_arr;
+	}
+	
+	function return_paths()
+	{
+		// all array values are lowercase and use _ (underscore) as seperators
+		$data['konnect']['original_path'] = $this->original_path; // real url used to access page
+		$data['konnect']['rewritten_path'] = $this->rewritten_path; // rewritten if called for in rewrites
 		
-		endforeach;
-		
-		// If the current path does not match anything that should be rewritten simply return the original
-		if(empty($this->return_array))
-			$this->return_array = $act_paths;
-		
+		return $data;
 	}
 	
 	function pick_off($pairing='0',$grabFirst = false)

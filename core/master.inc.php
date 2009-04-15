@@ -1,4 +1,4 @@
-<?PHP
+<?php
     // Application flag
     define('kt', true);
 
@@ -9,8 +9,14 @@
     require DOC_ROOT . '/core/functions.inc.php'; // __autoload() is contained in this file
     require DOC_ROOT . '/core/class.dbobject.php';
     require DOC_ROOT . '/core/class.objects.php';
-    require DOC_ROOT . '/rewrites.php'; // These are the paths you wish to have rewritten
-
+    require DOC_ROOT . '/config/rewrites.php'; // These are the paths you wish to have rewritten
+    require DOC_ROOT . '/config/config.php'; // These are the paths you wish to have rewritten
+	
+	// Load all objects for installed apps
+	foreach($core['installed_apps'] as $app){
+		require DOC_ROOT . '/apps/' . $app . '/models.php';
+	}	
+	
     // Fix magic quotes
     if(get_magic_quotes_gpc())
     {

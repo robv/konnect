@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 	// These are useful function not orginally in SPF
 	require DOC_ROOT . '/core/extfunctions.inc.php';
