@@ -142,7 +142,7 @@
 
 			foreach($str as $key => $value):
 
-				$str[$key] = deslugify($value);
+				$str[$key] = deslugify($value,$replace);
 	
 			endforeach;
 	

@@ -379,7 +379,7 @@ class Index_controller extends Controller {
 		$this->loadView('cropper');
 	}
 	
-	public function databaseobjects()
+	public function database_objects()
 	{
 	 	$db = Database::getDatabase();
 	
