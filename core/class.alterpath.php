@@ -23,12 +23,14 @@ class AlterPath {
 		
 		foreach($rewrites as $intial_path => $destination_path){
 			if(empty($this->rewritten_path)){ // if we already matched something stop trying
-				if(preg_match('#^'.$intial_path.'$#',$current_path,$matches)){
+			
+				if(preg_match('#^'.trim($intial_path,'/').'/$#',$current_path,$matches)){
 				
 					foreach($matches as $key => $value) // in destination path use %1%, %2%, etc as you would $1, $2, in mod_rewrite
-						$destination_path = str_replace('%'.$key.'%',$value);
+						$destination_path = str_replace('%'.$key.'%',$value,$destination_path);
 				
-					$this->rewritten_path = explode($this->seperator,deslugify(trim(strtolower($destination_path),$this->seperator),'_')); // trim seperator then explode by seperator
+					$this->rewritten_path = explode($this->seperator,trim(strtolower($destination_path),$this->seperator)); // trim seperator then explode by seperator
+			
 				}
 			}
 		}
@@ -38,15 +40,16 @@ class AlterPath {
 			$this->rewritten_path = $cleaned_current_arr;
 			
 		$this->original_path = $cleaned_current_arr;
+		
 	}
 	
 	function return_paths()
 	{
+		global $data;
+		
 		// all array values are lowercase and use _ (underscore) as seperators
 		$data['konnect']['original_path'] = $this->original_path; // real url used to access page
 		$data['konnect']['rewritten_path'] = $this->rewritten_path; // rewritten if called for in rewrites
-		
-		return $data;
 	}
 	
 	function pick_off($pairing='0',$grabFirst = false)

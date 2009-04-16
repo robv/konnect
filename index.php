@@ -6,11 +6,9 @@
 		
 	$data['konnect']['config'] = Config::getConfig();
 	
-	
-	
 	// This is just putting some useful variables together that will be available everywhere
 	$ap = new AlterPath($core['rewrites']); 
-	$data['konnect'] = array_merge($ap->return_paths(),$data['konnect']);
+	$ap->return_paths();
 	
 	if(!mysql_is_table('users') && $_SERVER['REQUEST_URI'] !== 'install/') {
 		include 'controls/install.control.php';
@@ -27,8 +25,6 @@
 	else
 		die ('<h1>Opps</h1> <p>The app you\'re trying to use doesn\'t exist.</p>');
 		
-	
 	require DOC_ROOT . '/apps/' . $core['app'] . '/init.php'; // import init class
 	$init_class = ucfirst($core['app']) . '_init'; // first letters in classes should always be capital followed by lowercase
 	$init_class_obj = new $init_class(); // initiate init class
-	$init_class_obj->initiateApp();

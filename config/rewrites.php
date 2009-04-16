@@ -13,7 +13,7 @@
 									);
 
 	$core['rewrites'] = array(
-								'login' => 'auth/login/',
-								'recover' => 'auth/recover/',
-								'logout' => 'auth/logout/'
+								'login' => 'auth/index/login/',
+								'recover' => 'auth/index/recover/',
+								'logout' => 'auth/index/logout/'
 							);

@@ -8,26 +8,26 @@ class Index_controller extends Controller {
 	function __construct($app_name,$data = '')
 	{
 		global $Auth;
-		
+		$this->data = $data;
 		$this->app_name = $app_name;
 		
 		// Building the method name
 		if(!isset($this->data['konnect']['rewritten_path']['2']) || empty($this->data['konnect']['rewritten_path']['2']))
-			$method = $this->defaultMethod;
+			$this->data['konnect']['method'] = $this->defaultMethod;
 		else
-			$method = $this->data['konnect']['rewritten_path']['2'];
+			$this->data['konnect']['method'] = $this->data['konnect']['rewritten_path']['2'];
 		
 		// This first checks to see if users exist
 		// If not it assumes you don't want the admin protected
 		// If so it ensures the logged in user is an administrator
 		if(users_exist()){ $Auth->requireAdmin(WEB_ROOT.'login/'); };
 		
-		$data['header_links_return'] = new Konnect_links();
-		$data['header_links_return'] = $data['header_links_return']->getLinks();
-		$data['header_links'] = $data['header_links_return']['object'];
-		$data['header_sub_links'] = $data['header_links_return']['sub_links'];
-	
-		parent::__construct($method,$data);
+		$this->data['header_links_return'] = new Konnect_links();
+		$this->data['header_links_return'] = $this->data['header_links_return']->getLinks();
+		$this->data['header_links'] = $this->data['header_links_return']['object'];
+		$this->data['header_sub_links'] = $this->data['header_links_return']['sub_links'];
+		
+		parent::__construct($this->data['konnect']['method'],$this->data);
 		
 	}
 
@@ -53,7 +53,7 @@ class Index_controller extends Controller {
 	
 	}
 
-	public function add($templateFile='admin/edit_save')
+	public function add($templateFile='edit_save')
 	{
 		global $Auth,$Flash;
 		

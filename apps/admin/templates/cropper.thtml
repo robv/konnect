@@ -1,4 +1,4 @@
-<?php include 'templates/admin/_header.thtml'; ?>
+<?php include DOC_ROOT . '/apps/admin/templates/_header.thtml'; ?>
 
 	<div id="full">
 		
@@ -59,4 +59,4 @@
 
 	</div>
 				
-<?php include 'templates/admin/_footer.thtml'; ?>
+<?php include DOC_ROOT . '/apps/admin/templates/_footer.thtml'; ?>

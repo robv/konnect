@@ -31,10 +31,10 @@
 	<div id="navigation" class="clearfix">
 	
 		<ul id="main">
-			<li<?php if(implode('/',$url_structure).'/' === 'admin/'){ echo ' class="active"'; } ?>><a href="<?= WEB_ROOT; ?>admin/">Dashboard</a></li>
+			<li<?php if(implode('/',$konnect['rewritten_path']).'/' === 'admin/'){ echo ' class="active"'; } ?>><a href="<?= WEB_ROOT; ?>admin/">Dashboard</a></li>
 			<?php
 				foreach($header_links as $header_link):
-					if(implode('/',$url_structure).'/' === 'admin/'.$header_link->link){
+					if(implode('/',$konnect['rewritten_path']).'/' === 'admin/'.$header_link->link){
 						$active_insert = ' class="active"';
 						$current_link = $header_link->id;
 					} else { $active_insert = ''; }

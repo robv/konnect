@@ -5,9 +5,8 @@ class Index_controller extends Controller {
 	public $defaultMethod = 'login';
 	public $app_name;
 	
-	function __construct($controller='',$data = '')
+	function __construct($app_name='',$data = '')
 	{	
-		
 		$this->app_name = $app_name;
 		
 		// Building the method name
@@ -15,14 +14,14 @@ class Index_controller extends Controller {
 			$method = $this->defaultMethod;
 		else
 			$method = $this->data['konnect']['rewritten_path']['2'];
-		
+			
 		parent::__construct($method,$data);
-		
 	}
 	
 	public function login()
 	{
 		global $Auth,$Flash;
+		
 		
 		// Kick out user if already logged in
 		if($Auth->loggedIn()) redirect(WEB_ROOT);
@@ -35,10 +34,10 @@ class Index_controller extends Controller {
 			else
 				$Flash->set('<p class="validation">We\'re sorry, you have entered an incorrect username and password. Please try again.</p>');
 		}
-
-		$this->setGlobal('username',isset($_POST['username']) ? htmlspecialchars($_POST['username']) : '');
 		
-		$this->loadView('auth/login');
+		$this->data['username'] = isset($_POST['username']) ? htmlspecialchars($_POST['username']) : '';
+		
+		$this->loadView('login');
 	}
 	
 	public function recover()
@@ -73,7 +72,7 @@ class Index_controller extends Controller {
 				}
 		}
 			
-		$this->loadView('auth/recover');
+		$this->loadView('recover');
 	
 	}
 	
