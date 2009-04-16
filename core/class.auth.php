@@ -58,8 +58,7 @@
 
         public function logout()
         {
-            $Config = Config::getConfig();
-
+ 
             $this->id             = null;
             $this->username       = null;
             $this->level          = 'guest';
@@ -71,7 +70,7 @@
 
             $_SESSION['un'] = '';
             $_SESSION['pw'] = '';
-            setcookie('s', '', time() - 3600, '/', $Config->authDomain);
+            setcookie('s', '', time() - 3600, '/', Config::getConfig()->authDomain);
         }
 
         // Assumes you have already checked for duplicate usernames
@@ -91,9 +90,8 @@
         public function changePassword($new_password)
         {
             $db = Database::getDatabase();
-            $Config = Config::getConfig();
-
-            if($Config->useHashedPasswords === true)
+ 
+            if(Config::getConfig()->useHashedPasswords === true)
                 $new_password = $this->createHashedPassword($new_password);
 
             $db->query("UPDATE users SET password = '?' WHERE id = '?'", $new_password, $this->id);
@@ -132,9 +130,8 @@
         public function passwordIsCorrect($pw)
         {
             $db = Database::getDatabase();
-            $Config = Config::getConfig();
-
-            if($Config->useHashedPasswords === true)
+ 
+            if(Config::getConfig()->useHashedPasswords === true)
                 $pw = $this->createHashedPassword($pw);
 
             $db->query("SELECT COUNT(*) FROM users WHERE username = '?' AND password = BINARY '?'", $this->username, $pw);
@@ -148,8 +145,7 @@
         public function impersonate($user_to_impersonate)
         {
             $db = Database::getDatabase();
-            $Config = Config::getConfig();
-
+ 
             if(ctype_digit($user_to_impersonate))
                 $row = $db->getRow('SELECT * FROM users WHERE id = ' . $db->quote($user_to_impersonate));
             else
@@ -169,7 +165,7 @@
                     $this->user->load($row);
                 }
 
-                if($Config->useHashedPasswords === false)
+                if(Config::getConfig()->useHashedPasswords === false)
                     $row['password'] = $this->createHashedPassword($row['password']);
 
                 $this->storeSessionData($this->username, $row['password']);
@@ -211,13 +207,12 @@
         private function attemptLogin($un, $pw)
         {
             $db = Database::getDatabase();
-            $Config = Config::getConfig();
-
+ 
             // We SELECT * so we can load the full user record into the user DBObject later
             $row = $db->getRow('SELECT * FROM users WHERE username = ' . $db->quote($un));
             if($row === false) return false;
 
-            if($Config->useHashedPasswords === false)
+            if(Config::getConfig()->useHashedPasswords === false)
                 $row['password'] = $this->createHashedPassword($row['password']);
 
             if($pw != $row['password']) return false;
@@ -244,18 +239,16 @@
         private function storeSessionData($un, $pw)
         {
             if(headers_sent()) return false;
-            $Config = Config::getConfig();
-            $_SESSION['un'] = $un;
+             $_SESSION['un'] = $un;
             $_SESSION['pw'] = $pw;
             $s = json_encode(array('un' => $un, 'pw' => $pw));
-            return setcookie('s', $s, time()+60*60*24*30, '/', $Config->authDomain);
+            return setcookie('s', $s, time()+60*60*24*30, '/', Config::getConfig()->authDomain);
         }
 
-		// Returns the hashed version of a password if $Config->usedHashedPasswords is turned on
+		// Returns the hashed version of a password if Config::getConfig()->usedHashedPasswords is turned on
 		public function createHashedPassword($pw)
 		{
-            $Config = Config::getConfig();
-            return ($Config->useHashedPasswords === true) ? sha1($pw . $Config->authSalt) : $pw;
+             return (Config::getConfig()->useHashedPasswords === true) ? sha1($pw . Config::getConfig()->authSalt) : $pw;
 		}
     
 	}

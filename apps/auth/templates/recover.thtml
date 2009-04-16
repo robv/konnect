@@ -23,7 +23,7 @@
 			
 				<form action="" method="post">
 				
-					<?php $Flash->show(); ?>
+					<?php Flash::show(); ?>
 					
 					<p class="info">
 						Enter the email address you signed up with below and a new password will be emailed to you.

@@ -4,7 +4,6 @@
 	// Path to login is rewritten below as an example.
 	// Also supports regex
 	
-	
 	$core['default_app'] = 'admin';
 	
 	$core['installed_apps'] = array(

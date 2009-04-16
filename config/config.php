@@ -13,7 +13,7 @@
         // Add your server names to the appropriate arrays.
         private $productionServers = array();
         private $stagingServers    = array();
-        private $localServers      = array('konnectapps.dev');
+        private $localServers      = array('konnectapp.dev');
 
        // Add your config options here...
         public $useDBSessions = true; // Set to true to store sessions in the database
@@ -113,10 +113,10 @@
             ini_set('display_errors', '1');
             ini_set('error_reporting', E_ALL);
 
-            define('WEB_ROOT', 'http://konnectapps.dev/');
+            define('WEB_ROOT', 'http://konnectapp.dev/');
 
             $this->dbHost       = 'localhost';
-            $this->dbName       = 'konnect';
+            $this->dbName       = 'konnectapps';
             $this->dbUsername   = 'root';
             $this->dbPassword   = 'rootpassword';
             $this->dbDieOnError = true;

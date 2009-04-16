@@ -10,12 +10,6 @@
 	$ap = new AlterPath($core['rewrites']); 
 	$ap->return_paths();
 	
-	if(!mysql_is_table('users') && $_SERVER['REQUEST_URI'] !== 'install/') {
-		include 'controls/install.control.php';
-		new Install_controller();
-		exit;
-	}
-	
 	if(!isset($data['konnect']['rewritten_path']['0']) || empty($data['konnect']['rewritten_path']['0']))
 		$data['konnect']['rewritten_path']['0'] = $data['konnect']['config']->defaultApp;
 	

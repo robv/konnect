@@ -5,7 +5,7 @@
 		<h2><?= $pageTitle; ?></h2>
 		
 		<?php 
-			$Flash->show();
+			Flash::show();
 		?>
 			
 		<?php if(empty($entries)): ?>

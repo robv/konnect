@@ -1,6 +1,5 @@
 <?php
 
-
 	class Users extends DBObject
 	{
 		function __construct($id = "")
@@ -11,7 +10,7 @@
 		function insert()
 		{
 			global $Auth;
-				$this->password = $Auth->createHashedPassword($this->password);
+				$this->password = Auth::getAuth()->createHashedPassword($this->password);
 			parent::insert();
 		}
 
@@ -22,7 +21,7 @@
 			$thisUser->select($this->id);
 			// BECAUSE PASSWORDS ARE STORED HASHED DON'T WANT TO HASH A HASH
 			if($thisUser->password !== $this->password)
-				$this->password = $Auth->createHashedPassword($this->password);
+				$this->password = Auth::getAuth()->createHashedPassword($this->password);
 			parent::update();
 		}
 	}

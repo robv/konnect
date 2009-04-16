@@ -13,14 +13,14 @@
 	<div id="header">
 		<h1>Website Administration</h1>
 		<ul>
-			<?php if($Auth->level === 'admin'){ ?>
+			<?php if(Auth::getAuth()->level === 'admin'){ ?>
 				<li><a href="<?= WEB_ROOT; ?>admin/manage/Konnect-Links/">Links</a></li>
 				<li><a href="<?= WEB_ROOT; ?>admin/manage/Konnect-Field-Information/">Forms</a></li>
 				<li><a href="<?= WEB_ROOT; ?>admin/manage/Konnect-View-Information/">Views</a></li>
 				<li><a href="<?= WEB_ROOT; ?>admin/Database-Objects/">DB Objects</a></li>
 			<?php 
 				}
-				if($Auth->level === 'admin' || $Auth->level === 'owner'){
+				if(Auth::getAuth()->level === 'admin' || Auth::getAuth()->level === 'owner'){
 			?>
 				<li><a href="<?= WEB_ROOT; ?>admin/manage/Users/">Users</a></li>
 			<?php } ?>

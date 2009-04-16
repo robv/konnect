@@ -20,7 +20,7 @@ class Controller {
 	// This is the best I could come up with...
 	public function loadView($file)
 	{
-		global $Auth,$Flash,$Error;
+		global $Auth,$Error;
 			
 			// Run through data array for access in view
 			if(!empty($this->data)){
@@ -31,6 +31,22 @@ class Controller {
 			
 		include DOC_ROOT.'/apps/'.$this->app_name.'/templates/'.$file.'.thtml';
 		
+	}
+	
+	public function install()
+	{
+		// Create tables
+		$sql = file_get_contents(DOC_ROOT . '/apps/' . $this->app_name . '/db.sql');
+
+		// Do this to split up creations to one per query.
+		$queries = explode('#',$sql);
+		
+		$db = Database::getDatabase();
+		
+			foreach($queries as $query)
+				$db->query($query);
+				
+		redirect(WEB_ROOT . $this->app_name . '/');
 	}
 	
 }

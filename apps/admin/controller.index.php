@@ -7,7 +7,6 @@ class Index_controller extends Controller {
 	
 	function __construct($app_name,$data = '')
 	{
-		global $Auth;
 		$this->data = $data;
 		$this->app_name = $app_name;
 		
@@ -17,15 +16,24 @@ class Index_controller extends Controller {
 		else
 			$this->data['konnect']['method'] = $this->data['konnect']['rewritten_path']['2'];
 		
-		// This first checks to see if users exist
-		// If not it assumes you don't want the admin protected
-		// If so it ensures the logged in user is an administrator
-		if(users_exist()){ $Auth->requireAdmin(WEB_ROOT.'login/'); };
+		if($this->data['konnect']['method'] !== 'install'){
+			
+			if(!mysql_is_table('users')) {
+				redirect(WEB_ROOT.'auth/'); // the user system doesn't even exist, redirect to auth app to install
+			} elseif(users_exist()) { 
+				Auth::getAuth()->requireAdmin(WEB_ROOT.'auth/index/login/'); // if users exist then make sure they're admins
+			} 
+			elseif($this->data['konnect']['method'] !== 'add') { 
+				Flash::set('<p class="success">Please add an administrator before continuing.</p>'); 
+				redirect(WEB_ROOT.$app_name.'/add/users/'); 
+			}
 		
-		$this->data['header_links_return'] = new Konnect_links();
-		$this->data['header_links_return'] = $this->data['header_links_return']->getLinks();
-		$this->data['header_links'] = $this->data['header_links_return']['object'];
-		$this->data['header_sub_links'] = $this->data['header_links_return']['sub_links'];
+			$this->data['header_links_return'] = new Konnect_links();
+			$this->data['header_links_return'] = $this->data['header_links_return']->getLinks();
+			$this->data['header_links'] = $this->data['header_links_return']['object'];
+			$this->data['header_sub_links'] = $this->data['header_links_return']['sub_links'];
+		
+		}
 		
 		parent::__construct($this->data['konnect']['method'],$this->data);
 		
@@ -39,23 +47,23 @@ class Index_controller extends Controller {
 	
 	public function delete()
 	{		
-		global $Flash;
 		
-			$this->data['table_name'] = deslugify($this->data['url_structure']['2'],'_');
+		
+			$this->data['table_name'] = deslugify($this->data['konnect']['rewritten_path']['3'],'_');
 			$this->data['pageTitle'] = 'Delete '.ucwords(deslugify($this->data['table_name'],' '));
 			$obj_name = ucfirst($this->data['table_name']);
 			
-			$delete = new $obj_name($this->data['url_structure']['3']);
+			$delete = new $obj_name($this->data['konnect']['rewritten_path']['4']);
 			$delete->delete();
 			
-			$Flash->set('<p class="success">You\'re entry was deleted successfully.</p>');
-			redirect(WEB_ROOT.'admin/manage/'.$this->data['url_structure']['2'].'/');
+			Flash::set('<p class="success">You\'re entry was deleted successfully.</p>');
+			redirect(WEB_ROOT.'admin/manage/'.$this->data['konnect']['rewritten_path']['3'].'/');
 	
 	}
 
 	public function add($templateFile='edit_save')
 	{
-		global $Auth,$Flash;
+		
 		
 		// Just makes sure crop_images isn't being added to but being writen from scratch
 		if(isset($_SESSION['crop_images']))
@@ -64,31 +72,31 @@ class Index_controller extends Controller {
 		$seperators = array('-','+','_',' ');
 		
 		// Setting the default table, really this should never be the case
-		if(!isset($this->data['url_structure']['2']))
-			$this->data['url_structure']['2'] = $this->data['pageTitle'] = 'News';
+		if(!isset($this->data['konnect']['rewritten_path']['3']))
+			$this->data['konnect']['rewritten_path']['3'] = $this->data['pageTitle'] = 'News';
 		else
-			$this->data['pageTitle'] = ucwords(deslugify($this->data['url_structure']['2'],' '));
+			$this->data['pageTitle'] = ucwords(deslugify($this->data['konnect']['rewritten_path']['3'],' '));
 			
 		
 		// Array key "3" is where iterations reside, if it's not set then set it to "1"
-		if(isset($this->data['url_structure']['3']) && is_numeric($this->data['url_structure']['3']))
-			$this->data['iterations'] = $this->data['url_structure']['3'];
+		if(isset($this->data['konnect']['rewritten_path']['4']) && is_numeric($this->data['konnect']['rewritten_path']['4']))
+			$this->data['iterations'] = $this->data['konnect']['rewritten_path']['4'];
 		else
 			$this->data['iterations'] = 1;
 			
 		
-		$scaffold = new Scaffolder(deslugify($this->data['url_structure']['2'],'_'),'',$this->data['iterations']);
+		$scaffold = new Scaffolder(deslugify($this->data['konnect']['rewritten_path']['3'],'_'),'',$this->data['iterations']);
 		$scaffold->iterate();
 		
 		// Grab user preferences for what to do after form submit
 		$this->data['preference'] = new User_preferences();
-		$this->data['preference']->select(array($Auth->id,'next'),array('user','preference'));
+		$this->data['preference']->select(array(Auth::getAuth()->id,'next'),array('user','preference'));
 		
 			if(submit()){
 				
 				if($scaffold->saveObject()){
 				
-					if($templateFile !== 'admin/edit_save'){
+					if($templateFile !== 'edit_save'){
 						
 						$valueField = addslashes(mysql_real_escape_string($_GET['valueField']));
 						$textField = addslashes(mysql_real_escape_string($_GET['textField']));
@@ -104,31 +112,31 @@ class Index_controller extends Controller {
 					} elseif(isset($_POST['next']) && $_POST['next'] === 'add'){
 						
 						// Updated or inserting user preference
-						$this->data['preference']->setPreference($Auth->id);
+						$this->data['preference']->setPreference(Auth::getAuth()->id);
 						
 						// We need to redirect to image cropper or we don't....
 						if(isset($_SESSION['crop_images']) && is_array($_SESSION['crop_images'])){
-							$_SESSION['crop_redirect'] = WEB_ROOT.'admin/add/'.$this->data['url_structure']['2'].'/';
-							$_SESSION['crop_flash'] = '<p class="success">You\'re entry was added successfully, you can add another below or <a href="'.WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$scaffold->currentId.'/"> click here to review / edit that entry</a>.</p>';
+							$_SESSION['crop_redirect'] = WEB_ROOT.'admin/add/'.$this->data['konnect']['rewritten_path']['3'].'/';
+							$_SESSION['crop_flash'] = '<p class="success">You\'re entry was added successfully, you can add another below or <a href="'.WEB_ROOT.'admin/edit/'.$this->data['konnect']['rewritten_path']['3'].'/'.$scaffold->currentId.'/"> click here to review / edit that entry</a>.</p>';
 							redirect(WEB_ROOT.'admin/cropper/');
 						} else {	
-							$Flash->set('<p class="success">You\'re entry was added successfully, you can add another below or <a href="'.WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$scaffold->currentId.'/"> click here to review / edit that entry</a>.</p>');
-							redirect(WEB_ROOT.'admin/add/'.$this->data['url_structure']['2'].'/');
+							Flash::set('<p class="success">You\'re entry was added successfully, you can add another below or <a href="'.WEB_ROOT.'admin/edit/'.$this->data['konnect']['rewritten_path']['3'].'/'.$scaffold->currentId.'/"> click here to review / edit that entry</a>.</p>');
+							redirect(WEB_ROOT.'admin/add/'.$this->data['konnect']['rewritten_path']['3'].'/');
 						}
 				
 					} else {
 						
 						// Updated or inserting user preference
-						$this->data['preference']->setPreference($Auth->id,'edit');
+						$this->data['preference']->setPreference(Auth::getAuth()->id,'edit');
 						
 						// We need to redirect to image cropper or we don't....
 						if(isset($_SESSION['crop_images']) && is_array($_SESSION['crop_images'])){
-							$_SESSION['crop_redirect'] = WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$scaffold->currentId.'/';
+							$_SESSION['crop_redirect'] = WEB_ROOT.'admin/edit/'.$this->data['konnect']['rewritten_path']['3'].'/'.$scaffold->currentId.'/';
 							$_SESSION['crop_flash'] = '<p class="success">You\'re entry was added successfully, you can make edits below.</p>';
 							redirect(WEB_ROOT.'admin/cropper/');
 						} else {
-							$Flash->set('<p class="success">You\'re entry was added successfully, you can make edits below.</p>');
-							redirect(WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$scaffold->currentId.'/');
+							Flash::set('<p class="success">You\'re entry was added successfully, you can make edits below.</p>');
+							redirect(WEB_ROOT.'admin/edit/'.$this->data['konnect']['rewritten_path']['3'].'/'.$scaffold->currentId.'/');
 						}
 				
 					}
@@ -144,12 +152,12 @@ class Index_controller extends Controller {
 
 	public function modalForm()
 	{
-		$this->add('admin/_modal_edit_save');
+		$this->add('_modal_edit_save');
 	}
 
 	public function edit()
 	{
-		global $Flash;
+		
 		
 		// Just makes sure crop_images isn't being added to but being writen from scratch
 		if(isset($_SESSION['crop_images']))
@@ -157,19 +165,19 @@ class Index_controller extends Controller {
 			
 		
 		// Setting default table to "News"
-		if(!isset($this->data['url_structure']['2']))
-			$this->data['url_structure']['2'] = $this->data['pageTitle'] = 'News';
+		if(!isset($this->data['konnect']['rewritten_path']['3']))
+			$this->data['konnect']['rewritten_path']['3'] = $this->data['pageTitle'] = 'News';
 		else 
-			$this->data['pageTitle'] = ucwords(deslugify($this->data['url_structure']['2'],' '));
+			$this->data['pageTitle'] = ucwords(deslugify($this->data['konnect']['rewritten_path']['3'],' '));
 			
 		
 		// Array key "3" is where row id resides
-		if(isset($this->data['url_structure']['3']) && is_numeric($this->data['url_structure']['3']))
-			$currentId = $this->data['url_structure']['3'];
+		if(isset($this->data['konnect']['rewritten_path']['4']) && is_numeric($this->data['konnect']['rewritten_path']['4']))
+			$currentId = $this->data['konnect']['rewritten_path']['4'];
 		else
 			$currentId = '';
 			
-		$scaffold = new Scaffolder(deslugify($this->data['url_structure']['2'],'_'),$currentId);
+		$scaffold = new Scaffolder(deslugify($this->data['konnect']['rewritten_path']['3'],'_'),$currentId);
 		$scaffold->iterate();
 		
 			if(submit()){
@@ -177,12 +185,12 @@ class Index_controller extends Controller {
 					
 					// We need to redirect to image cropper or we don't....
 					if(isset($_SESSION['crop_images']) && is_array($_SESSION['crop_images'])){
-						$_SESSION['crop_redirect'] = WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$this->data['url_structure']['3'].'/';
+						$_SESSION['crop_redirect'] = WEB_ROOT.'admin/edit/'.$this->data['konnect']['rewritten_path']['3'].'/'.$this->data['konnect']['rewritten_path']['4'].'/';
 						$_SESSION['crop_flash'] = '<p class="success">You\'re entry was saved successfully, you can make more edits below.</p>';
 						redirect(WEB_ROOT.'admin/cropper/');
 					} else {
-						$Flash->set('<p class="success">You\'re entry was saved successfully, you can make more edits below.</p>');
-						redirect(WEB_ROOT.'admin/edit/'.$this->data['url_structure']['2'].'/'.$this->data['url_structure']['3'].'/');
+						Flash::set('<p class="success">You\'re entry was saved successfully, you can make more edits below.</p>');
+						redirect(WEB_ROOT.'admin/edit/'.$this->data['konnect']['rewritten_path']['3'].'/'.$this->data['konnect']['rewritten_path']['4'].'/');
 					}
 				
 				}
@@ -202,11 +210,11 @@ class Index_controller extends Controller {
 		$seperators = array('-','+','_',' ');
 		
 		// Setting default table to "news" this should never happen
-		if(!isset($this->data['url_structure']['2']))
-			$this->data['url_structure']['2'] = 'News';
+		if(!isset($this->data['konnect']['rewritten_path']['3']))
+			$this->data['konnect']['rewritten_path']['3'] = 'News';
 		
-		$this->data['table_name'] = deslugify($this->data['url_structure']['2'],'_');
-		$this->data['pageTitle'] = 'Manage '.ucwords(deslugify($this->data['url_structure']['2'],' '));
+		$this->data['table_name'] = deslugify($this->data['konnect']['rewritten_path']['3'],'_');
+		$this->data['pageTitle'] = 'Manage '.ucwords(deslugify($this->data['konnect']['rewritten_path']['3'],' '));
 		$obj_name = ucfirst($this->data['table_name']);
 
 
@@ -247,10 +255,10 @@ class Index_controller extends Controller {
 		}
 		
 		
-		if(isset($this->data['url_structure']['3']) && isset($this->data['url_structure']['4'])){
+		if(isset($this->data['konnect']['rewritten_path']['4']) && isset($this->data['konnect']['rewritten_path']['5'])){
 			if(!empty($search))
 				$search = ' AND '.$search;
-			$where = 'WHERE `'.$this->data['url_structure']['3'].'`="'.$this->data['url_structure']['4'].'"'.$search;
+			$where = 'WHERE `'.$this->data['konnect']['rewritten_path']['4'].'`="'.$this->data['konnect']['rewritten_path']['5'].'"'.$search;
 		}else{
 			if(!empty($search))
 				$where = 'WHERE '.$search;
@@ -317,7 +325,7 @@ class Index_controller extends Controller {
 	
 	public function cropper()
 	{
-		global $Flash;
+		
 		
 		$this->data['pageTitle'] = 'Crop Your Images';
 		
@@ -358,7 +366,7 @@ class Index_controller extends Controller {
 				if(!isset($_SESSION['crop_redirect']))
 					$_SESSION['crop_redirect'] = WEB_ROOT.'admin/';
 				if(isset($_SESSION['crop_flash']))
-					$Flash->set($_SESSION['crop_flash']);
+					Flash::set($_SESSION['crop_flash']);
 					
 				$crop_redirect = $_SESSION['crop_redirect'];
 				unset($_SESSION['crop_images'],$_SESSION['crop_redirect']);

@@ -7,9 +7,14 @@ class Auth_init extends App_init {
 		
 	function initiateApp()
 	{
+		
 		$this->rewrites = array(
-									'([^/]+)/(.*)' => 'index/%1%/%2%' // smaller url by making everything go through index controller
+									'(?:index/)?([^/]+)/?(.*)' => 'index/%1%/%2%' // if routed to index do nothing else reroute through index
 								);
+
+		if(!mysql_is_table('users')) {
+			$this->data['konnect']['rewritten_path'] = array($this->app_name,'install');
+		}
 
 		// Creates $this->data['konnect']['app_rewritten_path'] and $this->data['konnect']['app_rewritten_path']
 		// and $this->data['konnect']['app_original_path']						

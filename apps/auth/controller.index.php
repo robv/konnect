@@ -6,7 +6,8 @@ class Index_controller extends Controller {
 	public $app_name;
 	
 	function __construct($app_name='',$data = '')
-	{	
+	{		
+		$this->data = $data;
 		$this->app_name = $app_name;
 		
 		// Building the method name
@@ -20,19 +21,18 @@ class Index_controller extends Controller {
 	
 	public function login()
 	{
-		global $Auth,$Flash;
 		
-		
+
 		// Kick out user if already logged in
-		if($Auth->loggedIn()) redirect(WEB_ROOT);
+		if(Auth::getAuth()->loggedIn()) redirect(WEB_ROOT);
 
 		if(isset($_POST['username']))
 		{
-			$Auth->login($_POST['username'], $_POST['password']);
-			if($Auth->loggedIn())
+			Auth::getAuth()->login($_POST['username'], $_POST['password']);
+			if(Auth::getAuth()->loggedIn())
 				redirect(WEB_ROOT.'admin/');
 			else
-				$Flash->set('<p class="validation">We\'re sorry, you have entered an incorrect username and password. Please try again.</p>');
+				Flash::set('<p class="validation">We\'re sorry, you have entered an incorrect username and password. Please try again.</p>');
 		}
 		
 		$this->data['username'] = isset($_POST['username']) ? htmlspecialchars($_POST['username']) : '';
@@ -42,7 +42,7 @@ class Index_controller extends Controller {
 	
 	public function recover()
 	{
-		global $Flash;
+		
 		
 		$this->setGlobal('email',isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '');
 				
@@ -61,13 +61,13 @@ class Index_controller extends Controller {
 					
 					send_html_mail($recover->email, 'Password Recovery', $msg,$data['config']->email_address);
 					
-					$Flash->set('<p class="success">Password has been reset and will be emailed to you shortly.</p>');
+					Flash::set('<p class="success">Password has been reset and will be emailed to you shortly.</p>');
 					
 					redirect(WEB_ROOT.'auth/');
 					
 				}else{
 					
-					$Flash->set('<p class="validation">We\'re sorry, you have entered an email address that is not associated with any account.</p>');
+					Flash::set('<p class="validation">We\'re sorry, you have entered an email address that is not associated with any account.</p>');
 					
 				}
 		}
@@ -78,9 +78,8 @@ class Index_controller extends Controller {
 	
 	public function logout()
 	{
-		global $Auth;
 		
-		$Auth->logout();
+		Auth::getAuth()->logout();
 		
 		redirect(WEB_ROOT);
 	

@@ -18,13 +18,12 @@
         // Singleton constructor
         private function __construct($connect = false)
         {
-            $Config = Config::getConfig();
-
-            $this->host       = $Config->dbHost;
-            $this->name       = $Config->dbName;
-            $this->username   = $Config->dbUsername;
-            $this->password   = $Config->dbPassword;
-            $this->dieOnError = $Config->dbDieOnError;
+ 
+            $this->host       = Config::getConfig()->dbHost;
+            $this->name       = Config::getConfig()->dbName;
+            $this->username   = Config::getConfig()->dbUsername;
+            $this->password   = Config::getConfig()->dbPassword;
+            $this->dieOnError = Config::getConfig()->dbDieOnError;
 
             $this->db = false;
             $this->queries = array();

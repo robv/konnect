@@ -9,17 +9,18 @@
 	
 		function getLinks()
 		{
-			global $Auth;
+			
+            $links = DBObject::glob(get_class($this),'SELECT * FROM `konnect_links` WHERE (authorized_groups LIKE "%'.Auth::getAuth()->level.'%" OR authorized_groups is NULL OR authorized_groups="") AND (parent_link = "" OR parent_link IS NULL)');
+			$sub_links = array();
 		
-	            $links = DBObject::glob(get_class($this),'SELECT * FROM `konnect_links` WHERE (authorized_groups LIKE "%'.$Auth->level.'%" OR authorized_groups is NULL OR authorized_groups="") AND (parent_link = "" OR parent_link IS NULL)');
-			
-				foreach($links as $link){
-					$sub_links[$link->id] = DBObject::glob(get_class($this),'SELECT * FROM `konnect_links` WHERE (authorized_groups LIKE "%'.$Auth->level.'%" OR authorized_groups is NULL OR authorized_groups="") AND (parent_link = "'.$link->id.'")');
-				}
-			
-				$return['object'] = $links;
-				$return['sub_links'] = $sub_links;
-				return $return;
+			foreach($links as $link){
+				$sub_links[$link->id] = DBObject::glob(get_class($this),'SELECT * FROM `konnect_links` WHERE (authorized_groups LIKE "%'.Auth::getAuth()->level.'%" OR authorized_groups is NULL OR authorized_groups="") AND (parent_link = "'.$link->id.'")');
+			}
+		
+			$return['object'] = $links;
+			$return['sub_links'] = $sub_links;
+			return $return;
+		
 		}
 	}
 

@@ -20,7 +20,7 @@ class App_init {
 	{
 		
 		if(isset($this->data['konnect']['rewritten_path']))
-			$current_path = str_replace($this->app_name.'/','',implode('/',$this->data['konnect']['rewritten_path']));
+			$current_path = trim(str_replace($this->app_name,'',implode('/',$this->data['konnect']['rewritten_path'])),'/');
 		else
 			$current_path = '';
 			
@@ -29,7 +29,7 @@ class App_init {
 		foreach($this->rewrites as $intial_path => $destination_path){
 			if(empty($this->rewritten_path)){ // if we already matched something stop trying
 				if(preg_match('#^'.$intial_path.'$#i',$current_path,$matches)){
-				
+								
 					foreach($matches as $key => $value) // in destination path use %1%, %2%, etc as you would $1, $2, in mod_rewrite
 						$destination_path = str_replace('%'.$key.'%',$value,$destination_path);
 				
@@ -38,7 +38,6 @@ class App_init {
 			}
 		}
 		
-		$this->data['konnect']['rewritten_path'] = $this->data['konnect']['rewritten_path'];
 		$this->data['konnect']['app_original_path'] = $current_path;
 		
 	}
