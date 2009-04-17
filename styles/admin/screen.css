@@ -449,13 +449,22 @@ textarea.objects {
 
 /* @group ICONS */
 
+#container #right ul li a,#container #right ul li a:link {
+	text-decoration: none;
+}
+
 #container #right ul li.add a,#container #right ul li.add a:link {
-	background: url(../../files/icons/add.png) no-repeat left center;
+	background: url(../../files/icons/add.png) no-repeat left 2px;
 	padding: 3px 0 3px 23px;
 }
 
 #container #right ul li.pencil a,#container #right ul li.pencil a:link {
-	background: url(../../files/icons/pencil.png) no-repeat left center;
+	background: url(../../files/icons/pencil.png) no-repeat left 2px;
+	padding: 3px 0 3px 23px;
+}
+
+#container #right ul li.event a,#container #right ul li.event a:link {
+	background: url(../../files/icons/event.png) no-repeat left 3px;
 	padding: 3px 0 3px 23px;
 }
 
