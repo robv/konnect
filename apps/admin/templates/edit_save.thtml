@@ -1,4 +1,4 @@
-<?php include DOC_ROOT . '/apps/admin/templates/_header.thtml'; ?>
+<?php include DOC_ROOT . '/apps/'.$app_name.'/templates/_header.thtml'; ?>
 
 <script type="text/javascript">Site.edit_save_start();</script>
 
@@ -9,7 +9,7 @@
 			<li><a href="#" class="dd">Add Multiple Entries</a><ul class="show"><li>
 				<?php
 					for($i=1;$i<21;$i++):
-						echo '<a href="'.WEB_ROOT.'admin/add/'.$url_structure['2'].'/'.$i.'/">'.$i.'</a>';
+						echo '<a href="'.WEB_ROOT.$app_name.'/add/'.$url_structure['2'].'/'.$i.'/">'.$i.'</a>';
 					endfor;
 				?>
 			</li></ul></li>
@@ -48,4 +48,4 @@
 
 	</div>
 				
-<?php include DOC_ROOT . '/apps/admin/templates/_footer.thtml'; ?>
+<?php include DOC_ROOT . '/apps/'.$app_name.'/templates/_footer.thtml'; ?>

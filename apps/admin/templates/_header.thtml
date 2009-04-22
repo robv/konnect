@@ -14,15 +14,15 @@
 		<h1>Website Administration</h1>
 		<ul>
 			<?php if(Auth::getAuth()->level === 'admin'){ ?>
-				<li><a href="<?= WEB_ROOT; ?>admin/manage/Konnect-Links/">Links</a></li>
-				<li><a href="<?= WEB_ROOT; ?>admin/manage/Konnect-Field-Information/">Forms</a></li>
-				<li><a href="<?= WEB_ROOT; ?>admin/manage/Konnect-View-Information/">Views</a></li>
-				<li><a href="<?= WEB_ROOT; ?>admin/Database-Objects/">DB Objects</a></li>
+				<li><a href="<?= WEB_ROOT.$app_name; ?>/manage/Konnect-Links/">Links</a></li>
+				<li><a href="<?= WEB_ROOT.$app_name; ?>/manage/Konnect-Field-Information/">Forms</a></li>
+				<li><a href="<?= WEB_ROOT.$app_name; ?>/manage/Konnect-View-Information/">Views</a></li>
+				<li><a href="<?= WEB_ROOT.$app_name; ?>/Database-Objects/">DB Objects</a></li>
 			<?php 
 				}
 				if(Auth::getAuth()->level === 'admin' || Auth::getAuth()->level === 'owner'){
 			?>
-				<li><a href="<?= WEB_ROOT; ?>admin/manage/Users/">Users</a></li>
+				<li><a href="<?= WEB_ROOT.$app_name; ?>/manage/Users/">Users</a></li>
 			<?php } ?>
 			<li class="highlight"><a href="<?= WEB_ROOT; ?>logout/">Logout</a></li>
 		</ul>
@@ -31,14 +31,14 @@
 	<div id="navigation" class="clearfix">
 	
 		<ul id="main">
-			<li<?php if(implode('/',$konnect['rewritten_path']).'/' === 'admin/'){ echo ' class="active"'; } ?>><a href="<?= WEB_ROOT; ?>admin/">Dashboard</a></li>
+			<li<?php if(implode('/',$konnect['rewritten_path']).'/' === $app_name.'/'){ echo ' class="active"'; } ?>><a href="<?= WEB_ROOT.$app_name; ?>/">Dashboard</a></li>
 			<?php
 				foreach($header_links as $header_link):
 					if(implode('/',deslugify($konnect['rewritten_path'],'-')).'/' === $app_name.'/index/'.strtolower($header_link->link)){
 						$active_insert = ' class="active"';
 						$current_link = $header_link->id;
 					} else { $active_insert = ''; }
-					echo '<li'.$active_insert.'><a href="'.WEB_ROOT.'admin/'.$header_link->link.'">'.$header_link->name.'</a></li>';
+					echo '<li'.$active_insert.'><a href="'.WEB_ROOT.$app_name.'/'.$header_link->link.'">'.$header_link->name.'</a></li>';
 				endforeach;
 			?>
 		</ul>

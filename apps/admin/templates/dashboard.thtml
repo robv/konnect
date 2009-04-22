@@ -1,4 +1,4 @@
-<?php include DOC_ROOT . '/apps/admin/templates/_header.thtml'; ?>
+<?php include DOC_ROOT . '/apps/'.$app_name.'/templates/_header.thtml'; ?>
 	<div id="left" class="match">
 			
 		<h2><?= $pageTitle; ?></h2>
@@ -15,4 +15,4 @@
 
 	</div>
 				
-<?php include DOC_ROOT . '/apps/admin/templates/_footer.thtml'; ?>
+<?php include DOC_ROOT . '/apps/'.$app_name.'/templates/_footer.thtml'; ?>

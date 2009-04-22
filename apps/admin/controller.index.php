@@ -57,7 +57,7 @@ class Index_controller extends Controller {
 			$delete->delete();
 			
 			Flash::set('<p class="success">You\'re entry was deleted successfully.</p>');
-			redirect(WEB_ROOT.'admin/manage/'.$this->data['konnect']['rewritten_path']['3'].'/');
+			redirect(WEB_ROOT.$app_name.'/manage/'.$this->data['konnect']['rewritten_path']['3'].'/');
 	
 	}
 
@@ -116,12 +116,12 @@ class Index_controller extends Controller {
 						
 						// We need to redirect to image cropper or we don't....
 						if(isset($_SESSION['crop_images']) && is_array($_SESSION['crop_images'])){
-							$_SESSION['crop_redirect'] = WEB_ROOT.'admin/add/'.$this->data['konnect']['rewritten_path']['3'].'/';
-							$_SESSION['crop_flash'] = '<p class="success">You\'re entry was added successfully, you can add another below or <a href="'.WEB_ROOT.'admin/edit/'.$this->data['konnect']['rewritten_path']['3'].'/'.$scaffold->currentId.'/"> click here to review / edit that entry</a>.</p>';
-							redirect(WEB_ROOT.'admin/cropper/');
+							$_SESSION['crop_redirect'] = WEB_ROOT.$app_name.'/add/'.$this->data['konnect']['rewritten_path']['3'].'/';
+							$_SESSION['crop_flash'] = '<p class="success">You\'re entry was added successfully, you can add another below or <a href="'.WEB_ROOT.$app_name.'/edit/'.$this->data['konnect']['rewritten_path']['3'].'/'.$scaffold->currentId.'/"> click here to review / edit that entry</a>.</p>';
+							redirect(WEB_ROOT.$app_name.'/cropper/');
 						} else {	
-							Flash::set('<p class="success">You\'re entry was added successfully, you can add another below or <a href="'.WEB_ROOT.'admin/edit/'.$this->data['konnect']['rewritten_path']['3'].'/'.$scaffold->currentId.'/"> click here to review / edit that entry</a>.</p>');
-							redirect(WEB_ROOT.'admin/add/'.$this->data['konnect']['rewritten_path']['3'].'/');
+							Flash::set('<p class="success">You\'re entry was added successfully, you can add another below or <a href="'.WEB_ROOT.$app_name.'/edit/'.$this->data['konnect']['rewritten_path']['3'].'/'.$scaffold->currentId.'/"> click here to review / edit that entry</a>.</p>');
+							redirect(WEB_ROOT.$app_name.'/add/'.$this->data['konnect']['rewritten_path']['3'].'/');
 						}
 				
 					} else {
@@ -131,12 +131,12 @@ class Index_controller extends Controller {
 						
 						// We need to redirect to image cropper or we don't....
 						if(isset($_SESSION['crop_images']) && is_array($_SESSION['crop_images'])){
-							$_SESSION['crop_redirect'] = WEB_ROOT.'admin/edit/'.$this->data['konnect']['rewritten_path']['3'].'/'.$scaffold->currentId.'/';
+							$_SESSION['crop_redirect'] = WEB_ROOT.$app_name.'/edit/'.$this->data['konnect']['rewritten_path']['3'].'/'.$scaffold->currentId.'/';
 							$_SESSION['crop_flash'] = '<p class="success">You\'re entry was added successfully, you can make edits below.</p>';
-							redirect(WEB_ROOT.'admin/cropper/');
+							redirect(WEB_ROOT.$app_name.'/cropper/');
 						} else {
 							Flash::set('<p class="success">You\'re entry was added successfully, you can make edits below.</p>');
-							redirect(WEB_ROOT.'admin/edit/'.$this->data['konnect']['rewritten_path']['3'].'/'.$scaffold->currentId.'/');
+							redirect(WEB_ROOT.$app_name.'/edit/'.$this->data['konnect']['rewritten_path']['3'].'/'.$scaffold->currentId.'/');
 						}
 				
 					}
@@ -185,12 +185,12 @@ class Index_controller extends Controller {
 					
 					// We need to redirect to image cropper or we don't....
 					if(isset($_SESSION['crop_images']) && is_array($_SESSION['crop_images'])){
-						$_SESSION['crop_redirect'] = WEB_ROOT.'admin/edit/'.$this->data['konnect']['rewritten_path']['3'].'/'.$this->data['konnect']['rewritten_path']['4'].'/';
+						$_SESSION['crop_redirect'] = WEB_ROOT.$app_name.'/edit/'.$this->data['konnect']['rewritten_path']['3'].'/'.$this->data['konnect']['rewritten_path']['4'].'/';
 						$_SESSION['crop_flash'] = '<p class="success">You\'re entry was saved successfully, you can make more edits below.</p>';
-						redirect(WEB_ROOT.'admin/cropper/');
+						redirect(WEB_ROOT.$app_name.'/cropper/');
 					} else {
 						Flash::set('<p class="success">You\'re entry was saved successfully, you can make more edits below.</p>');
-						redirect(WEB_ROOT.'admin/edit/'.$this->data['konnect']['rewritten_path']['3'].'/'.$this->data['konnect']['rewritten_path']['4'].'/');
+						redirect(WEB_ROOT.$app_name.'/edit/'.$this->data['konnect']['rewritten_path']['3'].'/'.$this->data['konnect']['rewritten_path']['4'].'/');
 					}
 				
 				}
@@ -364,7 +364,7 @@ class Index_controller extends Controller {
 				}
 				
 				if(!isset($_SESSION['crop_redirect']))
-					$_SESSION['crop_redirect'] = WEB_ROOT.'admin/';
+					$_SESSION['crop_redirect'] = WEB_ROOT.$app_name.'/';
 				if(isset($_SESSION['crop_flash']))
 					Flash::set($_SESSION['crop_flash']);
 					

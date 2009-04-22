@@ -1,9 +1,9 @@
-<?php include DOC_ROOT . '/apps/admin/templates/_header.thtml'; ?>
+<?php include DOC_ROOT . '/apps/'.$app_name.'/templates/_header.thtml'; ?>
 
 	<div id="full" class="match">
 		
 		<?php if(is_null($show_add_entry->id)): ?>
-			<div id="header_button"><a href="<?= WEB_ROOT; ?>admin/add/<?= $url_structure['2']; ?>/">Add Entry</a></div>
+			<div id="header_button"><a href="<?= WEB_ROOT.$app_name; ?>/add/<?= $url_structure['2']; ?>/">Add Entry</a></div>
 		<?php endif; ?>
 		
 		<h2><?= $pageTitle; ?></h2>
@@ -14,7 +14,7 @@
 				<?php if(isset($current_link) && isset($header_sub_links[$current_link]) && !empty($header_sub_links[$current_link])): ?>
 					<ul>
 						<?php foreach($header_sub_links[$current_link] as $sub_link): ?>
-							<li><a href="<?= WEB_ROOT.'admin/'.$sub_link->link ?>"><?= $sub_link->name; ?></a></li>
+							<li><a href="<?= WEB_ROOT.$app_name.'/'.$sub_link->link ?>"><?= $sub_link->name; ?></a></li>
 						<?php endforeach; ?>
 					</ul>
 				<?php endif; ?>
@@ -146,8 +146,8 @@
 					
 		?>
 		
-				<td class="edit_delete"><a href="<?= WEB_ROOT; ?>admin/edit/<?= $table_name; ?>/<?= $entry->id; ?>/">Edit</a></td>
-				<td class="edit_delete"><a href="<?= WEB_ROOT; ?>admin/confirm/?delete=<?= $entry->id; ?>&table_name=<?= $table_name; ?>" rel="facebox[.modal_center]">Delete</a></td>
+				<td class="edit_delete"><a href="<?= WEB_ROOT.$app_name; ?>/edit/<?= $table_name; ?>/<?= $entry->id; ?>/">Edit</a></td>
+				<td class="edit_delete"><a href="<?= WEB_ROOT.$app_name; ?>/confirm/?delete=<?= $entry->id; ?>&table_name=<?= $table_name; ?>" rel="facebox[.modal_center]">Delete</a></td>
 				</tr>
 				
 		<?php
@@ -176,4 +176,4 @@
 
 	</div>
 				
-<?php include DOC_ROOT . '/apps/admin/templates/_footer.thtml'; ?>
+<?php include DOC_ROOT . '/apps/'.$app_name.'/templates/_footer.thtml'; ?>
