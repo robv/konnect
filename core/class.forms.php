@@ -301,10 +301,10 @@ class Forms {
 		if(isset($info['options']['selectName']))
 			$out .= '<option value="">'.$info['options']['selectName'].'</option>';
 
-			if(!isset($info['sql']))
-				$info['sql'] = '';
+			if(!isset($info['options']['sql']))
+				$info['options']['sql'] = '';
 
-			$out .=  $this->get_options($info['options']['table'],$info['options']['val'],$info['options']['text'],$info['value']);
+			$out .=  $this->get_options($info['options']['table'],$info['options']['val'],$info['options']['text'],$info['value'],NULL,$info['options']['sql']);
 
 		$out .= '</select>';
 		
@@ -332,9 +332,10 @@ class Forms {
 		if(isset($info['options']['selectName']))
 			$out .= '<option value="">'.$info['options']['selectName'].'</option>';
 
-			if(!isset($info['sql']))
-				$info['sql'] = '';
-			$out .=  $this->get_options($info['options']['table'],$info['options']['val'],$info['options']['text'],$info['value'],$info['options']['dependent']);
+			if(!isset($info['options']['sql']))
+				$info['options']['sql'] = '';
+		
+		$out .=  $this->get_options($info['options']['table'],$info['options']['val'],$info['options']['text'],$info['value'],$info['options']['dependent'],$info['options']['sql']);
 
 		$out .= '</select>';
 
