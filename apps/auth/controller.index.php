@@ -30,7 +30,7 @@ class Index_controller extends Controller {
 		{
 			Auth::getAuth()->login($_POST['username'], $_POST['password']);
 			if(Auth::getAuth()->loggedIn())
-				redirect(WEB_ROOT.'admin/');
+				redirect(WEB_ROOT);
 			else
 				Flash::set('<p class="validation">We\'re sorry, you have entered an incorrect username and password. Please try again.</p>');
 		}
