@@ -1,4 +1,4 @@
-<?PHP
+<?php
 	require 'includes/master.inc.php';
 
 	// Kick out user if already logged in.
@@ -35,8 +35,8 @@
 		<h2>Sample Login Form</h2>
 		<form action="login.php" method="post">
 			<p>This is a sample login form that demonstrates how to use the <code>Auth</code> class to login a user.</p>
-			<?PHP echo $Error; ?>
-			<p><label for="username">Username:</label> <input type="text" name="username" value="<?PHP echo $username;?>" id="username" /></p>
+			<?php echo $Error; ?>
+			<p><label for="username">Username:</label> <input type="text" name="username" value="<?php echo $username;?>" id="username" /></p>
 			<p><label for="password">Password:</label> <input type="password" name="password" value="" id="password" /></p>
 			<p><input type="submit" name="btnlogin" value="Login" id="btnlogin" /></p>
 		</form>

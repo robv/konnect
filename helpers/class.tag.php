@@ -1,4 +1,4 @@
-<?PHP
+<?php
     class Tag extends DBObject
     {
         public function __construct($id = '')

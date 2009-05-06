@@ -1,4 +1,4 @@
-<?PHP
+<?php
     class Loop
     {
         private $index;

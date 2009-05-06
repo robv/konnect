@@ -1,4 +1,4 @@
-<?PHP
+<?php
     class DBSession
     {
         public static function register()

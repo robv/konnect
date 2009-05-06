@@ -1,4 +1,4 @@
-<?PHP
+<?php
     // ORMObject is brand new and totally untested as of 04/02/2009 - RTH
     class ORMObject extends DBObject
     {

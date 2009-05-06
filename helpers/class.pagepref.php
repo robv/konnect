@@ -1,4 +1,4 @@
-<?PHP
+<?php
     // Stores session variables unique to a given URL
     class PagePref
     {

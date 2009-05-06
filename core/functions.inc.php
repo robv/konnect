@@ -1,11 +1,5 @@
-<?PHP
-    function printr($var)
-    {
-        $output = print_r($var, true);
-        $output = str_replace("\n", "<br>", $output);
-        $output = str_replace(' ', '&nbsp;', $output);
-        echo "<div style='font-family:courier;'>$output</div>";
-    }
+<?php
+
 
     // Formats a given number of seconds into proper mm:ss format
     function format_time($seconds)
@@ -17,15 +11,6 @@
     function split_id($str)
     {
         return match('/[_-]([0-9]+)$/', $str, 1);
-    }
-
-    // Creates a friendly URL slug from a string
-    function slugify($str)
-    {
-        $str = preg_replace('/[^a-zA-Z0-9 -]/', '', $str);
-        $str = strtolower(str_replace(' ', '-', trim($str)));
-        $str = preg_replace('/-+/', '-', $str);
-        return $str;
     }
 
     // Computes the *full* URL of the current page (protocol, server, path, query parameters, etc)
@@ -173,34 +158,7 @@
         return strtotime($str);
     }
 
-    // Converts a date/timestamp into the specified format
-    function dater($date = null, $format = null)
-    {
-        if(is_null($format))
-            $format = 'Y-m-d H:i:s';
 
-        if(is_null($date))
-            $date = time();
-
-        // if $date contains only numbers, treat it as a timestamp
-        if(ctype_digit($date) === true)
-            return date($format, $date);
-        else
-            return date($format, strtotime($date));
-    }
-
-    // Formats a phone number as (xxx) xxx-xxxx or xxx-xxxx depending on the length.
-    function format_phone($phone)
-    {
-        $phone = preg_replace("/[^0-9]/", '', $phone);
-
-        if(strlen($phone) == 7)
-            return preg_replace("/([0-9]{3})([0-9]{4})/", "$1-$2", $phone);
-        elseif(strlen($phone) == 10)
-            return preg_replace("/([0-9]{3})([0-9]{3})([0-9]{4})/", "($1) $2-$3", $phone);
-        else
-            return $phone;
-    }
 
     // Outputs hour, minute, am/pm dropdown boxes
     function hourmin($hid = 'hour', $mid = 'minute', $pid = 'ampm', $hval = null, $mval = null, $pval = null)
@@ -290,17 +248,7 @@
         exit();
     }
 
-    // Ensures $str ends with a single /
-    function slash($str)
-    {
-        return rtrim($str, '/') . '/';
-    }
 
-    // Ensures $str DOES NOT end with a /
-    function unslash($str)
-    {
-        return rtrim($str, '/');
-    }
 
     // Returns an array of the values of the specified column from a multi-dimensional array
     function gimme($arr, $key = null)
@@ -315,13 +263,6 @@
         return $out;
     }
 
-    // Fixes MAGIC_QUOTES
-    function fix_slashes($arr = '')
-    {
-        if(is_null($arr) || $arr == '') return null;
-        if(!get_magic_quotes_gpc()) return $arr;
-        return is_array($arr) ? array_map('fix_slashes', $arr) : stripslashes($arr);
-    }
 
     // Returns the first $num words of $str
     function max_words($str, $num, $suffix = '')
@@ -368,17 +309,7 @@
         return isset($matches[1]) ? $matches[1] : false;
     }
 
-    // Outputs a filesize in human readable format.
-    function bytes2str($val, $round = 0)
-    {
-        $unit = array('','K','M','G','T','P','E','Z','Y');
-        while($val >= 1000)
-        {
-            $val /= 1024;
-            array_shift($unit);
-        }
-        return round($val, $round) . array_shift($unit) . 'B';
-    }
+
 
     // Tests for a valid email address and optionally tests for valid MX records, too.
     function valid_email($email, $test_mx = false)
@@ -544,12 +475,6 @@
     function WEBROOT()
     {
         echo WEB_ROOT;
-    }
-
-    // Class Autloader
-    function __autoload($class_name)
-    {
-        require DOC_ROOT . '/includes/class.' . strtolower($class_name) . '.php';
     }
 
     // Returns a file's mimetype based on its extension

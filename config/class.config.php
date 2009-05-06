@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
     // The Config class provides a single object to store your application's settings.
     // Define your settings as public members. (We've already setup the standard options
@@ -77,8 +77,8 @@
 
             // Settings for the Auth class
             $this->authDomain         = $_SERVER['HTTP_HOST'];
-            $this->useHashedPasswords = false;
-            $this->authSalt           = ''; // Pick any random string of characters
+            $this->useHashedPasswords = true;
+            $this->authSalt           = 'wtnMmVyc8vhkrxBrtkm3VTkLwiAFs'; // Pick any random string of characters
         }
 
         // Add code/variables to be run only on production servers

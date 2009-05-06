@@ -1,4 +1,4 @@
-<?PHP
+<?php
     class Pager implements Iterator
     {
         // Stuff you set...

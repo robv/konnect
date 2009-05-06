@@ -1,4 +1,4 @@
-<?PHP
+<?php
     // Stick your DBOjbect subclasses in here (to help keep things tidy).
 
     class User extends DBObject

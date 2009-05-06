@@ -7,9 +7,11 @@
 # Note: If you're having trouble making Apache pickup your .htaccess file,
 # make sure AllowOverride is set to "All" instead of "None".
 
-# RewriteEngine On
-# RewriteBase /
+RewriteEngine On
+RewriteBase /
 
-# RewriteCond %{REQUEST_FILENAME} !-f # If not a file...
-# RewriteCond %{REQUEST_FILENAME} !-d # and not a directory...
-# RewriteRule . /index.php [L]        # serve index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+
+# AddHandler php5-script .php
