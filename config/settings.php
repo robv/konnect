@@ -4,21 +4,21 @@
 	// any one of the keys in your servers array to the current host name
 	
 		// Developement server settings
-		$Config['development']['servers'] = array('konnect.dev');
-		$Config['development']['WEB_ROOT'] = 'http://konnect.dev';
-		$Config['development']['displayErrors'] = 1;
-		$Config['development']['dbHost'] = 'localhost';
-		$Config['development']['dbName'] = 'konnect_new';
-		$Config['development']['dbUsername'] = 'root';
-		$Config['development']['dbPassword'] = 'rootpassword';
-		$Config['development']['dbDieOnError'] = true;
+		$config['development']['servers'] = array('konnect.dev');
+		$config['development']['WEB_ROOT'] = 'http://konnect.dev';
+		$config['development']['displayErrors'] = 1;
+		$config['development']['dbHost'] = 'localhost';
+		$config['development']['dbName'] = 'konnect_new';
+		$config['development']['dbUsername'] = 'root';
+		$config['development']['dbPassword'] = 'rootpassword';
+		$config['development']['dbDieOnError'] = true;
 		
 		// Staging server settings
-		$Config['staging']['servers'] = array('konnectphp.com','www.konnectphp.com');
-		$Config['staging']['WEB_ROOT'] = 'http://konnectphp.com';
-		$Config['staging']['displayErrors'] = 1;
-		$Config['staging']['dbHost'] = 'localhost';
-		$Config['staging']['dbName'] = 'konnect_new';
-		$Config['staging']['dbUsername'] = 'root';
-		$Config['staging']['dbPassword'] = 'rootpassword';
-		$Config['staging']['dbDieOnError'] = true;
+		$config['staging']['servers'] = array('konnectphp.com','www.konnectphp.com');
+		$config['staging']['WEB_ROOT'] = 'http://konnectphp.com';
+		$config['staging']['displayErrors'] = 1;
+		$config['staging']['dbHost'] = 'localhost';
+		$config['staging']['dbName'] = 'konnect_new';
+		$config['staging']['dbUsername'] = 'root';
+		$config['staging']['dbPassword'] = 'rootpassword';
+		$config['staging']['dbDieOnError'] = true;
