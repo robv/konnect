@@ -6,7 +6,7 @@
 
         public function __construct($table_name, $columns, $id = null)
         {
-            if(!is_array(ORMObject::$_data))
+            if (!is_array(ORMObject::$_data))
                 ORMObject::$_data = array();
 
             parent::__construct($table_name, $columns, $id);
@@ -14,13 +14,13 @@
 
         public function __get($key)
         {
-            if(array_key_exists($key, $this->columns))
+            if (array_key_exists($key, $this->columns))
                 return $this->columns[$key];
 
-            if((substr($key, 0, 2) == '__') && array_key_exists(substr($key, 2), $this->columns))
+            if ((substr($key, 0, 2) == '__') && array_key_exists(substr($key, 2), $this->columns))
                 return htmlspecialchars($this->columns[substr($key, 2)]);
 
-            if(isset(ORMObject::$_data[$this->className][strtolower($key)]))
+            if (isset(ORMObject::$_data[$this->className][strtolower($key)]))
                 return $this->{ORMObject::$_data[$this->className][strtolower($key)]['getter']}($key);
 
             $trace = debug_backtrace();
@@ -30,9 +30,9 @@
 
         public function __set($key, $value)
         {
-            if(array_key_exists($key, $this->columns))
+            if (array_key_exists($key, $this->columns))
                 $this->columns[$key] = $value;
-            elseif(isset(ORMObject::$_data[$this->className][strtolower($key)]))
+            elseif (isset(ORMObject::$_data[$this->className][strtolower($key)]))
                 return $this->{ORMObject::$_data[$this->className][strtolower($key)]['setter']}($key, $value);
 
             return $value;
@@ -40,16 +40,16 @@
 
         public function __call($name, $arguments)
         {
-            if(isset(ORMObject::$_data[$this->className][strtolower($name)]))
+            if (isset(ORMObject::$_data[$this->className][strtolower($name)]))
                 return $this->{ORMObject::$_data[$this->className][strtolower($name)]['func']}($name, $arguments);
         }
 
         // To be made in the object with the foreign key
         public function belongsTo($class_name, $pk = null, $fk = null)
         {
-            if(is_null($pk)) $pk = 'id';
-            if(is_null($fk)) $fk = strtolower($class_name . '_id');
-            if(@!is_array(ORMObject::$_data[$this->className])) ORMObject::$_data[$this->className] = array();
+            if (is_null($pk)) $pk = 'id';
+            if (is_null($fk)) $fk = strtolower($class_name . '_id');
+            if (@!is_array(ORMObject::$_data[$this->className])) ORMObject::$_data[$this->className] = array();
             ORMObject::$_data[$this->className][strtolower($class_name)] =
                     array('pk' => $pk,
                           'fk' => $fk,
@@ -69,7 +69,7 @@
 
         protected function setBelongsTo($key, $val)
         {
-            if(!is_subclass_of($val, 'DBObject'))
+            if (!is_subclass_of($val, 'DBObject'))
             {
                 trigger_error("Cannont assign non-DBObject to ORMObject property $key in {$trace[0]['file']} on line {$trace[0]['line']}", E_USER_NOTICE);
                 return;
@@ -83,9 +83,9 @@
         // To be made in the object with the primary key
         public function hasOne($class_name, $pk = null, $fk = null)
         {
-            if(is_null($pk)) $pk = 'id';
-            if(is_null($fk)) $fk = strtolower($this->className . '_id');
-            if(@!is_array(ORMObject::$_data[$this->className])) ORMObject::$_data[$this->className] = array();
+            if (is_null($pk)) $pk = 'id';
+            if (is_null($fk)) $fk = strtolower($this->className . '_id');
+            if (@!is_array(ORMObject::$_data[$this->className])) ORMObject::$_data[$this->className] = array();
             ORMObject::$_data[$this->className][strtolower($class_name)] =
                     array('pk' => $pk,
                           'fk' => $fk,
@@ -107,7 +107,7 @@
         {
             $db = Database::getDatabase();
 
-            if(!is_subclass_of($val, 'DBObject'))
+            if (!is_subclass_of($val, 'DBObject'))
             {
                 trigger_error("Cannont assign non-DBObject to ORMObject property $key in {$trace[0]['file']} on line {$trace[0]['line']}", E_USER_NOTICE);
                 return;
@@ -122,9 +122,9 @@
 
         public function hasMany($class_name, $pk = null, $fk = null, $joined = false)
         {
-            if(is_null($pk)) $pk = 'id';
-            if(is_null($fk)) $fk = strtolower($this->className . '_id');
-            if(@!is_array(ORMObject::$_data[$this->className])) ORMObject::$_data[$this->className] = array();
+            if (is_null($pk)) $pk = 'id';
+            if (is_null($fk)) $fk = strtolower($this->className . '_id');
+            if (@!is_array(ORMObject::$_data[$this->className])) ORMObject::$_data[$this->className] = array();
             ORMObject::$_data[$this->className][strtolower($class_name . 's')] =
                     array('pk' => $pk,
                           'fk' => $fk,
@@ -169,7 +169,7 @@
             $data = ORMObject::$_data[$this->className][strtolower($key)];
             $tmp_obj = new $data['fc'];
 
-            if($data['joined'])
+            if ($data['joined'])
             {
                 $join_table = $this->joinTable($this->tableName, $tmp_obj->tableName);
                 $data_b = ORMObject::$_data[$tmp_obj->className][strtolower($this->className . 's')];
@@ -178,7 +178,7 @@
             }
             else
             {
-				if(isset($data['sort']))
+				if (isset($data['sort']))
 					$sorter = " SORT BY `{$data['sort']}` ";
 				else
 					$sorter = '';
@@ -194,7 +194,7 @@
             $data = ORMObject::$_data[$this->className][strtolower($key)];
             $tmp_obj = new $data['fc'];
 
-            if($data['joined'])
+            if ($data['joined'])
             {
                 $join_table = $this->joinTable($this->tableName, $tmp_obj->tableName);
                 $data_b = ORMObject::$_data[$tmp_obj->className][strtolower($this->className . 's')];
@@ -214,7 +214,7 @@
             $data = ORMObject::$_data[$this->className][strtolower($key)];
             $tmp_obj = new $data['fc'];
 
-            if($data['joined'])
+            if ($data['joined'])
             {
                 $join_table = $this->joinTable($this->tableName, $tmp_obj->tableName);
                 $data_b = ORMObject::$_data[$tmp_obj->className][strtolower($this->className . 's')];
@@ -234,7 +234,7 @@
             $data = ORMObject::$_data[$this->className][strtolower($key)];
             $tmp_obj = new $data['fc'];
 
-            if($data['joined'])
+            if ($data['joined'])
             {
                 $join_table = $this->joinTable($this->tableName, $tmp_obj->tableName);
                 $sql = "DELETE FROM `$join_table` WHERE `{$data['fk']}` = " . $db->quote($this->{$data['pk']});

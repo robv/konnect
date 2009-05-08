@@ -9,7 +9,7 @@
         {
             $this->_id = 'pp' . md5($_SERVER['PHP_SELF']);
 
-            if(isset($_SESSION[$this->_id]))
+            if (isset($_SESSION[$this->_id]))
                 $this->_data = unserialize($_SESSION[$this->_id]);
         }
 
@@ -20,7 +20,7 @@
 
         public function __set($key, $val)
         {
-            if(!is_array($this->_data)) $this->_data = array();
+            if (!is_array($this->_data)) $this->_data = array();
             $this->_data[$key] = $val;
             $_SESSION[$this->_id] = serialize($this->_data);
         }

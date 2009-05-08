@@ -6,7 +6,7 @@ class AlterPath {
 	
 	function __construct($rewrites)
 	{
-		if($this->pick_off()){
+		if ($this->pick_off()){
 			$cleaned_current_arr = explode('/',strtolower(implode('/',deslugify($this->pick_off(),'_'))));
 		} else {
 			$cleaned_current_arr = array();
@@ -16,12 +16,12 @@ class AlterPath {
 		$current_path = implode('/',$cleaned_current_arr).'/';
 		$matches = array();
 		
-		foreach($rewrites as $intial_path => $destination_path){
-			if(empty($this->rewritten_path)){ // if we already matched something stop trying
+		foreach ($rewrites as $intial_path => $destination_path){
+			if (empty($this->rewritten_path)){ // if we already matched something stop trying
 			
-				if(preg_match('#^'.trim($intial_path,'/').'/$#',$current_path,$matches)){
+				if (preg_match('#^'.trim($intial_path,'/').'/$#',$current_path,$matches)){
 				
-					foreach($matches as $key => $value) // in destination path use %1%, %2%, etc as you would $1, $2, in mod_rewrite
+					foreach ($matches as $key => $value) // in destination path use %1%, %2%, etc as you would $1, $2, in mod_rewrite
 						$destination_path = str_replace('%'.$key.'%',$value,$destination_path);
 				
 					$this->rewritten_path = explode($this->seperator,trim(strtolower($destination_path),$this->seperator)); // trim seperator then explode by seperator
@@ -31,7 +31,7 @@ class AlterPath {
 		}
 		
 		// If the current path does not match anything that should be rewritten simply return the original array
-		if(empty($this->rewritten_path))
+		if (empty($this->rewritten_path))
 			$this->rewritten_path = $cleaned_current_arr;
 			
 		$this->original_path = $cleaned_current_arr;
@@ -51,13 +51,13 @@ class AlterPath {
     {
 		$ret = array();
 		$arr = explode($this->seperator, trim($_SERVER['REQUEST_URI'], $this->seperator));
-		if($grabFirst && $pairing !== 'key') $ret[$pairing++] = array_shift($arr);
-		while(count($arr) > 0)
+		if ($grabFirst && $pairing !== 'key') $ret[$pairing++] = array_shift($arr);
+		while (count($arr) > 0)
 		        $pairing === 'key' ? $ret[array_shift($arr)] = array_shift($arr) : $ret[$pairing++] = array_shift($arr);
 		
-		foreach($ret as $key => $value){
+		foreach ($ret as $key => $value){
 			$check_count = explode('?',$value);
-			if(count($check_count) > 1)
+			if (count($check_count) > 1)
 				unset($ret[$key]);
 		}
 		

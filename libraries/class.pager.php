@@ -29,15 +29,15 @@
         public function calculate()
         {
             $this->numPages = ceil($this->numRecords / $this->perPage);
-            if($this->numPages == 0) $this->numPages = 1;
+            if ($this->numPages == 0) $this->numPages = 1;
 
             $this->page = intval($this->page);
-            if($this->page < 1) $this->page = 1;
-            if($this->page > $this->numPages) $this->page = $this->numPages;
+            if ($this->page < 1) $this->page = 1;
+            if ($this->page > $this->numPages) $this->page = $this->numPages;
 
             $this->firstRecord = (int) ($this->page - 1) * $this->perPage;
             $this->lastRecord  = (int) $this->firstRecord + $this->perPage - 1;
-            if($this->lastRecord >= $this->numRecords) $this->lastRecord = $this->numRecords - 1;
+            if ($this->lastRecord >= $this->numRecords) $this->lastRecord = $this->numRecords - 1;
 
             $this->records = range($this->firstRecord, $this->lastRecord, 1);
         }

@@ -55,7 +55,7 @@
 	    function format_bytes($val, $round = 0)
 	    {
 	        $unit = array('','K','M','G','T','P','E','Z','Y');
-	        while($val >= 1000)
+	        while ($val >= 1000)
 	        {
 	            $val /= 1024;
 	            array_shift($unit);
@@ -273,7 +273,7 @@
 			$newtext .= $text;
 
 			// Empty Stack
-			while($x = array_pop($tagstack)) 
+			while ($x = array_pop($tagstack)) 
 			{
 				$newtext .= '</' . $x . '>'; // Add remaining tags to close
 			}

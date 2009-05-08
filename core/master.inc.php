@@ -9,9 +9,9 @@
     function __autoload($class_name)
     {
      	$folders = array('core','helpers','config','libraries');
-		foreach($folders as $folder)
+		foreach ($folders as $folder)
 		{
-			if(file_exists(DOC_ROOT . $folder . '/class.' . strtolower($class_name) . '.php'))
+			if (file_exists(DOC_ROOT . $folder . '/class.' . strtolower($class_name) . '.php'))
 	 		{
 				require DOC_ROOT .  $folder . '/class.' . strtolower($class_name) . '.php';
 				break;
@@ -23,7 +23,7 @@
     require DOC_ROOT . 'core/class.dbobject.php'; // TODO: Will this be autoloaded on extends?
 
     // Fix magic quotes
-    if(get_magic_quotes_gpc())
+    if (get_magic_quotes_gpc())
     {
         $_POST    = String::exec()->fix_slashes($_POST);
         $_GET     = String::exec()->fix_slashes($_GET);
@@ -32,7 +32,7 @@
     }
 
     // Store session info in the database?
-    if(Config::getConfig()->useDBSessions === true)
+    if (Config::getConfig()->useDBSessions === true)
         DBSession::register();
 
     // Initialize our session

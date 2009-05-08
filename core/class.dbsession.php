@@ -1,4 +1,5 @@
 <?php
+	// TODO: Rewrite to use dbobjects instead of custom queries.
     class DBSession
     {
         public static function register()

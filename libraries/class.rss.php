@@ -27,8 +27,8 @@
 
         public function setPubDate($date = null)
         {
-            if(is_null($date)) $date = time();
-            if(!ctype_digit($date)) $date = strtotime($date);
+            if (is_null($date)) $date = time();
+            if (!ctype_digit($date)) $date = strtotime($date);
             $this->pubDate = date('D, d M Y H:i:s O', $date);
         }
 
@@ -39,7 +39,7 @@
 
         public function loadRecordset($result, $title, $link, $description, $pub_date)
         {
-            while($row = mysql_fetch_array($result, MYSQL_ASSOC))
+            while ($row = mysql_fetch_array($result, MYSQL_ASSOC))
             {
                 $item = new RSSItem();
                 $item->title       = $row[$title];
@@ -66,10 +66,10 @@
             $out .= "<pubDate>" . $this->pubDate . "</pubDate>\n";
             $out .= '<atom:link href="' . $this->url . '" rel="self" type="application/rss+xml" />' . "\n";
 
-            foreach($this->tags as $k => $v)
+            foreach ($this->tags as $k => $v)
                 $out .= "<$k>$v</$k>\n";
 
-            foreach($this->items as $item)
+            foreach ($this->items as $item)
                 $out .= $item->out();
 
             $out .= "</channel>\n";
@@ -108,7 +108,7 @@
 
         private function cdata($str)
         {
-            if($this->useCDataTags)
+            if ($this->useCDataTags)
             {
                 $str = '<![CDATA[' . $str . ']]>';
             }
@@ -138,8 +138,8 @@
 
         public function setPubDate($date = null)
         {
-            if(is_null($date)) $date = time();
-            if(!ctype_digit($date)) $date = strtotime($date);
+            if (is_null($date)) $date = time();
+            if (!ctype_digit($date)) $date = strtotime($date);
             $this->pubDate = date('D, d M Y H:i:s O', $date);
         }
 
@@ -160,15 +160,15 @@
             $out .= "<description>" . $this->cdata($this->description) . "</description>\n";
             $out .= "<pubDate>" . $this->pubDate . "</pubDate>\n";
 
-            if(is_null($this->guid))
+            if (is_null($this->guid))
                 $this->guid = $this->link;
 
             $out .= "<guid>" . $this->guid . "</guid>\n";
 
-            if(!is_null($this->enclosureUrl))
+            if (!is_null($this->enclosureUrl))
                 $out .= "<enclosure url='{$this->enclosureUrl}' length='{$this->enclosureLength}' type='{$this->enclosureType}' />\n";
 
-            foreach($this->tags as $k => $v)
+            foreach ($this->tags as $k => $v)
                 $out .= "<$k>$v</$k>\n";
 
             $out .= "</item>\n";
@@ -184,7 +184,7 @@
 
         private function cdata($str)
         {
-            if($this->useCDataTags)
+            if ($this->useCDataTags)
             {
                 $str = '<![CDATA[' . $str . ']]>';
             }

@@ -9,11 +9,11 @@
 	$ap = new AlterPath($core['rewrites']); 
 	$ap->return_paths();
 	
-	if(!isset($data['konnect']['rewritten_path']['0']) || empty($data['konnect']['rewritten_path']['0']))
+	if (!isset($data['konnect']['rewritten_path']['0']) || empty($data['konnect']['rewritten_path']['0']))
 		$data['konnect']['rewritten_path']['0'] = $data['konnect']['config']->defaultApp;
 	
 	// TODO: Error management if app isn't in install list
-	if(in_array($data['konnect']['rewritten_path']['0'],$core['installed_apps']))
+	if (in_array($data['konnect']['rewritten_path']['0'],$core['installed_apps']))
 		$core['app'] = $data['konnect']['rewritten_path']['0'];
 	else
 		die ('<h1>Opps</h1> <p>The app you\'re trying to use doesn\'t exist.</p>');

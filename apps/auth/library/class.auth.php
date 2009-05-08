@@ -24,16 +24,16 @@
             $this->user           = null;
             $this->loggedIn       = false;
 
-            if(class_exists('User') && (is_subclass_of('User', 'DBObject')))
+            if (class_exists('User') && (is_subclass_of('User', 'DBObject')))
                 $this->user = new User();
 
-            if(!is_null($user_to_impersonate))
+            if (!is_null($user_to_impersonate))
                 return $this->impersonate($user_to_impersonate);
 
-            if($this->attemptSessionLogin())
+            if ($this->attemptSessionLogin())
                 return true;
 
-            if($this->attemptCookieLogin())
+            if ($this->attemptCookieLogin())
                 return true;
 
             return false;
@@ -42,7 +42,7 @@
         // Get Singleton object
         public static function getAuth($user_to_impersonate = null)
         {
-            if(is_null(self::$me))
+            if (is_null(self::$me))
                 self::$me = new Auth($user_to_impersonate);
             return self::$me;
         }
@@ -66,7 +66,7 @@
             $this->user           = null;
             $this->loggedIn       = false;
 
-            if(class_exists('User') && (is_subclass_of('User', 'DBObject')))
+            if (class_exists('User') && (is_subclass_of('User', 'DBObject')))
                 $this->user = new User();
 
             $_SESSION['un'] = '';
@@ -79,7 +79,7 @@
         {
             $db = Database::getDatabase();
             $db->query('UPDATE users SET username = :username WHERE id = :id', array('username' => $new_username, 'id' => $this->id));
-            if($db->affectedRows() == 1)
+            if ($db->affectedRows() == 1)
             {
                 $this->impersonate($this->id);
                 return true;
@@ -93,11 +93,11 @@
             $db = Database::getDatabase();
             $Config = Config::getConfig();
 
-            if($Config->useHashedPasswords === true)
+            if ($Config->useHashedPasswords === true)
                 $new_password = $this->createHashedPassword($new_password);
 
             $db->query('UPDATE users SET password = :password WHERE id = :id', array('password' => $new_password, 'id' => $this->id));
-            if($db->affectedRows() == 1)
+            if ($db->affectedRows() == 1)
             {
                 $this->impersonate($this->id);
                 return true;
@@ -116,14 +116,14 @@
         // Helper function that redirects away from 'admin only' pages
         public function requireAdmin($url)
         {
-            if(!$this->loggedIn() || $this->level != 'admin')
+            if (!$this->loggedIn() || $this->level != 'admin')
                 redirect($url);
         }
 
         // Helper function that redirects away from 'member only' pages
         public function requireUser($url)
         {
-            if(!$this->loggedIn())
+            if (!$this->loggedIn())
                 redirect($url);
         }
 
@@ -134,7 +134,7 @@
             $db = Database::getDatabase();
             $Config = Config::getConfig();
 
-            if($Config->useHashedPasswords === true)
+            if ($Config->useHashedPasswords === true)
                 $pw = $this->createHashedPassword($pw);
 
             $db->query('SELECT COUNT(*) FROM users WHERE username = :username AND password = BINARY :password', array('username' => $this->username, 'password' => $pw));
@@ -150,26 +150,26 @@
             $db = Database::getDatabase();
             $Config = Config::getConfig();
 
-            if(ctype_digit($user_to_impersonate))
+            if (ctype_digit($user_to_impersonate))
                 $row = $db->getRow('SELECT * FROM users WHERE id = ' . $db->quote($user_to_impersonate));
             else
                 $row = $db->getRow('SELECT * FROM users WHERE username = ' . $db->quote($user_to_impersonate));
 
-            if(is_array($row))
+            if (is_array($row))
             {
                 $this->id       = $row['id'];
                 $this->username = $row['username'];
                 $this->level    = $row['level'];
 
                 // Load any additional user info if DBObject and User are available
-                if(class_exists('User') && (is_subclass_of('User', 'DBObject')))
+                if (class_exists('User') && (is_subclass_of('User', 'DBObject')))
                 {
                     $this->user = new User();
                     $this->user->id = $row['id'];
                     $this->user->load($row);
                 }
 
-                if($Config->useHashedPasswords === false)
+                if ($Config->useHashedPasswords === false)
                     $row['password'] = $this->createHashedPassword($row['password']);
 
                 $this->storeSessionData($this->username, $row['password']);
@@ -184,7 +184,7 @@
         // Attempt to login using data stored in the current session
         private function attemptSessionLogin()
         {
-            if(isset($_SESSION['un']) && isset($_SESSION['pw']))
+            if (isset($_SESSION['un']) && isset($_SESSION['pw']))
                 return $this->attemptLogin($_SESSION['un'], $_SESSION['pw']);
             else
                 return false;
@@ -193,10 +193,10 @@
         // Attempt to login using data stored in a cookie
         private function attemptCookieLogin()
         {
-            if(isset($_COOKIE['s']) && is_string($_COOKIE['s']))
+            if (isset($_COOKIE['s']) && is_string($_COOKIE['s']))
             {
                 $s = json_decode($_COOKIE['s'], true);
-                if(isset($s['un']) && isset($s['pw']))
+                if (isset($s['un']) && isset($s['pw']))
                 {
                     return $this->attemptLogin($s['un'], $s['pw']);
                 }
@@ -215,19 +215,19 @@
 
             // We SELECT * so we can load the full user record into the user DBObject later
             $row = $db->getRow('SELECT * FROM users WHERE username = ' . $db->quote($un));
-            if($row === false) return false;
+            if ($row === false) return false;
 
-            if($Config->useHashedPasswords === false)
+            if ($Config->useHashedPasswords === false)
                 $row['password'] = $this->createHashedPassword($row['password']);
 
-            if($pw != $row['password']) return false;
+            if ($pw != $row['password']) return false;
 
             $this->id       = $row['id'];
             $this->username = $row['username'];
             $this->level    = $row['level'];
 
             // Load any additional user info if DBObject and User are available
-            if(class_exists('User') && (is_subclass_of('User', 'DBObject')))
+            if (class_exists('User') && (is_subclass_of('User', 'DBObject')))
             {
                 $this->user = new User();
                 $this->user->id = $row['id'];
@@ -243,7 +243,7 @@
         // Takes a username and a *hashed* password
         private function storeSessionData($un, $pw)
         {
-            if(headers_sent()) return false;
+            if (headers_sent()) return false;
             $Config = Config::getConfig();
             $_SESSION['un'] = $un;
             $_SESSION['pw'] = $pw;

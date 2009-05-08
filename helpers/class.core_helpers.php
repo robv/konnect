@@ -37,45 +37,45 @@
 	    // Graciously stolen from http://ejohn.org/files/pretty.js
 	    function time2str($ts)
 	    {
-	        if(!ctype_digit($ts))
+	        if (!ctype_digit($ts))
 	            $ts = strtotime($ts);
 
 	        $diff = time() - $ts;
-	        if($diff == 0)
+	        if ($diff == 0)
 	            return 'now';
-	        elseif($diff > 0)
+	        elseif ($diff > 0)
 	        {
 	            $day_diff = floor($diff / 86400);
-	            if($day_diff == 0)
+	            if ($day_diff == 0)
 	            {
-	                if($diff < 60) return 'just now';
-	                if($diff < 120) return '1 minute ago';
-	                if($diff < 3600) return floor($diff / 60) . ' minutes ago';
-	                if($diff < 7200) return '1 hour ago';
-	                if($diff < 86400) return floor($diff / 3600) . ' hours ago';
+	                if ($diff < 60) return 'just now';
+	                if ($diff < 120) return '1 minute ago';
+	                if ($diff < 3600) return floor($diff / 60) . ' minutes ago';
+	                if ($diff < 7200) return '1 hour ago';
+	                if ($diff < 86400) return floor($diff / 3600) . ' hours ago';
 	            }
-	            if($day_diff == 1) return 'Yesterday';
-	            if($day_diff < 7) return $day_diff . ' days ago';
-	            if($day_diff < 31) return ceil($day_diff / 7) . ' weeks ago';
-	            if($day_diff < 60) return 'last month';
+	            if ($day_diff == 1) return 'Yesterday';
+	            if ($day_diff < 7) return $day_diff . ' days ago';
+	            if ($day_diff < 31) return ceil($day_diff / 7) . ' weeks ago';
+	            if ($day_diff < 60) return 'last month';
 	            return date('F Y', $ts);
 	        }
 	        else
 	        {
 	            $diff = abs($diff);
 	            $day_diff = floor($diff / 86400);
-	            if($day_diff == 0)
+	            if ($day_diff == 0)
 	            {
-	                if($diff < 120) return 'in a minute';
-	                if($diff < 3600) return 'in ' . floor($diff / 60) . ' minutes';
-	                if($diff < 7200) return 'in an hour';
-	                if($diff < 86400) return 'in ' . floor($diff / 3600) . ' hours';
+	                if ($diff < 120) return 'in a minute';
+	                if ($diff < 3600) return 'in ' . floor($diff / 60) . ' minutes';
+	                if ($diff < 7200) return 'in an hour';
+	                if ($diff < 86400) return 'in ' . floor($diff / 3600) . ' hours';
 	            }
-	            if($day_diff == 1) return 'Tomorrow';
-	            if($day_diff < 4) return date('l', $ts);
-	            if($day_diff < 7 + (7 - date('w'))) return 'next week';
-	            if(ceil($day_diff / 7) < 4) return 'in ' . ceil($day_diff / 7) . ' weeks';
-	            if(date('n', $ts) == date('n') + 1) return 'next month';
+	            if ($day_diff == 1) return 'Tomorrow';
+	            if ($day_diff < 4) return date('l', $ts);
+	            if ($day_diff < 7 + (7 - date('w'))) return 'next week';
+	            if (ceil($day_diff / 7) < 4) return 'in ' . ceil($day_diff / 7) . ' weeks';
+	            if (date('n', $ts) == date('n') + 1) return 'next month';
 	            return date('F Y', $ts);
 	        }
 	    }
@@ -85,8 +85,8 @@
 	    // and manipulate the dates as needed.
 	    function calendar($month = null, $year = null)
 	    {
-	        if(is_null($month)) $month = date('n');
-	        if(is_null($year)) $year = date('Y');
+	        if (is_null($month)) $month = date('n');
+	        if (is_null($year)) $year = date('Y');
 
 	        $first = mktime(0, 0, 0, $month, 1, $year);
 	        $last = mktime(23, 59, 59, $month, date('t', $first), $year);
@@ -95,10 +95,10 @@
 	        $stop = $last + (86400 * (7 - date('w', $first)));
 
 	        $out = array();
-	        while($start < $stop)
+	        while ($start < $stop)
 	        {
 	            $week = array();
-	            if($start > $last) break;
+	            if ($start > $last) break;
 	            for($i = 0; $i < 7; $i++)
 	            {
 	                $week[$i] = $start;
@@ -116,8 +116,8 @@
 	    {
 	        $ret = array();
 	        $arr = explode($sep, trim($_SERVER['REQUEST_URI'], $sep));
-	        if($grab_first) $ret[0] = array_shift($arr);
-	        while(count($arr) > 0)
+	        if ($grab_first) $ret[0] = array_shift($arr);
+	        while (count($arr) > 0)
 	            $ret[array_shift($arr)] = array_shift($arr);
 	        return (count($ret) > 0) ? $ret : false;
 	    }
@@ -131,17 +131,17 @@
 
 	        $table = $db->escape($table);
 	        $rows = $db->getRows("SELECT * FROM `$table` $sql");
-	        foreach($rows as $row)
+	        foreach ($rows as $row)
 	        {
 	            $the_text = '';
-	            if(!is_array($text)) $text = array($text); // Allows you to concat multiple fields for display
-	            foreach($text as $t)
+	            if (!is_array($text)) $text = array($text); // Allows you to concat multiple fields for display
+	            foreach ($text as $t)
 	                $the_text .= $row[$t] . ' ';
 	            $the_text = htmlspecialchars(trim($the_text));
 
-	            if(!is_null($default) && $row[$val] == $default)
+	            if (!is_null($default) && $row[$val] == $default)
 	                $out .= '<option value="' . htmlspecialchars($row[$val], ENT_QUOTES) . '" selected="selected">' . $the_text . '</option>';
-	            elseif(is_array($default) && in_array($row[$val],$default))
+	            elseif (is_array($default) && in_array($row[$val],$default))
 	                $out .= '<option value="' . htmlspecialchars($row[$val], ENT_QUOTES) . '" selected="selected">' . $the_text . '</option>';
 	            else
 	                $out .= '<option value="' . htmlspecialchars($row[$val], ENT_QUOTES) . '">' . $the_text . '</option>';
@@ -153,12 +153,12 @@
 	    function chkdate($str)
 	    {
 	        // Requires PHP 5.2
-	        if(function_exists('date_parse'))
+	        if (function_exists('date_parse'))
 	        {
 	            $info = date_parse($str);
-	            if($info !== false && $info['error_count'] == 0)
+	            if ($info !== false && $info['error_count'] == 0)
 	            {
-	                if(checkdate($info['month'], $info['day'], $info['year']))
+	                if (checkdate($info['month'], $info['day'], $info['year']))
 	                    return true;
 	            }
 
@@ -175,7 +175,7 @@
 	    function hourmin($hid = 'hour', $mid = 'minute', $pid = 'ampm', $hval = null, $mval = null, $pval = null)
 	    {
 	        // Dumb hack to let you just pass in a timestamp instead
-	        if(func_num_args() == 1)
+	        if (func_num_args() == 1)
 	        {
 	            list($hval, $mval, $pval) = explode(' ', date('g i a', strtotime($hid)));
 	            $hid = 'hour';
@@ -184,28 +184,28 @@
 	        }
 	        else
 	        {
-	            if(is_null($hval)) $hval = date('h');
-	            if(is_null($mval)) $mval = date('i');
-	            if(is_null($pval)) $pval = date('a');
+	            if (is_null($hval)) $hval = date('h');
+	            if (is_null($mval)) $mval = date('i');
+	            if (is_null($pval)) $pval = date('a');
 	        }
 
 	        $hours = array(12, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11);
 	        $out = "<select name='$hid' id='$hid'>";
-	        foreach($hours as $hour)
-	            if(intval($hval) == intval($hour)) $out .= "<option value='$hour' selected>$hour</option>";
+	        foreach ($hours as $hour)
+	            if (intval($hval) == intval($hour)) $out .= "<option value='$hour' selected>$hour</option>";
 	            else $out .= "<option value='$hour'>$hour</option>";
 	        $out .= "</select>";
 
 	        $minutes = array('00', 15, 30, 45);
 	        $out .= "<select name='$mid' id='$mid'>";
-	        foreach($minutes as $minute)
-	            if(intval($mval) == intval($minute)) $out .= "<option value='$minute' selected>$minute</option>";
+	        foreach ($minutes as $minute)
+	            if (intval($mval) == intval($minute)) $out .= "<option value='$minute' selected>$minute</option>";
 	            else $out .= "<option value='$minute'>$minute</option>";
 	        $out .= "</select>";
 
 	        $out .= "<select name='$pid' id='$pid'>";
 	        $out .= "<option value='am'>am</option>";
-	        if($pval == 'pm') $out .= "<option value='pm' selected>pm</option>";
+	        if ($pval == 'pm') $out .= "<option value='pm' selected>pm</option>";
 	        else $out .= "<option value='pm'>pm</option>";
 	        $out .= "</select>";
 
@@ -218,9 +218,9 @@
 	    // $output_format lets you specify which dropdowns appear and in what order.
 	    function mdy($date = null, $prefix = null, $output_format = 'm d y')
 	    {
-	        if(is_null($date)) $date = time();
-	        if(!ctype_digit($date)) $date = strtotime($date);
-	        if(!is_null($prefix)) $prefix .= '_';
+	        if (is_null($date)) $date = time();
+	        if (!ctype_digit($date)) $date = strtotime($date);
+	        if (!is_null($prefix)) $prefix .= '_';
 	        list($yval, $mval, $dval) = explode(' ', date('Y n j', $date));
 
 	        $month_dd = "<select name='{$prefix}month' id='{$prefix}month'>";
@@ -254,7 +254,7 @@
 	    // Redirects user to $url
 	    function redirect($url = null)
 	    {
-	        if(is_null($url)) $url = $_SERVER['PHP_SELF'];
+	        if (is_null($url)) $url = $_SERVER['PHP_SELF'];
 	        header("Location: $url");
 	        exit();
 	    }
@@ -264,11 +264,11 @@
 	    // Returns an array of the values of the specified column from a multi-dimensional array
 	    function gimme($arr, $key = null)
 	    {
-	        if(is_null($key))
+	        if (is_null($key))
 	            $key = array_shift(array_keys($arr));
 
 	        $out = array();
-	        foreach($arr as $a)
+	        foreach ($arr as $a)
 	            $out[] = $a[$key];
 
 	        return $out;
@@ -279,7 +279,7 @@
 	    function max_words($str, $num, $suffix = '')
 	    {
 	        $words = explode(' ', $str);
-	        if(count($words) < $num)
+	        if (count($words) < $num)
 	            return $str;
 	        else
 	            return implode(' ', array_slice($words, 0, $num)) . $suffix;
@@ -288,7 +288,7 @@
 	    // Serves an external document for download as an HTTP attachment.
 	    function download_document($filename, $mimetype = 'application/octet-stream')
 	    {
-	        if(!file_exists($filename) || !is_readable($filename)) return false;
+	        if (!file_exists($filename) || !is_readable($filename)) return false;
 	        $base = basename($filename);
 	        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 	        header("Content-Disposition: attachment; filename=$base");
@@ -306,7 +306,7 @@
 	        curl_setopt($ch, CURLOPT_NOBODY, 1);
 	        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-	        if(!is_null($user) && !is_null($pw))
+	        if (!is_null($user) && !is_null($pw))
 	        {
 	            $headers = array('Authorization: Basic ' .  base64_encode("$user:$pw"));
 	            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -325,9 +325,9 @@
 	    // Tests for a valid email address and optionally tests for valid MX records, too.
 	    function valid_email($email, $test_mx = false)
 	    {
-	        if(eregi("^([_a-z0-9+-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-z0-9-]+)*(\.[a-z]{2,4})$", $email))
+	        if (eregi("^([_a-z0-9+-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-z0-9-]+)*(\.[a-z]{2,4})$", $email))
 	        {
-	            if($test_mx)
+	            if ($test_mx)
 	            {
 	                list( , $domain) = split("@", $email);
 	                return getmxrr($domain, $mxrecords);
@@ -342,10 +342,10 @@
 	    // Grabs the contents of a remote URL. Can perform basic authentication if un/pw are provided.
 	    function geturl($url, $username = null, $password = null)
 	    {
-	        if(function_exists('curl_init'))
+	        if (function_exists('curl_init'))
 	        {
 	            $ch = curl_init();
-	            if(!is_null($username) && !is_null($password))
+	            if (!is_null($username) && !is_null($password))
 	                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Basic ' .  base64_encode("$username:$password")));
 	            curl_setopt($ch, CURLOPT_URL, $url);
 	            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -354,9 +354,9 @@
 	            curl_close($ch);
 	            return $html;
 	        }
-	        elseif(ini_get('allow_url_fopen') == true)
+	        elseif (ini_get('allow_url_fopen') == true)
 	        {
-	            if(!is_null($username) && !is_null($password))
+	            if (!is_null($username) && !is_null($password))
 	                $url = str_replace("://", "://$username:$password@", $url);
 	            $html = file_get_contents($url);
 	            return $html;
@@ -383,7 +383,7 @@
 	    // Quick wrapper for preg_match
 	    function match($regex, $str, $i = 0)
 	    {
-	        if(preg_match($regex, $str, $match) == 1)
+	        if (preg_match($regex, $str, $match) == 1)
 	            return $match[$i];
 	        else
 	            return false;
@@ -392,9 +392,9 @@
 	    // Sends an HTML formatted email
 	    function send_html_mail($to, $subject, $msg, $from, $plaintext = '')
 	    {
-	        if(!is_array($to)) $to = array($to);
+	        if (!is_array($to)) $to = array($to);
 
-	        foreach($to as $address)
+	        foreach ($to as $address)
 	        {
 	            $boundary = uniqid(rand(), true);
 
@@ -426,7 +426,7 @@
 	        $data     = file_get_contents("http://local.yahooapis.com/MapsService/V1/geocode?output=php&appid=$appid&location=$location");
 	        $data     = unserialize($data);
 
-	        if($data === false) return false;
+	        if ($data === false) return false;
 
 	        $data = $data['ResultSet']['Result'];
 
@@ -438,7 +438,7 @@
 	    {
 	        static $tmpfile;
 
-	        if(!isset($tmpfile) || ($tmpfile == '')) $tmpfile = tempnam('/tmp', 'FOO');
+	        if (!isset($tmpfile) || ($tmpfile == '')) $tmpfile = tempnam('/tmp', 'FOO');
 
 	        $ch = curl_init($url);
 	        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -449,8 +449,8 @@
 	        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	        // curl_setopt($ch, CURLOPT_VERBOSE, 1);
 
-	        if($referer) curl_setopt($ch, CURLOPT_REFERER, $referer);
-	        if(!is_null($post))
+	        if ($referer) curl_setopt($ch, CURLOPT_REFERER, $referer);
+	        if (!is_null($post))
 	        {
 	            curl_setopt($ch, CURLOPT_POST, true);
 	            curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
@@ -465,8 +465,8 @@
 	    // Accepts any number of arguments and returns the first non-empty one
 	    function pick()
 	    {
-	        foreach(func_get_args() as $arg)
-	            if(!empty($arg))
+	        foreach (func_get_args() as $arg)
+	            if (!empty($arg))
 	                return $arg;
 	        return '';
 	    }
@@ -474,7 +474,7 @@
 	    // Secure a PHP script using basic HTTP authentication
 	    function http_auth($un, $pw, $realm = "Secured Area")
 	    {
-	        if(!(isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']) && $_SERVER['PHP_AUTH_USER'] == $un && $_SERVER['PHP_AUTH_PW'] == $pw))
+	        if (!(isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']) && $_SERVER['PHP_AUTH_USER'] == $un && $_SERVER['PHP_AUTH_PW'] == $pw))
 	        {
 	            header('WWW-Authenticate: Basic realm="' . $realm . '"');
 	            header('Status: 401 Unauthorized');
