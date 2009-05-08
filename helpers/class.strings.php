@@ -1,7 +1,18 @@
 <?php
 
 	class Strings
-	{
+	{	
+		// Singleton object. Leave $me alone.
+		private static $me;
+
+        // Get Singleton object
+        public static function exec()
+        {
+            if (is_null(self::$me))
+                self::$me = new Strings();
+            return self::$me;
+        }
+
 	    // Creates a friendly URL slug from a 
 	    function clean($str, $replacer = '-')
 	    {
