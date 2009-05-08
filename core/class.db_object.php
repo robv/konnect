@@ -1,5 +1,5 @@
 <?php
-    class DBObject
+    class Db_Object
     {
         public $id;
         public $tableName;
@@ -36,7 +36,7 @@
                 return htmlspecialchars($this->columns[substr($key, 2)]);
 
             $trace = debug_backtrace();
-            trigger_error("Undefined property via DBObject::__get(): $key in {$trace[0]['file']} on line {$trace[0]['line']}", E_USER_NOTICE);
+            trigger_error("Undefined property via Db_Object::__get(): $key in {$trace[0]['file']} on line {$trace[0]['line']}", E_USER_NOTICE);
             return null;
         }
 
@@ -153,8 +153,8 @@
 
             $tmp_obj = new $class_name;
 
-            // Also, it needs to be a subclass of DBObject...
-            if (!is_subclass_of($tmp_obj, 'DBObject'))
+            // Also, it needs to be a subclass of Db_Object...
+            if (!is_subclass_of($tmp_obj, 'Db_Object'))
                 return false;
 
             if (is_null($sql))
@@ -184,7 +184,7 @@
         }
     }
 
-    class TaggableDBObject extends DBObject
+    class TaggableDb_Object extends Db_Object
     {
         protected $tagColumnName;
 
@@ -250,6 +250,6 @@
             $tag = new Tag($tag_name);
             if (is_null($tag->id)) return array();
 
-            return DBObject::glob(get_class($this), "SELECT b.* FROM {$this->tableName}2tags a LEFT JOIN {$this->tableName} b ON a.{$this->tagColumnName} = b.{$this->idColumnName} WHERE a.tag_id = {$tag->id} $sql");
+            return Db_Object::glob(get_class($this), "SELECT b.* FROM {$this->tableName}2tags a LEFT JOIN {$this->tableName} b ON a.{$this->tagColumnName} = b.{$this->idColumnName} WHERE a.tag_id = {$tag->id} $sql");
         }
     }

@@ -7,7 +7,7 @@
         public $id;
         public $username;
         public $level;
-        public $user; // DBObject User object (if available)
+        public $user; // Db_Object User object (if available)
 
         private $loggedIn;
 
@@ -24,7 +24,7 @@
             $this->user           = null;
             $this->loggedIn       = false;
 
-            if (class_exists('User') && (is_subclass_of('User', 'DBObject')))
+            if (class_exists('User') && (is_subclass_of('User', 'Db_Object')))
                 $this->user = new User();
 
             if (!is_null($user_to_impersonate))
@@ -66,7 +66,7 @@
             $this->user           = null;
             $this->loggedIn       = false;
 
-            if (class_exists('User') && (is_subclass_of('User', 'DBObject')))
+            if (class_exists('User') && (is_subclass_of('User', 'Db_Object')))
                 $this->user = new User();
 
             $_SESSION['un'] = '';
@@ -161,8 +161,8 @@
                 $this->username = $row['username'];
                 $this->level    = $row['level'];
 
-                // Load any additional user info if DBObject and User are available
-                if (class_exists('User') && (is_subclass_of('User', 'DBObject')))
+                // Load any additional user info if Db_Object and User are available
+                if (class_exists('User') && (is_subclass_of('User', 'Db_Object')))
                 {
                     $this->user = new User();
                     $this->user->id = $row['id'];
@@ -213,7 +213,7 @@
             $db = Database::getDatabase();
             $Config = Config::getConfig();
 
-            // We SELECT * so we can load the full user record into the user DBObject later
+            // We SELECT * so we can load the full user record into the user Db_Object later
             $row = $db->getRow('SELECT * FROM users WHERE username = ' . $db->quote($un));
             if ($row === false) return false;
 
@@ -226,8 +226,8 @@
             $this->username = $row['username'];
             $this->level    = $row['level'];
 
-            // Load any additional user info if DBObject and User are available
-            if (class_exists('User') && (is_subclass_of('User', 'DBObject')))
+            // Load any additional user info if Db_Object and User are available
+            if (class_exists('User') && (is_subclass_of('User', 'Db_Object')))
             {
                 $this->user = new User();
                 $this->user->id = $row['id'];

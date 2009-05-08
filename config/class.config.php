@@ -27,7 +27,7 @@
         public $dbDieOnError; // What do do on a database error (see class.database.php for details)
 
         // Add your config options here...
-        public $useDBSessions; // Set to true to store sessions in the database
+        public $useDb_Sessions; // Set to true to store sessions in the database
 
         // Singleton constructor
         private function __construct($config = NULL)
@@ -59,7 +59,7 @@
         private function everywhere()
         {
             // Store sesions in the database?
-            $this->useDBSessions = true;
+            $this->useDb_Sessions = true;
 
             // Settings for the Auth class
             $this->authDomain         = $_SERVER['HTTP_HOST'];

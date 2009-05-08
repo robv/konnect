@@ -1,11 +1,11 @@
 <?php
 	// TODO: Rewrite to use dbobjects instead of custom queries.
-    class DBSession
+    class Db_Session
     {
         public static function register()
         {
             ini_set('session.save_handler', 'user');
-            session_set_save_handler(array('DBSession', 'open'), array('DBSession', 'close'), array('DBSession', 'read'), array('DBSession', 'write'), array('DBSession', 'destroy'), array('DBSession', 'gc'));
+            session_set_save_handler(array('Db_Session', 'open'), array('Db_Session', 'close'), array('Db_Session', 'read'), array('Db_Session', 'write'), array('Db_Session', 'destroy'), array('Db_Session', 'gc'));
         }
 
         public static function open()

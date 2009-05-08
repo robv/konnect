@@ -2,7 +2,7 @@
 
 // This class provides a way to alter paths to controllers
 
-class AlterPath {
+class Alter_Path {
 	
 	function __construct($rewrites)
 	{
