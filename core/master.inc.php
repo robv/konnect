@@ -20,7 +20,6 @@
     }
 
     // Global include files
-    require DOC_ROOT . 'core/functions.inc.php'; // TODO: Break up into helpers
     require DOC_ROOT . 'core/class.dbobject.php'; // TODO: Will this be autoloaded on extends?
 
     // Fix magic quotes
