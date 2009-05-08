@@ -14,7 +14,7 @@
         }
 
 	    // Creates a friendly URL slug from a 
-	    function clean($str, $replacer = '-')
+        public static function clean($str, $replacer = '-')
 	    {
 	        $str = preg_replace('/[^a-zA-Z0-9 -]/', '', $str);
 	        $str = strtolower(str_replace(' ', $replacer, trim($str)));
@@ -23,7 +23,7 @@
 	    }
 		
 		// Formats a phone number as (xxx) xxx-xxxx or xxx-xxxx depending on the length.
-	    function format_phone($phone)
+        public static function format_phone($phone)
 	    {
 	        $phone = preg_replace("/[^0-9]/", '', $phone);
 
@@ -36,7 +36,7 @@
 	    }
 
 	    // Converts a date/timestamp into the specified format
-	    function format_date($date = null, $format = null)
+        public static function format_date($date = null, $format = null)
 	    {
 	        if (is_null($format))
 	            $format = 'Y-m-d H:i:s';
@@ -52,7 +52,7 @@
 	    }
 	
 	    // Outputs a filesize in human readable format.
-	    function format_bytes($val, $round = 0)
+        public static function format_bytes($val, $round = 0)
 	    {
 	        $unit = array('','K','M','G','T','P','E','Z','Y');
 	        while ($val >= 1000)
@@ -64,26 +64,26 @@
 	    }
 	
 	    // Ensures $str ends with a single /
-	    function slash($str)
+        public static function slash($str)
 	    {
 	        return rtrim($str, '/') . '/';
 	    }
 
 	    // Ensures $str DOES NOT end with a /
-	    function unslash($str)
+        public static function unslash($str)
 	    {
 	        return rtrim($str, '/');
 	    }
 	
 	    // Fixes MAGIC_QUOTES
-	    function fix_slashes($arr = '')
+        public static function fix_slashes($arr = '')
 	    {
 	        if (is_null($arr) || $arr == '') return null;
 	        if (!get_magic_quotes_gpc()) return $arr;
 	        return is_array($arr) ? array_map(array($this, 'fix_slashes'), $arr) : stripslashes($arr);
 	    }
 	
-	    function printr($var)
+        public static function printr($var)
 	    {
 	        $output = print_r($var, true);
 	        $output = str_replace("\n", "<br>", $output);
@@ -103,7 +103,7 @@
 			$col2 = array_pluck(1,$a);            // == array(4,6) (grab 2nd column of data)
 		*/
 		
-		function array_pluck($key, $array)
+        public static function array_pluck($key, $array)
 		{
 		    if (is_array($key) || !is_array($array)) return array();
 		    $funct = create_function('$e', 'return is_array($e) && array_key_exists("'.$key.'",$e) ? $e["'. $key .'"] : null;');
@@ -111,7 +111,7 @@
 		}
 		
 		// Generates a random numerical / alpha string of the given length
-		function random($length = 10)
+        public static function random($length = 10)
 		{
 			$numbers = array(1,2,3,4,5,6,7,8,9,0);
 			$alpha = 'q,w,e,r,t,y,u,i,o,p,a,s,d,f,g,h,j,k,l,z,x,c,v,b,n,m';
@@ -126,18 +126,18 @@
 		}
 		
 		// Safely serialize and unserialize arrays, should be used in place of just serialize
-		function safe_serialize($array)
+        public static function safe_serialize($array)
 		{
 			return base64_encode(serialize($array));
 		}
 
-		function safe_unserialize($array)
+        public static function safe_unserialize($array)
 		{
 			return unserialize(base64_decode($array));
 		}
 		
 		// Truncates a string to $max in length and add's $moretext to the end of it
-		function truncate($string, $max, $more_text)
+        public static function truncate($string, $max, $more_text)
 		{
 			if (is_array($string))
 			{
@@ -167,7 +167,7 @@
 		
 		// Useful when truncating, ensures html string does not leave tags open
 		// Hideous but useful, TODO: Refactor balance tags function!
-		function balance_tags($text) {
+        public static function balance_tags($text) {
 
 			$tagstack = array(); $stacksize = 0; $tagqueue = ''; $newtext = '';
 
