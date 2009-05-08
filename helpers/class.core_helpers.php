@@ -4,7 +4,7 @@
 	{	
 		// Singleton object. Leave $me alone.
 		private static $me;
-
+		
         // Get Singleton object
         public static function exec()
         {
@@ -13,19 +13,19 @@
             return self::$me;
         }
 	    // Formats a given number of seconds into proper mm:ss format
-	    function format_time($seconds)
+		public static function format_time($seconds)
 	    {
 	        return floor($seconds / 60) . ':' . str_pad($seconds % 60, 2, '0');
 	    }
 
 	    // Given a string such as "comment_123" or "id_57", it returns the final, numeric id.
-	    function split_id($str)
+		public static function split_id($str)
 	    {
 	        return match('/[_-]([0-9]+)$/', $str, 1);
 	    }
 
 	    // Computes the *full* URL of the current page (protocol, server, path, query parameters, etc)
-	    function full_url()
+		public static function full_url()
 	    {
 	        $s = empty($_SERVER['HTTPS']) ? '' : ($_SERVER['HTTPS'] == 'on') ? 's' : '';
 	        $protocol = substr(strtolower($_SERVER['SERVER_PROTOCOL']), 0, strpos(strtolower($_SERVER['SERVER_PROTOCOL']), '/')) . $s;
@@ -35,7 +35,7 @@
 
 	    // Returns an English representation of a past date within the last month
 	    // Graciously stolen from http://ejohn.org/files/pretty.js
-	    function time2str($ts)
+		public static function time2str($ts)
 	    {
 	        if (!ctype_digit($ts))
 	            $ts = strtotime($ts);
@@ -83,7 +83,7 @@
 	    // Returns an array representation of the given calendar month.
 	    // The array values are timestamps which allow you to easily format
 	    // and manipulate the dates as needed.
-	    function calendar($month = null, $year = null)
+		public static function calendar($month = null, $year = null)
 	    {
 	        if (is_null($month)) $month = date('n');
 	        if (is_null($year)) $year = date('Y');
@@ -112,7 +112,7 @@
 
 	    // Processes mod_rewrite URLs into key => value pairs
 	    // See .htacess for more info.
-	    function pick_off($grab_first = false, $sep = '/')
+		public static function pick_off($grab_first = false, $sep = '/')
 	    {
 	        $ret = array();
 	        $arr = explode($sep, trim($_SERVER['REQUEST_URI'], $sep));
@@ -124,7 +124,7 @@
 
 	    // Creates a list of <option>s from the given database table.
 	    // table name, column to use as value, column(s) to use as text, default value(s) to select (can accept an array of values), extra sql to limit results
-	    function get_options($table, $val, $text, $default = null, $sql = '')
+		public static function get_options($table, $val, $text, $default = null, $sql = '')
 	    {
 	        $db = Database::getDatabase(true);
 	        $out = '';
@@ -150,7 +150,7 @@
 	    }
 
 	    // More robust strict date checking for string representations
-	    function chkdate($str)
+		public static function chkdate($str)
 	    {
 	        // Requires PHP 5.2
 	        if (function_exists('date_parse'))
@@ -172,7 +172,7 @@
 
 
 	    // Outputs hour, minute, am/pm dropdown boxes
-	    function hourmin($hid = 'hour', $mid = 'minute', $pid = 'ampm', $hval = null, $mval = null, $pval = null)
+		public static function hourmin($hid = 'hour', $mid = 'minute', $pid = 'ampm', $hval = null, $mval = null, $pval = null)
 	    {
 	        // Dumb hack to let you just pass in a timestamp instead
 	        if (func_num_args() == 1)
@@ -216,7 +216,7 @@
 	    // You can set the default date by passing in a timestamp OR a parseable date string.
 	    // $prefix_ will be appened to the name/id's of each dropdown, allowing for multiple calls in the same form.
 	    // $output_format lets you specify which dropdowns appear and in what order.
-	    function mdy($date = null, $prefix = null, $output_format = 'm d y')
+		public static function mdy($date = null, $prefix = null, $output_format = 'm d y')
 	    {
 	        if (is_null($date)) $date = time();
 	        if (!ctype_digit($date)) $date = strtotime($date);
@@ -252,7 +252,7 @@
 	    }
 
 	    // Redirects user to $url
-	    function redirect($url = null)
+		public static function redirect($url = null)
 	    {
 	        if (is_null($url)) $url = $_SERVER['PHP_SELF'];
 	        header("Location: $url");
@@ -262,7 +262,7 @@
 
 
 	    // Returns an array of the values of the specified column from a multi-dimensional array
-	    function gimme($arr, $key = null)
+		public static function gimme($arr, $key = null)
 	    {
 	        if (is_null($key))
 	            $key = array_shift(array_keys($arr));
@@ -276,7 +276,7 @@
 
 
 	    // Returns the first $num words of $str
-	    function max_words($str, $num, $suffix = '')
+		public static function max_words($str, $num, $suffix = '')
 	    {
 	        $words = explode(' ', $str);
 	        if (count($words) < $num)
@@ -285,21 +285,8 @@
 	            return implode(' ', array_slice($words, 0, $num)) . $suffix;
 	    }
 
-	    // Serves an external document for download as an HTTP attachment.
-	    function download_document($filename, $mimetype = 'application/octet-stream')
-	    {
-	        if (!file_exists($filename) || !is_readable($filename)) return false;
-	        $base = basename($filename);
-	        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-	        header("Content-Disposition: attachment; filename=$base");
-	        header("Content-Length: " . filesize($filename));
-	        header("Content-Type: $mimetype");
-	        readfile($filename);
-	        exit();
-	    }
-
 	    // Retrieves the filesize of a remote file.
-	    function remote_filesize($url, $user = null, $pw = null)
+		public static function remote_filesize($url, $user = null, $pw = null)
 	    {
 	        $ch = curl_init($url);
 	        curl_setopt($ch, CURLOPT_HEADER, 1);
@@ -323,7 +310,7 @@
 
 
 	    // Tests for a valid email address and optionally tests for valid MX records, too.
-	    function valid_email($email, $test_mx = false)
+		public static function valid_email($email, $test_mx = false)
 	    {
 	        if (eregi("^([_a-z0-9+-]+)(\.[_a-z0-9-]+)*@([a-z0-9-]+)(\.[a-z0-9-]+)*(\.[a-z]{2,4})$", $email))
 	        {
@@ -340,7 +327,7 @@
 	    }
 
 	    // Grabs the contents of a remote URL. Can perform basic authentication if un/pw are provided.
-	    function geturl($url, $username = null, $password = null)
+		public static function geturl($url, $username = null, $password = null)
 	    {
 	        if (function_exists('curl_init'))
 	        {
@@ -371,7 +358,7 @@
 	    // Returns the user's browser info.
 	    // browscap.ini must be available for this to work.
 	    // See the PHP manual for more details.
-	    function browser_info()
+		public static function browser_info()
 	    {
 	        $info    = get_browser(null, true);
 	        $browser = $info['browser'] . ' ' . $info['version'];
@@ -381,7 +368,7 @@
 	    }
 
 	    // Quick wrapper for preg_match
-	    function match($regex, $str, $i = 0)
+		public static function match($regex, $str, $i = 0)
 	    {
 	        if (preg_match($regex, $str, $match) == 1)
 	            return $match[$i];
@@ -390,7 +377,7 @@
 	    }
 
 	    // Sends an HTML formatted email
-	    function send_html_mail($to, $subject, $msg, $from, $plaintext = '')
+		public static function send_html_mail($to, $subject, $msg, $from, $plaintext = '')
 	    {
 	        if (!is_array($to)) $to = array($to);
 
@@ -419,7 +406,7 @@
 	    // Returns the lat, long of an address via Yahoo!'s geocoding service.
 	    // You'll need an App ID, which is available from here:
 	    // http://developer.yahoo.com/maps/rest/V1/geocode.html
-	    function geocode($location, $appid)
+		public static function geocode($location, $appid)
 	    {
 	        $location = urlencode($location);
 	        $appid    = urlencode($appid);
@@ -434,7 +421,7 @@
 	    }
 
 	    // Quick and dirty wrapper for curl scraping.
-	    function curl($url, $referer = null, $post = null)
+		public static function curl($url, $referer = null, $post = null)
 	    {
 	        static $tmpfile;
 
@@ -463,7 +450,7 @@
 	    }
 
 	    // Accepts any number of arguments and returns the first non-empty one
-	    function pick()
+		public static function pick()
 	    {
 	        foreach (func_get_args() as $arg)
 	            if (!empty($arg))
@@ -472,7 +459,7 @@
 	    }
 
 	    // Secure a PHP script using basic HTTP authentication
-	    function http_auth($un, $pw, $realm = "Secured Area")
+		public static function http_auth($un, $pw, $realm = "Secured Area")
 	    {
 	        if (!(isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']) && $_SERVER['PHP_AUTH_USER'] == $un && $_SERVER['PHP_AUTH_PW'] == $pw))
 	        {
@@ -482,8 +469,26 @@
 	        }
 	    }
 
+	    // Serves an external document for download as an HTTP attachment.
+		public static function download_document($filename, $mimetype = NULL)
+	    {
+			if (is_null($mimetype))
+				$mimetype = $this->mime_type($filename);
+				
+	        if (!file_exists($filename) || !is_readable($filename))
+				return false;
+	        
+			$base = basename($filename);
+	        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+	        header("Content-Disposition: attachment; filename=$base");
+	        header("Content-Length: " . filesize($filename));
+	        header("Content-Type: $mimetype");
+	        readfile($filename);
+	        exit();
+	    }
+
 	    // Returns a file's mimetype based on its extension
-	    function mime_type($filename)
+		public static function mime_type($filename)
 	    {
 	        $mime_types = array('323'     => 'text/h323',
 	                            'acx'     => 'application/internet-property-stream',
@@ -672,8 +677,12 @@
 	                            'z'       => 'application/x-compress',
 	                            'zip'     => 'application/zip');
 
-	        list($dir, $base, $ext, $file) = pathinfo($filename);
-	        return isset($mime_types[$ext]) ? $mime_types[$ext] : 'application/octet-stream';
+        	$file_info = pathinfo($filename);
+
+			if (!isset($file_info['extension']))
+				return 'application/octet-stream';
+			else
+				return isset($mime_types[$ext]) ? $mime_types[$ext] : 'application/octet-stream';
 	    }
 
 	}
