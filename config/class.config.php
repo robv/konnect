@@ -12,9 +12,6 @@
         // Singleton object. Leave $me alone.
         private static $me;
 
-        // Add your server hostnames to the appropriate arrays. ($_SERVER['HTTP_HOST'])
-        private $servers = array();
-
         // Standard Config Options...
 
         // ...For Auth Class
@@ -33,19 +30,21 @@
         public $useDBSessions; // Set to true to store sessions in the database
 
         // Singleton constructor
-        private function __construct($config)
+        private function __construct($config = NULL)
         {
-
-            $this->everywhere();
-            $this->setConfig($config);
-                
+			if (!is_null($config)) {
+            	$this->everywhere();
+            	$this->setConfig($config);
+            }
         }
 
         // Get Singleton object
         public static function getConfig()
         {
+			include DOC_ROOT . 'config/settings.php';
+			
             if (is_null(self::$me))
-                self::$me = new Config();
+                self::$me = new Config($config);
             return self::$me;
         }
 
@@ -71,7 +70,7 @@
 
         public function setConfig($config)
         {
-			foreach($config as $name => $settings)
+			foreach ($config as $name => $settings)
 			{
 	            if (in_array($_SERVER['HTTP_HOST'], $settings['servers']))
 				{
@@ -84,7 +83,7 @@
 		            $this->dbPassword   = $settings['dbPassword'];
 		            $this->dbDieOnError = $settings['dbDieOnError'];
 				}
-				if(!defined('WEB_ROOT')){
+				if (!defined('WEB_ROOT')) {
 					die('<h1>Where am I?</h1> <p>You need to setup your server names in <code>settings.php</code></p>
 	                     <p><code>$_SERVER[\'HTTP_HOST\']</code> reported <code>' . $_SERVER['HTTP_HOST'] . '</code></p>');
 				}
