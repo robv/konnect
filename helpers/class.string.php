@@ -1,6 +1,6 @@
 <?php
 
-	class Strings
+	class String
 	{	
 		// Singleton object. Leave $me alone.
 		private static $me;
@@ -9,7 +9,7 @@
         public static function exec()
         {
             if (is_null(self::$me))
-                self::$me = new Strings();
+                self::$me = new String();
             return self::$me;
         }
 

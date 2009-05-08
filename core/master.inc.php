@@ -26,10 +26,10 @@
     // Fix magic quotes
     if(get_magic_quotes_gpc())
     {
-        $_POST    = Strings::exec()->fix_slashes($_POST);
-        $_GET     = Strings::exec()->fix_slashes($_GET);
-        $_REQUEST = Strings::exec()->fix_slashes($_REQUEST);
-        $_COOKIE  = Strings::exec()->fix_slashes($_COOKIE);
+        $_POST    = String::exec()->fix_slashes($_POST);
+        $_GET     = String::exec()->fix_slashes($_GET);
+        $_REQUEST = String::exec()->fix_slashes($_REQUEST);
+        $_COOKIE  = String::exec()->fix_slashes($_COOKIE);
     }
 
     // Store session info in the database?
