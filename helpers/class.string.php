@@ -78,10 +78,26 @@
 	    // Fixes MAGIC_QUOTES
         public static function fix_slashes($arr = '')
 	    {
-	        if (is_null($arr) || $arr == '') return null;
-	        if (!get_magic_quotes_gpc()) return $arr;
-	        return is_array($arr) ? array_map(array($this, 'fix_slashes'), $arr) : stripslashes($arr);
-	    }
+	        if (is_null($arr) || $arr == '') 
+				return null;
+	        
+			if (!get_magic_quotes_gpc()) 
+				return $arr;
+			
+			// I COULD NOT get damned array mapping to work with this shizzle, TODO: Refactor with array mapping
+			if (is_array($arr))
+			{
+				foreach($arr as $key => $value)
+				{
+					$arr[$key] = $this->fix_slashes($value);
+				}
+				return $arr;
+			}
+			else
+			{
+				return stripslashes($arr);
+			}
+		}
 	
         public static function printr($var)
 	    {
