@@ -15,37 +15,43 @@
         // Standard Config Options...
 
         // ...For Auth Class
-        public $authDomain;         // Domain to set for the cookie
-        public $authSalt;           // Can be any random string of characters
-        public $useHashedPasswords; // Store hashed passwords in database? (versus plain-text)
+        public $auth_domain;         // Domain to set for the cookie
+        public $auth_salt;           // Can be any random string of characters
+        public $hash_passwords; // Store hashed passwords in database? (versus plain-text)
 
         // ...For Database Class
-        public $dbHost;       // Database server
-        public $dbName;       // Database name
-        public $dbUsername;   // Database username
-        public $dbPassword;   // Database password
-        public $dbDieOnError; // What do do on a database error (see class.database.php for details)
+        public $db_host;       // Database server
+        public $db_name;       // Database name
+        public $db_username;   // Database username
+        public $db_password;   // Database password
+        public $db_die; // What do do on a database error (see class.database.php for details)
 
         // Add your config options here...
-        public $useDb_Sessions; // Set to true to store sessions in the database
+        public $use_db_session; // Set to true to store sessions in the database
+		public $web_root; // Self explanitory
+		public $display_errors; // Display php errors or not
+		
+		// App info
+        public $default_app; // Default app to direct to
+		public $installed_apps;
 
         // Singleton constructor
         private function __construct($config = NULL)
         {
 			if (!is_null($config)) {
             	$this->everywhere();
-            	$this->setConfig($config);
+            	$this->set_config($config);
             }
         }
 
         // Get Singleton object
-        public static function getConfig()
+        public static function exec()
         {
-			// Returns the array $config
+			// Returns the array $config and also $settings
 			include DOC_ROOT . 'config/settings.php';
 			
             if (is_null(self::$me))
-                self::$me = new Config($config);
+                self::$me = new Config($config,$core);
             return self::$me;
         }
 
@@ -56,34 +62,37 @@
             return self::$me->$key;
         }
 
+		public function set_config_vars($config = array()) {
+		  foreach ($config as $k => $v) {
+		    if (isset($this->$k)) $this->$k = $v;
+		  }
+		}
+
         // Add code to be run on all servers
         private function everywhere()
         {
             // Store sesions in the database?
-            $this->useDb_Sessions = true;
+            $this->use_db_session = true;
 
             // Settings for the Auth class
-            $this->authDomain         = $_SERVER['HTTP_HOST'];
-            $this->useHashedPasswords = true;
-            $this->authSalt           = 'wtnMmVyc8vhkrxBrtkm3VTkLwiAFs'; // Pick any random string of characters
+            $this->auth_domain         = $_SERVER['HTTP_HOST'];
+            $this->hash_passwords = true;
+            $this->auth_salt           = 'wtnMmVyc8vhkrxBrtkm3VTkLwiAFs'; // Pick any random string of characters
 
         }
 
-        public function setConfig($config)
+        public function set_config($config,$core)
         {
+			// Load $core settings into object
+			$this->set_config_vars($core);
+			
 			foreach ($config as $name => $settings)
 			{
 				// Search server array to see if where we are matches, if true, then we know what settings to use
 	            if (in_array($_SERVER['HTTP_HOST'], $settings['servers']))
 				{
-		            ini_set('display_errors', $settings['displayErrors']);
-		            define('WEB_ROOT', $settings['WEB_ROOT']);
-
-		            $this->dbHost       = $settings['dbHost'];
-		            $this->dbName       = $settings['dbName'];
-		            $this->dbUsername   = $settings['dbUsername'];
-		            $this->dbPassword   = $settings['dbPassword'];
-		            $this->dbDieOnError = $settings['dbDieOnError'];
+					$this->set_config_vars($settings);
+		            define('WEB_ROOT', $this->web_root);
 				}
 				if (!defined('WEB_ROOT')) {
 					die('<h1>Where am I?</h1> <p>You need to setup your server names in <code>settings.php</code></p>

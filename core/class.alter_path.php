@@ -29,7 +29,7 @@
 			$rewrites = array();
 			
 			// rewrites.php includes $rewrites array
-			include DOC_ROOT . 'config/rewrites.php';
+			include DOC_ROOT . 'config/settings.php';
 			
 			$uri_string = implode('/',$this->uri) . '/';
 			$matches = array();
