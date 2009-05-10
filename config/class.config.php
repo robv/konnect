@@ -41,6 +41,7 @@
         // Get Singleton object
         public static function getConfig()
         {
+			// Returns the array $config
 			include DOC_ROOT . 'config/settings.php';
 			
             if (is_null(self::$me))
@@ -72,6 +73,7 @@
         {
 			foreach ($config as $name => $settings)
 			{
+				// Search server array to see if where we are matches, if true, then we know what settings to use
 	            if (in_array($_SERVER['HTTP_HOST'], $settings['servers']))
 				{
 		            ini_set('display_errors', $settings['displayErrors']);
