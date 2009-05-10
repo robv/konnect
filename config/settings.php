@@ -1,5 +1,8 @@
 <?php
 	
+	// We don't want anything beside the framework loading this shizzle
+	if (!defined('KONNECT')) exit();
+	
 	// This is where you declare your server enviroment settings which are set dynamically by matching
 	// any one of the keys in your servers array to the current host name
 	

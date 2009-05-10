@@ -1,6 +1,6 @@
 <?php
     // Application flag
-    define('KNNCT', true);
+    define('KONNECT', true);
 
     // Determine our absolute document root, includes trailing slash
     define('DOC_ROOT', realpath(dirname(__FILE__) . '/../') . '/');
