@@ -20,7 +20,7 @@
     }
 
     // Global include files
-    require DOC_ROOT . 'core/class.dbobject.php'; // TODO: Will this be autoloaded on extends?
+    require DOC_ROOT . 'core/class.db_object.php'; // TODO: Will this be autoloaded on extends?
 
     // Fix magic quotes
     if (get_magic_quotes_gpc())
@@ -30,7 +30,7 @@
         $_REQUEST = String::exec()->fix_slashes($_REQUEST);
         $_COOKIE  = String::exec()->fix_slashes($_COOKIE);
     }
-
+	
     // Store session info in the database?
     if (Config::getConfig()->useDb_Sessions === true)
         Db_Session::register();
