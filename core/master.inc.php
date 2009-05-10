@@ -32,7 +32,7 @@
     }
 	
     // Store session info in the database?
-    if (Config::getConfig()->useDb_Sessions === true)
+    if (Config::exec()->use_db_session === true)
         Db_Session::register();
 
     // Initialize our session
