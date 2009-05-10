@@ -21,6 +21,13 @@
 	        $str = preg_replace('/\\' . $replacer . '+/', $replacer, $str);
 	        return $str;
 	    }
+	
+		public static function uc_slug($str, $replacer = '-')
+		{
+			explode($replacer, $str);
+			$str = ucwords($str);
+			return implode($replacer, $str);
+		}
 		
 		// Formats a phone number as (xxx) xxx-xxxx or xxx-xxxx depending on the length.
         public static function format_phone($phone)
