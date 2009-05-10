@@ -1,67 +1,83 @@
 <?php
 
-// This class provides a way to alter paths to controllers
+	// This class provides a way to alter paths to controllers
 
-class Alter_Path {
+	class Alter_Path {
 	
-	function __construct($rewrites)
-	{
-		if ($this->pick_off()){
-			$cleaned_current_arr = explode('/',strtolower(implode('/',deslugify($this->pick_off(),'_'))));
-		} else {
-			$cleaned_current_arr = array();
+		// Singleton object. Leave $me alone.
+		private static $me;
+
+		public $uri;
+    
+    	// Get Singleton object
+        public static function exec()
+        {
+            if (is_null(self::$me))
+                self::$me = new Alter_Path();
+            return self::$me;
+        }
+
+		function new_uri($uri = NULL)
+		{
+			$this->uri = $this->uri_to_array($uri);
+			$this->uri = $this->uri_rewrite();
+			return $this->uri;
 		}
 		
-		// imploding that deslugified array so we get the path we should match
-		$current_path = implode('/',$cleaned_current_arr).'/';
-		$matches = array();
+		function uri_rewrite()
+		{
+			$rewrites = array();
+			
+			// rewrites.php includes $rewrites array
+			include DOC_ROOT . 'config/rewrites.php';
+			
+			$uri_string = implode('/',$this->uri) . '/';
+			$matches = array();
 		
-		foreach ($rewrites as $intial_path => $destination_path){
-			if (empty($this->rewritten_path)){ // if we already matched something stop trying
-			
-				if (preg_match('#^'.trim($intial_path,'/').'/$#',$current_path,$matches)){
-				
-					foreach ($matches as $key => $value) // in destination path use %1%, %2%, etc as you would $1, $2, in mod_rewrite
+			foreach ($rewrites as $intial_path => $destination_path)
+			{
+				if (preg_match('#^' . trim($intial_path, '/') . '/$#', $uri_string, $matches))
+				{
+					foreach ($matches as $key => $value)
+					{ 
+						// in destination path use %1%, %2%, etc as you would $1, $2, in mod_rewrite
 						$destination_path = str_replace('%'.$key.'%',$value,$destination_path);
-				
-					$this->rewritten_path = explode($this->seperator,trim(strtolower($destination_path),$this->seperator)); // trim seperator then explode by seperator
-			
+					}
+					// triming shouldn't be neccessary it's done just in case
+					return $this->uri = explode('/',trim(strtolower($destination_path),'/')); 
 				}
 			}
-		}
-		
-		// If the current path does not match anything that should be rewritten simply return the original array
-		if (empty($this->rewritten_path))
-			$this->rewritten_path = $cleaned_current_arr;
 			
-		$this->original_path = $cleaned_current_arr;
-		
-	}
-	
-	function return_paths()
-	{
-		global $data;
-		
-		// all array values are lowercase and use _ (underscore) as seperators
-		$data['konnect']['original_path'] = $this->original_path; // real url used to access page
-		$data['konnect']['rewritten_path'] = $this->rewritten_path; // rewritten if called for in rewrites
-	}
-	
-	function pick_off($pairing='0',$grabFirst = false)
-    {
-		$ret = array();
-		$arr = explode($this->seperator, trim($_SERVER['REQUEST_URI'], $this->seperator));
-		if ($grabFirst && $pairing !== 'key') $ret[$pairing++] = array_shift($arr);
-		while (count($arr) > 0)
-		        $pairing === 'key' ? $ret[array_shift($arr)] = array_shift($arr) : $ret[$pairing++] = array_shift($arr);
-		
-		foreach ($ret as $key => $value){
-			$check_count = explode('?',$value);
-			if (count($check_count) > 1)
-				unset($ret[$key]);
+			return $this->uri;
 		}
-		
-		return (count($ret) > 0) ? $ret : false;
-    }
 	
-}
+		function uri_to_array($uri = NULL)
+	    {
+			// Not defaulting to server request uri allows some testing to be done
+			if(is_null($uri))
+			{
+				$uri = $_SERVER['REQUEST_URI'];
+			}	
+			
+			// Lowercase the entire string then strip http, https and ftp (just for fun) our of uri and then explode by "/"
+			$this->uri = explode('/', trim(str_replace(array('http://','https://','ftp://'), '', strtolower($uri)), '/'));
+		
+			$new_uri = array();
+		
+			foreach ($this->uri as $key => $singleton)
+			{	
+				// We want to rebuild the array without the actual domain
+				if ($key != 0)
+				{
+					// String the string of all special characters
+					$new_uri[] = String::exec()->clean($singleton,'-');
+				}	
+			}
+		
+			// Replace uri with the new modified version
+			$this->uri = $new_uri;
+		
+			return $this->uri;
+	    }
+	
+	}
