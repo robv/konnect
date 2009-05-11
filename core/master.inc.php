@@ -8,7 +8,16 @@
     // Class Autoloader
     function __autoload($class_name)
     {
-     	$folders = array('core','helpers','config','libraries');
+		$folders = array();
+	
+		// Load $core
+		include DOC_ROOT . 'config/settings.php';
+		foreach($core['installed_apps'] as $app)
+		{
+			$folders[] = 'apps/' . $app . '/libraries';
+		}
+		
+     	$folders = array_merge($folders, array('core','helpers','libraries'));
 		foreach ($folders as $folder)
 		{
 			if (file_exists(DOC_ROOT . $folder . '/class.' . strtolower($class_name) . '.php'))
