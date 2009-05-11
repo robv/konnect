@@ -36,11 +36,11 @@
 		public $installed_apps;
 
         // Singleton constructor
-        private function __construct($config = NULL)
+        private function __construct($config = NULL, $core = NULL)
         {
 			if (!is_null($config)) {
             	$this->everywhere();
-            	$this->set_config($config);
+            	$this->set_config($config, $core);
             }
         }
 
