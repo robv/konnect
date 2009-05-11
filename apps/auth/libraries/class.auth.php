@@ -1,4 +1,5 @@
 <?php
+
     class Auth
     {
         // Singleton object. Leave $me alone.
