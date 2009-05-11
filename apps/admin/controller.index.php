@@ -8,7 +8,7 @@ class Index_controller extends Controller {
 	function __construct($app_name,$data = '')
 	{
 		$this->data = $data;
-		$this->app_name = $app_name;
+		$this->data['app_name'] = $this->app_name = $app_name;
 		
 		// Building the method name
 		if(!isset($this->data['konnect']['rewritten_path']['2']) || empty($this->data['konnect']['rewritten_path']['2']))
