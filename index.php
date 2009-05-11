@@ -1,22 +1,18 @@
 <?php
 	
 	require 'core/master.inc.php';
-		
-		
-	// TODO: Rewrite index, and alterpath class to function properly
-		
-	// This is just putting some useful variables together that will be available everywhere
-	$data['konnect']['path'] = Alter_Path::exec()->new_uri();
 	
-	if (!isset($data['konnect']['path']['0']) || empty($data['konnect']['path']['0']))
+	Router::exec()->new_uri();
+	
+	if (!isset(Router::exec()->uri['0']) || empty(Router::exec()->uri['0']))
 	{
-		$data['konnect']['path']['0'] = Config::exec()->default_app;
+		Router::exec()->uri['0'] = Config::exec()->default_app;
 	}
 	
 	// If app doesn't exist then show error
-	if (in_array($data['konnect']['path']['0'], Config::exec()->installed_apps))
+	if (in_array(Router::exec()->uri['0'], Config::exec()->installed_apps))
 	{
-		$app_to_load = $data['konnect']['path']['0'];
+		$app_to_load = Router::exec()->uri['0'];
 	}
 	else
 	{

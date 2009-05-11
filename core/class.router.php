@@ -2,7 +2,7 @@
 
 	// This class provides a way to alter paths to controllers
 
-	class Alter_Path {
+	class Router {
 	
 		// Singleton object. Leave $me alone.
 		private static $me;
@@ -13,7 +13,7 @@
         public static function exec()
         {
             if (is_null(self::$me))
-                self::$me = new Alter_Path();
+                self::$me = new Router();
             return self::$me;
         }
 
