@@ -20,12 +20,29 @@
             // the constructor yourself if you have the need.
             $this->idColumnName = 'id';
 
-            foreach ($columns as $col)
-                $this->columns[$col] = null;
+            foreach ($columns as $column)
+			{
+                $this->columns[$column] = null;
+			}
 
             if (!is_null($id))
-                $this->select($id);
-        }
+			{
+				if(!is_array($id))
+				{	
+					$this->select($id);
+				}
+				else
+				{
+					// You can also select by $id[$fieldname] = $fieldvalue
+					foreach($id as $key => $value)
+					{
+						$keys[] = $key;
+						$values[] = $value;
+					}
+						$this->select($keys,$values);
+				}
+			}
+		}
 
         public function __get($key)
         {
@@ -43,20 +60,45 @@
         public function __set($key, $value)
         {
             if (array_key_exists($key, $this->columns))
+			{
                 $this->columns[$key] = $value;
-
+			}
             return $value; // Seriously.
+        }
+
+		// Returns an array containing columns and values in an array as opposed to object form
+        public function return_columns()
+        {
+            return $this->columns;
         }
 
         public function select($id, $column = null)
         {
             $db = Database::getDatabase();
 
-            if (is_null($column)) $column = $this->idColumnName;
-            $column = $db->escape($column);
-
-            $db->query("SELECT * FROM `{$this->tableName}` WHERE `$column` = :id LIMIT 1", array('id' => $id));
-            if ($db->hasRows())
+            if(is_array($id) && is_array($column))
+			{
+				// TODO: Error check for matching array count
+				foreach($column as $key => $column_name)
+				{
+					$where[$key] = '(`' . $db->escape($column_name) . '` = :' . $db->escape($column_name) . ')';
+					$values[$column_name] = $id[$key];
+				}
+				$where = implode(' AND ',$where);
+				$db->query('SELECT * FROM `' . $this->tableName . '` WHERE ' . $where . ' LIMIT 1', $values);
+			}
+			else
+			{
+				if (is_null($column))
+				{
+					$column = $this->idColumnName;
+				}
+				$column = $db->escape($column);
+	            $db->query('SELECT * FROM `' . $this->tableName . '` WHERE `' . $column . '` = :id LIMIT 1', array('id' => $id));
+			}
+			
+			// Finally check if there were any returned results
+			if ($db->hasRows())
             {
                 $row = $db->getRow();
                 $this->load($row);
@@ -74,9 +116,13 @@
         public function save()
         {
             if (is_null($this->id))
+			{
                 $this->insert();
+			}
             else
+			{
                 $this->update();
+			}
             return $this->id;
         }
 
@@ -84,17 +130,24 @@
         {
             $db = Database::getDatabase();
 
-            if (count($this->columns) == 0) return false;
+            if (count($this->columns) == 0)
+				return false;
 
             $data = array();
-            foreach ($this->columns as $k => $v)
-                if (!is_null($v))
-                    $data[$k] = $db->quote($v);
+            
+			foreach ($this->columns as $k => $v)
+            {
+    			if (!is_null($v))
+				{
+					$data[$k] = $db->quote($v);
 
+				}
+			}
+			
             $columns = '`' . implode('`, `', array_keys($data)) . '`';
             $values = implode(',', $data);
 
-            $db->query("$cmd `{$this->tableName}` ($columns) VALUES ($values)");
+            $db->query($cmd . ' `' . $this->tableName . '` (' . $columns . ') VALUES (' . $values . ')');
             $this->id = $db->insertId();
             return $this->id;
         }
@@ -106,18 +159,24 @@
 
         public function update()
         {
-            if (is_null($this->id)) return false;
+            if (is_null($this->id))
+				return false;
 
             $db = Database::getDatabase();
 
-            if (count($this->columns) == 0) return;
+            if (count($this->columns) == 0)
+				return false;
 
-            $sql = "UPDATE {$this->tableName} SET ";
+            $sql = 'UPDATE ' . $this->tableName . ' SET ';
+
             foreach ($this->columns as $k => $v)
-                $sql .= "`$k`=" . $db->quote($v) . ',';
-            $sql[strlen($sql) - 1] = ' ';
+            {
+    			$sql .= "`$k`=" . $db->quote($v) . ',';
+			}
+			
+			$sql[strlen($sql) - 1] = ' ';
 
-            $sql .= "WHERE `{$this->idColumnName}` = " . $db->quote($this->id);
+            $sql .= 'WHERE `' . $this->idColumnName . '` = ' . $db->quote($this->id);
             $db->query($sql);
 
             return $db->affectedRows();
@@ -125,9 +184,11 @@
 
         public function delete()
         {
-            if (is_null($this->id)) return false;
-            $db = Database::getDatabase();
-            $db->query("DELETE FROM `{$this->tableName}` WHERE `{$this->idColumnName}` = :id LIMIT 1", array('id' => $this->id));
+            if (is_null($this->id))
+				return false;
+            
+			$db = Database::getDatabase();
+            $db->query('DELETE FROM `' . $this->tableName . '` WHERE `' . $this->idColumnName . '` = :id LIMIT 1', array('id' => $this->id));
             return $db->affectedRows();
         }
 
@@ -136,10 +197,14 @@
             foreach ($row as $k => $v)
             {
                 if ($k == $this->idColumnName)
+				{
                     $this->id = $v;
-                elseif (array_key_exists($k, $this->columns))
-                    $this->columns[$k] = $v;
-            }
+                }
+				elseif (array_key_exists($k, $this->columns))
+                {
+					$this->columns[$k] = $v;
+            	}
+			}
         }
 
         // Grabs a large block of instantiated $class_name objects from the database using only one query.
@@ -176,80 +241,18 @@
             }
             return $objs;
         }
+		
+		// Easily run glob on basic db objects
+		function select_multiple($sql = null, $extra_columns = array())
+		{
+	            return $this->glob(ucfirst($this->tableName), 'SELECT * FROM `' . $this->tableName . '`' . $sql);
+		}
 
         public function addColumn($key, $val = null)
         {
             if (!in_array($key, array_keys($this->columns)))
+			{
                 $this->columns[$key] = $val;
-        }
-    }
-
-    class TaggableDb_Object extends Db_Object
-    {
-        protected $tagColumnName;
-
-        public function __construct($table_name, $columns, $id = null)
-        {
-            parent::__construct($table_name, $columns, $id);
-            $this->tagColumnName = strtolower($this->className . '_id');
-        }
-
-        public function addTag($name)
-        {
-            $db = Database::getDatabase();
-
-            if (is_null($this->id)) return false;
-
-            $name = trim($name);
-            if ($name == '') return false;
-
-            $t = new Tag($name);
-            $db->query("INSERT IGNORE {$this->tableName}2tags ({$this->tagColumnName}, tag_id) VALUES (:obj_id, :tag_id)", array('obj_id' => $this->id, 'tag_id' => $t->id));
-            return true;
-        }
-
-        public function removeTag($name)
-        {
-            $db = Database::getDatabase();
-
-            if (is_null($this->id)) return false;
-
-            $name = trim($name);
-            if ($name == '') return false;
-
-            $t = new Tag($name);
-            $db->query("DELETE FROM {$this->tableName}2tags WHERE {$this->tagColumnName} = :obj_id AND tag_id = :tag_id", array('obj_id' => $this->id, 'tag_id' => $t->id));
-            return true;
-        }
-
-        public function clearTags()
-        {
-            $db = Database::getDatabase();
-            if (is_null($this->id)) return false;
-            $db->query("DELETE FROM {$this->tableName}2tags WHERE {$this->tagColumnName} = :obj_id", array('obj_id' => $this->id));
-            return true;
-        }
-
-        public function tags()
-        {
-            $db = Database::getDatabase();
-            if (is_null($this->id)) return false;
-            $result = $db->query("SELECT t.id, t.name FROM {$this->tableName}2tags a LEFT JOIN tags t ON a.tag_id = t.id WHERE a.{$this->tagColumnName} = '{$this->id}'");
-            $tags = array();
-            $rows = $db->getRows($result);
-            foreach ($rows as $row)
-                $tags[$row['name']] = $row['id'];
-            return $tags;
-        }
-
-        // Return all objects tagged $tag_name
-        public function tagged($tag_name, $sql = '')
-        {
-            $db = Database::getDatabase();
-
-            $tag = new Tag($tag_name);
-            if (is_null($tag->id)) return array();
-
-            return Db_Object::glob(get_class($this), "SELECT b.* FROM {$this->tableName}2tags a LEFT JOIN {$this->tableName} b ON a.{$this->tagColumnName} = b.{$this->idColumnName} WHERE a.tag_id = {$tag->id} $sql");
+			}
         }
     }
