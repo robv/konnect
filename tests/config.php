@@ -14,4 +14,5 @@ include DOC_ROOT . 'core/class.config.php';
 	
 	Config::set_config('konnect.dev');
 	
+	echo Config::$core['web_root'] . "\n\n";
 	var_dump(Config::$core);
