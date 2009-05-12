@@ -16,16 +16,16 @@ class Router {
 	// Simply runs both uri_to_array and uri_rewrite so we don't have to run both methods
 	public static function new_uri($routes, $uri = NULL)
 	{
-		Router::$uri = $this->uri_to_array($uri);
-		Router::$uri = $this->uri_rewrite($routes);
-		return Router::$uri;
+		self::$uri = $this->uri_to_array($uri);
+		self::$uri = $this->uri_rewrite($routes);
+		return self::$uri;
 	}
 	
 	// Maps current uri array to see if matches are found in config/settings.php
 	public static function uri_rewrite($routes)
 	{
 			
-		$uri_string = implode('/', Router::$uri) . '/';
+		$uri_string = implode('/', self::$uri) . '/';
 		$matches = array();
 	
 		foreach ($routes as $intial_path => $destination_path)
@@ -38,11 +38,11 @@ class Router {
 					$destination_path = str_replace('%' . $key . '%',$value,$destination_path);
 				}
 				// triming shouldn't be neccessary it's done just in case
-				return Router::$uri = explode('/', trim(strtolower($destination_path), '/')); 
+				return self::$uri = explode('/', trim(strtolower($destination_path), '/')); 
 			}
 		}
 		
-		return Router::$uri;
+		return self::$uri;
 	}
 
 	public static function uri_to_array($uri = NULL)
@@ -52,23 +52,23 @@ class Router {
 			$uri = $_SERVER['REQUEST_URI'];
 		
 		// Lowercase the entire string then strip http, https and ftp (just for fun) our of uri and then explode by "/"
-		Router::$uri = explode('/', trim(str_replace(array('http://','https://','ftp://'), '', strtolower($uri)), '/'));
+		self::$uri = explode('/', trim(str_replace(array('http://','https://','ftp://'), '', strtolower($uri)), '/'));
 	
 		// We want to rebuild the array without the actual domain
 		if (@parse_url($uri))
-			array_shift(Router::$uri);
+			array_shift(self::$uri);
 
 		$new_uri = array();			
-		foreach (Router::$uri as $key => $singleton)
+		foreach (self::$uri as $key => $singleton)
 		{	
 			// String the string of all special characters
 			$new_uri[] = String::clean($singleton, '-');
 		}
 	
 		// Replace uri with the new modified version
-		Router::$uri = $new_uri;
+		self::$uri = $new_uri;
 	
-		return Router::$uri;
+		return self::$uri;
     }
 
 }
