@@ -57,23 +57,21 @@ class Router {
     {
 		// Not defaulting to server request uri allows some testing to be done
 		if(is_null($uri))
-		{
 			$uri = $_SERVER['REQUEST_URI'];
-		}	
 		
 		// Lowercase the entire string then strip http, https and ftp (just for fun) our of uri and then explode by "/"
 		$this->uri = explode('/', trim(str_replace(array('http://','https://','ftp://'), '', strtolower($uri)), '/'));
 	
 		$new_uri = array();
-	
+		
+		// We want to rebuild the array without the actual domain
+		if (@parse_url($uri))
+			array_shift($this->uri);
+			
 		foreach ($this->uri as $key => $singleton)
 		{	
-			// We want to rebuild the array without the actual domain
-			if ($key != 0)
-			{
-				// String the string of all special characters
-				$new_uri[] = String::exec()->clean($singleton,'-');
-			}	
+			// String the string of all special characters
+			$new_uri[] = String::exec()->clean($singleton,'-');
 		}
 	
 		// Replace uri with the new modified version
