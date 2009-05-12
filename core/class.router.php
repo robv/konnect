@@ -16,8 +16,8 @@ class Router {
 	// Simply runs both uri_to_array and uri_rewrite so we don't have to run both methods
 	public static function new_uri($routes, $uri = NULL)
 	{
-		self::$uri = $this->uri_to_array($uri);
-		self::$uri = $this->uri_rewrite($routes);
+		self::$uri = self::uri_to_array($uri);
+		self::$uri = self::uri_rewrite($routes);
 		return self::$uri;
 	}
 	
