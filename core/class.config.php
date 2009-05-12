@@ -37,12 +37,10 @@
 				{
 					self::set($settings);
 		            define('WEB_ROOT', self::$config['core']['web_root']);
-				}
-				if (!defined('WEB_ROOT')) {
-					die('<h1>Where am I?</h1> <p>You need to setup your server names in <code>settings.php</code></p>
-	                     <p><code>$_SERVER[\'HTTP_HOST\']</code> reported <code>' . $_SERVER['HTTP_HOST'] . '</code></p>');
+					return true;
 				}
 			}
+			return false;
 		}
 
 	}
