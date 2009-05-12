@@ -1,6 +1,10 @@
 <?php
 
-	// This class provides a way to alter paths to controllers
+/*
+	ROUTER provides a way to pass in the current uri in "http://konnectphp.com/foo/bar/" 
+	form and outputs an array such as $arr[0] = foo and $arr[1] = bar and also contains a method
+	for rerwriting that url based on predefined routes in config/settings.php
+*/
 
 	class Router {
 	
@@ -16,18 +20,19 @@
                 self::$me = new Router();
             return self::$me;
         }
-
-		function new_uri($uri = NULL)
+		
+		// Simply runs both uri_to_array and uri_rewrite so we don't have to run both methods
+		public static function new_uri($routes, $uri = NULL)
 		{
 			$this->uri = $this->uri_to_array($uri);
-			$this->uri = $this->uri_rewrite();
+			$this->uri = $this->uri_rewrite($routes);
 			return $this->uri;
 		}
 		
-		function uri_rewrite()
+		// Maps current uri array to see if matches are found in config/settings.php
+		public static function uri_rewrite($routes)
 		{
-			$routes = Config::getConfig()->routes;
-			
+				
 			$uri_string = implode('/',$this->uri) . '/';
 			$matches = array();
 		
@@ -48,7 +53,7 @@
 			return $this->uri;
 		}
 	
-		function uri_to_array($uri = NULL)
+		public static function uri_to_array($uri = NULL)
 	    {
 			// Not defaulting to server request uri allows some testing to be done
 			if(is_null($uri))

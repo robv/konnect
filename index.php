@@ -2,7 +2,7 @@
 	
 	require 'core/master.inc.php';
 	
-	Router::exec()->new_uri();
+	Router::exec()->new_uri(Config::exec()->routes);
 	
 	if (!isset(Router::exec()->uri['0']) || empty(Router::exec()->uri['0']))
 	{
