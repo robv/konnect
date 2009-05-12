@@ -36,6 +36,7 @@
 	            if (in_array($host, $settings['servers']))
 				{
 					self::set($settings);
+		            error_reporting(self::$config['core']['error_reporting']);
 		            define('WEB_ROOT', self::$config['core']['web_root']);
 					return true;
 				}

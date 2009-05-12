@@ -18,7 +18,7 @@
 		// Developement server settings
 		$config['development']['servers'] = array('konnect.dev');
 		$config['development']['core']['web_root'] = 'http://konnect.dev';
-		$config['development']['core']['display_errors'] = 1;
+		$config['development']['core']['error_reporting'] = E_STRICT; // See http://us3.php.net/manual/en/function.error-reporting.php
 		$config['development']['db']['host'] = 'localhost';
 		$config['development']['db']['name'] = 'konnect_new';
 		$config['development']['db']['username'] = 'root';
@@ -28,7 +28,7 @@
 		// Staging server settings
 		$config['staging']['servers'] = array('konnectphp.com','www.konnectphp.com');
 		$config['staging']['core']['web_root'] = 'http://konnectphp.com';
-		$config['staging']['core']['display_errors'] = 1;
+		$config['staging']['core']['error_reporting'] = 0; // See http://us3.php.net/manual/en/function.error-reporting.php
 		$config['staging']['db']['host'] = 'localhost';
 		$config['staging']['db']['name'] = 'konnect_new';
 		$config['staging']['db']['username'] = 'root';
