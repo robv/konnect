@@ -39,10 +39,6 @@
         $_REQUEST = String::exec()->fix_slashes($_REQUEST);
         $_COOKIE  = String::exec()->fix_slashes($_COOKIE);
     }
-	
-    // Store session info in the database?
-    if (Config::exec()->db['session'] === TRUE)
-        Db_Session::register();
 
     // Initialize our session
     session_start();

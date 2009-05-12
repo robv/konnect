@@ -13,11 +13,12 @@
         private static $me;
 		
         // The basics
-        public static $auth; // Array for all auth information
-        public static $db; // Array for all db information
 		public static $core; // Array for core information
+		public static $db; // Db information
 		public static $routes; // Core routes
-		public static $servers; // Core routes
+		public static $servers; // Servers associated with current host
+		
+		public static $app; // We can store app specific variables here
 		
 		// App info
         public static $default_app; // Default app to direct to
@@ -26,7 +27,6 @@
         // Singleton constructor
         private function __construct()
         {
-           	self::everywhere();
            	self::set_config();
         }
 
@@ -36,19 +36,6 @@
 				if(isset(self::$$k) || is_null(self::$$k))
 					self::$$k = $v;
 		}
-
-        // Add code to be run on all servers
-        private static function everywhere()
-        {
-            // Store sesions in the database?
-            self::$db['session'] = TRUE;
-
-            // Settings for the Auth class
-            self::$auth['domain'] = $_SERVER['HTTP_HOST'];
-            self::$auth['hash'] = TRUE;
-            self::$auth['salt'] = 'wtnMmVyc8vhkrxBrtkm3VTkLwiAFs'; // Pick any random string of characters
-
-        }
 
         public static function set_config($host = NULL)
         {
