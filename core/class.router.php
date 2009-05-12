@@ -26,15 +26,12 @@
 		
 		function uri_rewrite()
 		{
-			$rewrites = array();
-			
-			// rewrites.php includes $rewrites array
-			include DOC_ROOT . 'config/settings.php';
+			$routes = Config::getConfig()->routes;
 			
 			$uri_string = implode('/',$this->uri) . '/';
 			$matches = array();
 		
-			foreach ($rewrites as $intial_path => $destination_path)
+			foreach ($routes as $intial_path => $destination_path)
 			{
 				if (preg_match('#^' . trim($intial_path, '/') . '/$#', $uri_string, $matches))
 				{

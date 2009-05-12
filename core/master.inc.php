@@ -4,15 +4,15 @@
 
     // Determine our absolute document root, includes trailing slash
     define('DOC_ROOT', realpath(dirname(__FILE__) . '/../') . '/');
-
+	
+	include DOC_ROOT . 'core/class.config.php';
+	
     // Class Autoloader
     function __autoload($class_name)
     {
 		$folders = array();
 	
-		// Load $core
-		include DOC_ROOT . 'config/settings.php';
-		foreach($core['installed_apps'] as $app)
+		foreach(Config::exec()->installed_apps as $app)
 		{
 			$folders[] = 'apps/' . $app . '/libraries';
 		}
@@ -41,7 +41,7 @@
     }
 	
     // Store session info in the database?
-    if (Config::exec()->use_db_session === true)
+    if (Config::exec()->db['session'] === TRUE)
         Db_Session::register();
 
     // Initialize our session

@@ -9,28 +9,28 @@
 		$core['default_app'] = 'home';
 		$core['installed_apps'] = array('home');
 		
-		$rewrites = array(
-							'login' => 'auth/index/login/',
-							'recover' => 'auth/index/recover/',
-							'logout' => 'auth/index/logout/'
-					);
+		$core['routes'] = array(
+									'login' => 'auth/index/login/',
+									'recover' => 'auth/index/recover/',
+									'logout' => 'auth/index/logout/'
+							);
 	
 		// Developement server settings
 		$config['development']['servers'] = array('konnect.dev');
-		$config['development']['web_root'] = 'http://konnect.dev';
-		$config['development']['display_errors'] = 1;
-		$config['development']['db_host'] = 'localhost';
-		$config['development']['db_name'] = 'konnect_new';
-		$config['development']['db_username'] = 'root';
-		$config['development']['db_password'] = 'rootpassword';
-		$config['development']['db_die'] = true;
+		$config['development']['core']['web_root'] = 'http://konnect.dev';
+		$config['development']['core']['display_errors'] = 1;
+		$config['development']['db']['host'] = 'localhost';
+		$config['development']['db']['name'] = 'konnect_new';
+		$config['development']['db']['username'] = 'root';
+		$config['development']['db']['password'] = 'rootpassword';
+		$config['development']['db']['die'] = true;
 		
 		// Staging server settings
 		$config['staging']['servers'] = array('konnectphp.com','www.konnectphp.com');
-		$config['staging']['web_root'] = 'http://konnectphp.com';
-		$config['staging']['display_errors'] = 1;
-		$config['staging']['db_host'] = 'localhost';
-		$config['staging']['db_name'] = 'konnect_new';
-		$config['staging']['db_username'] = 'root';
-		$config['staging']['db_password'] = 'rootpassword';
-		$config['staging']['db_die'] = true;
+		$config['staging']['core']['web_root'] = 'http://konnectphp.com';
+		$config['staging']['core']['display_errors'] = 1;
+		$config['staging']['db']['host'] = 'localhost';
+		$config['staging']['db']['name'] = 'konnect_new';
+		$config['staging']['db']['username'] = 'root';
+		$config['staging']['db']['password'] = 'rootpassword';
+		$config['staging']['db']['die'] = TRUE;

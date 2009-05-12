@@ -11,47 +11,29 @@
     {
         // Singleton object. Leave $me alone.
         private static $me;
-
-        // Standard Config Options...
-
-        // ...For Auth Class
-        public $auth_domain;         // Domain to set for the cookie
-        public $auth_salt;           // Can be any random string of characters
-        public $hash_passwords; // Store hashed passwords in database? (versus plain-text)
-
-        // ...For Database Class
-        public $db_host;       // Database server
-        public $db_name;       // Database name
-        public $db_username;   // Database username
-        public $db_password;   // Database password
-        public $db_die; // What do do on a database error (see class.database.php for details)
-
-        // Add your config options here...
-        public $use_db_session; // Set to true to store sessions in the database
-		public $web_root; // Self explanitory
-		public $display_errors; // Display php errors or not
+		
+        // The basics
+        public $auth; // Array for all auth information
+        public $db; // Array for all db information
+		public $core; // Array for core information
+		public $routes; // Core routes
 		
 		// App info
         public $default_app; // Default app to direct to
 		public $installed_apps;
 
         // Singleton constructor
-        private function __construct($config = NULL, $core = NULL)
+        private function __construct()
         {
-			if (!is_null($config)) {
-            	$this->everywhere();
-            	$this->set_config($config, $core);
-            }
+           	$this->everywhere();
+           	$this->set_config();
         }
 
         // Get Singleton object
         public static function exec()
         {
-			// Returns the array $config and also $settings
-			include DOC_ROOT . 'config/settings.php';
-			
             if (is_null(self::$me))
-                self::$me = new Config($config,$core);
+                self::$me = new Config();
             return self::$me;
         }
 
@@ -62,27 +44,31 @@
             return self::$me->$key;
         }
 
-		public function set_config_vars($config = array()) {
-		  foreach ($config as $k => $v) {
-		    if (isset($this->$k)) $this->$k = $v;
-		  }
+		public function set_config_vars($config = array()) 
+		{
+			foreach ($config as $k => $v)
+				if(isset($this->$k) || is_null($this->$k))
+					$this->$k = $v;
 		}
 
         // Add code to be run on all servers
         private function everywhere()
         {
             // Store sesions in the database?
-            $this->use_db_session = true;
+            $this->db['session'] = TRUE;
 
             // Settings for the Auth class
-            $this->auth_domain         = $_SERVER['HTTP_HOST'];
-            $this->hash_passwords = true;
-            $this->auth_salt           = 'wtnMmVyc8vhkrxBrtkm3VTkLwiAFs'; // Pick any random string of characters
+            $this->auth['domain'] = $_SERVER['HTTP_HOST'];
+            $this->auth['hash'] = TRUE;
+            $this->auth['salt'] = 'wtnMmVyc8vhkrxBrtkm3VTkLwiAFs'; // Pick any random string of characters
 
         }
 
-        public function set_config($config,$core)
+        public function set_config()
         {
+			// Returns the array $config and also $core so that we don't have to define all those settings here
+			include DOC_ROOT . 'config/settings.php';
+			
 			// Load $core settings into object
 			$this->set_config_vars($core);
 			
@@ -92,7 +78,7 @@
 	            if (in_array($_SERVER['HTTP_HOST'], $settings['servers']))
 				{
 					$this->set_config_vars($settings);
-		            define('WEB_ROOT', $this->web_root);
+		            define('WEB_ROOT', $this->core['web_root']);
 				}
 				if (!defined('WEB_ROOT')) {
 					die('<h1>Where am I?</h1> <p>You need to setup your server names in <code>settings.php</code></p>
