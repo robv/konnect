@@ -13,7 +13,7 @@
 
 		public static function set($config = array(), $namespace = 'core') 
 		{
-			foreach($config as $k => $v)
+			foreach ($config as $k => $v)
 			{
 				self::$config[$namespace][$k] = $v;
 			}
@@ -22,7 +22,7 @@
         public static function set_core($host = NULL)
         {
 			// Allows testing outside of browser by being able to pass host
-			if(is_null($host))
+			if (is_null($host))
 				$host = $_SERVER['HTTP_HOST'];
 	
 			// Returns the array $config and also $core so that we don't have to define all those settings here
