@@ -16,7 +16,7 @@
 	    // Creates a friendly URL slug from a 
         public static function clean($str, $replacer = '-')
 	    {
-	        $str = preg_replace('/[^a-zA-Z0-9 -]/', '', $str);
+	        $str = preg_replace('/[^a-zA-Z0-9 ' . $replacer . ']/', ' ', $str);
 	        $str = strtolower(str_replace(' ', $replacer, trim($str)));
 	        $str = preg_replace('/\\' . $replacer . '+/', $replacer, $str);
 	        return $str;
