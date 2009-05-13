@@ -1,27 +1,32 @@
 <?php
 
-   class Config
-    {
-		public static $config;
+  class Config
+   {
+	public static $config;
 
-		public static function set($config = array(), $namespace = 'core') 
+	public static function set($config = array(), $namespace = 'core') 
+	{
+		foreach ($config as $k => $v)
 		{
-			foreach ($config as $k => $v)
-				self::$config[$namespace][$k] = $v;
+			self::$config[$namespace][$k] = $v;
 		}
+	}
 
-        public static function set_core($host = NULL)
-        {
-			// Allows testing outside of browser by being able to pass host
-			if (is_null($host))
-				$host = $_SERVER['HTTP_HOST'];
-	
-			// Returns the array $config and also $core so that we don't have to define all those settings here
-			include DOC_ROOT . 'config/settings.php';
+       public static function set_core($host = NULL)
+       {
+		// Allows testing outside of browser by being able to pass host
+		if (is_null($host))
+			$host = $_SERVER['HTTP_HOST'];
 
-			// Load $core settings into object
-			self::set($core);
-			foreach ($config as $name => $settings)
+		// Returns the array $config and also $core so that we don't have to define all those settings here
+		include DOC_ROOT . 'config/settings.php';
+
+		// Load $core settings into object
+		self::set($core);
+		foreach ($config as $name => $settings)
+		{
+			// Search server array to see if where we are matches, if true, then we know what settings to use
+            if (in_array($host, $settings['servers']))
 			{
 				// Search server array to see if where we are matches, if true, then we know what settings to use
 	            if (in_array($host, $settings['servers']))
@@ -32,7 +37,8 @@
 					return true;
 				}
 			}
-			return false;
 		}
-
+		return false;
 	}
+
+}
