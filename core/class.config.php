@@ -1,12 +1,5 @@
 <?php
 
-    // The Config class provides a single object to store your application's settings.
-    // Define your settings as public members. (We've already setup the standard options
-    // required for the Database and Auth classes.) Then, assign values to those settings
-    // inside the "location" functions. This allows you to have different configuration
-    // options depending on the server environment you're running on. Ex: local, staging,
-    // and production.
-
    class Config
     {
 		public static $config;
@@ -14,9 +7,7 @@
 		public static function set($config = array(), $namespace = 'core') 
 		{
 			foreach ($config as $k => $v)
-			{
 				self::$config[$namespace][$k] = $v;
-			}
 		}
 
         public static function set_core($host = NULL)
