@@ -8,6 +8,9 @@ define('DOC_ROOT', realpath(dirname(__FILE__) . '/../') . '/');
 
 include DOC_ROOT . 'core/class.config.php';
 
+// Setting core configuration variables.
+Config::set_core();
+
 // Class Autoloader
 function __autoload($class_name)
 {
@@ -27,7 +30,7 @@ function __autoload($class_name)
 }
 
 // Global include files
-require DOC_ROOT . 'core/class.db_object.php'; // TODO: Will this be autoloaded on extends?
+// require DOC_ROOT . 'core/class.db_object.php'; // TODO: Will this be autoloaded on extends?
 
 // Fix magic quotes
 if (get_magic_quotes_gpc()) {

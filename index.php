@@ -2,6 +2,7 @@
 	
 	require 'core/master.inc.php';
 	
+	// Remap URI with routes if needed
 	Router::new_uri(Config::$config['core']['routes']);
 	
 	// If no app is set through the uri array then set it to default
