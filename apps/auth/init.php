@@ -1,6 +1,6 @@
 <?php
 
-class Admin_init extends App_init {
+class Auth_init extends App_Init {
 		
 	function initiateApp()
 	{

@@ -14,4 +14,4 @@ include DOC_ROOT . 'core/class.config.php';
 	
 	Config::set_core('konnect.dev');
 	
-	var_dump(Config::$config['core']['db']);
+	var_dump(Config::$config);

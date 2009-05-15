@@ -28,7 +28,8 @@ class Config
 			// Search server array to see if where we are matches, if true, then we know what settings to use
 			if (in_array($host, $settings['servers'])) {
 				self::set($settings);
-				define('WEB_ROOT', self::$config['core']['web_root']);
+	            error_reporting(self::$config['core']['error_reporting']);
+	            define('WEB_ROOT', self::$config['core']['web_root']);
 				return true;
 			}
 		}

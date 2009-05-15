@@ -5,10 +5,10 @@
 	
 	/*
 		Available variables;
-		public $app_name;
+		public $app_name; // Should match name of directory this app sits in
 		public $default_controller;
-		public $rewrites;
-		public $data;
+		public $routes;
+		public $data; // You can pass some data in as array, this array will also get passed to the controller
 	*/
 	
 	$config['app_name'] = 'auth';

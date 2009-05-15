@@ -1,38 +1,42 @@
 <?php
 
-class App_init {
-	
-	public $app_name;
-	public $default_controller;
-	public $routes = array();
-	public $controller_obj;
+class App_Init {
+
+	public $config;
+	public $app_name
 	public $data;
 	
 	// $dir is the directory the app sits in
 	private function __construct($dir)
 	{
+		$this->app_name = $config['app_name'];
+		
 		include DOC_ROOT . $dir . '/config/settings.php';
-		$this->set_config($config);
 		
-		foreach($this->routes as $k => $v)
-		{
+		Config::set($config, $this->app_name);
+		
+		// We can't count on user to set routes, so let's make sure something's there
+		if(!isset(Config::$config[$this->app_name]['routes']))
+			Config::$config[$this->app_name]['routes'] = array();
 			
-		}
+		// We have to build the routes to include the app name before the paths, this includes rewriting keys
+		// BECUASE foo/bar/ should really be appname/foo/bar/
+		$new_routes = array();
 		
-		Router::exec()->uri_rewrite($this->routes);
+		foreach(Config::$config[$this->app_name]['routes'] as $k => $v)
+			$new_routes[$this->app_name . '/' . $k] = $this->app_name . '/' . $v
+			
+		Config::$config[$this->app_name]['routes'] = $new_routes;
+		unset($new_routes);
+		
+		Router::exec()->uri_rewrite(Config::$config[$this->app_name]['routes']);
 		
 		$this->initiateApp();
 	}
-
-	public function set_config($config = array()) 
-	{
-    	foreach ($config as $k => $v) {
-      		if (isset($this->$k) || is_null($this->$k)) $this->$k = $v;
-	}
 	
-	public function initiateApp()
+	public function initiate()
 	{
-		die('Please set up your "initiateApp" method for this app');
+		die('<h1>Please set up your "initiate" method for this app</h1>');
 	}
 	
 }
