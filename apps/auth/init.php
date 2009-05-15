@@ -1,9 +1,9 @@
 <?php
 
 class Auth_Init extends App_Init {
-	public function initiateApp() {
+	public function initiate() {
 		if (Router::uri(1) === null)
-			Router::$uri[1] = $this->default_controller;
+			Router::$uri[1] = Config::$config[$this->app_name]['default_controller'];
 
 		require DOC_ROOT . 'apps/' . $this->app_name . '/controllers/controller.' . Router::uri(1) . '.php';
 

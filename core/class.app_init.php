@@ -6,14 +6,13 @@ class App_Init {
 	public $app_name
 	public $data;
 	
-	// $dir is the directory the app sits in
-	private function __construct($dir)
+	public function __construct($dir)
 	{
-		$this->app_name = $config['app_name'];
-		
 		include DOC_ROOT . $dir . '/config/settings.php';
-		
+
 		Config::set($config, $this->app_name);
+		
+		$this->app_name = Config::$config[$this->app_name]['app_name'];
 		
 		// We can't count on user to set routes, so let's make sure something's there
 		if(!isset(Config::$config[$this->app_name]['routes']))
@@ -29,9 +28,9 @@ class App_Init {
 		Config::$config[$this->app_name]['routes'] = $new_routes;
 		unset($new_routes);
 		
-		Router::exec()->uri_rewrite(Config::$config[$this->app_name]['routes']);
-		
-		$this->initiateApp();
+		Router::uri_rewrite(Config::$config[$this->app_name]['routes']);
+
+		$this->initiate();
 	}
 	
 	public function initiate()
