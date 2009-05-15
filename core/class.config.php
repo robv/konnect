@@ -4,6 +4,8 @@ class Config
 {
 	public static $config;
 
+	private function __construct() {}
+
 	public static function set($config = array(), $namespace = 'core') 
 	{
 		foreach ($config as $k => $v) {
