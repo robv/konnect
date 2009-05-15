@@ -9,7 +9,10 @@ define('DOC_ROOT', realpath(dirname(__FILE__) . '/../') . '/');
 include DOC_ROOT . 'core/class.config.php';
 
 // Setting core configuration variables.
-Config::set_core();
+if (!Config::set_core()) {
+	die('<h1>Where am I?</h1> <p>You need to setup your server names in <code>class.config.php</code></p>
+		<p><code>$_SERVER[\'HTTP_HOST\']</code> reported <code>' . $_SERVER['HTTP_HOST'] . '</code></p>');
+}
 
 // Class Autoloader
 function __autoload($class_name)

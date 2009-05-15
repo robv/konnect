@@ -6,23 +6,28 @@
 	for rerwriting that url based on predefined routes in config/settings.php
 */
 
-class Router
-{
+class Router {
 	public static $uri;
+	
+	private function __construct() {}
 
-	public 
+	/*
+		TODO: If we add this helper, we can make the property on top private, what do you think? 
+	*/
+	public static function uri($segment = null)
+	{
+		return isset(self::$uri[$segment]) ? self::$uri[$segment] : null;
+	}
 
 	// Simply runs both uri_to_array and uri_rewrite so we don't have to run both methods
-	public static function new_uri($routes, $uri = NULL)
-	{
+	public static function new_uri($routes, $uri = NULL) {
 		self::$uri = self::uri_to_array($uri);
 		self::$uri = self::uri_rewrite($routes);
 		return self::$uri;
 	}
 
 	// Maps current uri array to see if matches are found in config/settings.php
-	public static function uri_rewrite($routes)
-	{
+	public static function uri_rewrite($routes) {
 		$uri_string = implode('/', self::$uri) . '/';
 		$matches = array();
 
@@ -30,7 +35,7 @@ class Router
 			if (preg_match('#^' . trim($intial_path, '/') . '/$#', $uri_string, $matches)) {
 				foreach ($matches as $key => $value) { 
 					// in destination path use %1%, %2%, etc as you would $1, $2, in mod_rewrite
-					$destination_path = str_replace('%' . $key . '%',$value,$destination_path);
+					$destination_path = str_replace('%' . $key . '%', $value, $destination_path);
 				}
 				// triming shouldn't be neccessary it's done just in case
 				return self::$uri = explode('/', trim(strtolower($destination_path), '/')); 
@@ -40,8 +45,7 @@ class Router
 		return self::$uri;
 	}
 
-	public static function uri_to_array($uri = NULL)
-	{
+	public static function uri_to_array($uri = NULL) {
 		// Not defaulting to server request uri allows some testing to be done
 		if(is_null($uri))
 			$uri = $_SERVER['REQUEST_URI'];
