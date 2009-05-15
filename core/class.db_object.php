@@ -2,46 +2,32 @@
     class Db_Object
     {
         public $id;
-        public $tableName;
-        public $idColumnName;
+        public $table_name;
+        public $id_column_name;
 
         protected $columns = array();
-        protected $className;
+        protected $class_name;
 
-        protected function __construct($table_name, $columns, $id = null)
+        protected function __construct($table_name, $columns, $args = NULL)
         {
-            $this->className    = get_class($this);
-            $this->tableName    = $table_name;
+            $this->class_name    = get_class($this);
+            $this->table_name    = $table_name;
 
-            // A note on hardcoding $this->idColumnName = 'id'...
+            // A note on hardcoding $this->id_column_name = 'id'...
             // In three years working with this framework, I've used
             // a different id name exactly once - so I've decided to
             // drop the option from the constructor. You can overload
             // the constructor yourself if you have the need.
-            $this->idColumnName = 'id';
+            $this->id_column_name = 'id';
 
             foreach ($columns as $column)
 			{
-                $this->columns[$column] = null;
+                $this->columns[$column] = NULL;
 			}
-
-            if (!is_null($id))
-			{
-				if(!is_array($id))
-				{	
-					$this->select($id);
-				}
-				else
-				{
-					// You can also select by $id[$fieldname] = $fieldvalue
-					foreach($id as $key => $value)
-					{
-						$keys[] = $key;
-						$values[] = $value;
-					}
-						$this->select($keys,$values);
-				}
-			}
+			
+			// Passing args to select allows us to combine a select with the initialization of an object
+            if (!is_null($args))
+				$this->select($args);
 		}
 
         public function __get($key)
@@ -54,7 +40,7 @@
 
             $trace = debug_backtrace();
             trigger_error("Undefined property via Db_Object::__get(): $key in {$trace[0]['file']} on line {$trace[0]['line']}", E_USER_NOTICE);
-            return null;
+            return NULL;
         }
 
         public function __set($key, $value)
@@ -67,45 +53,38 @@
         }
 
 		// Returns an array containing columns and values in an array as opposed to object form
-        public function return_columns()
+        public function get_columns()
         {
             return $this->columns;
         }
-
-        public function select($id, $column = null)
+		
+		
+		// $args should be an array formatted like $args[field_name] = field_value, matching functionality of Database::query
+        public function select($args)
         {
-            $db = Database::getDatabase();
-
-            if(is_array($id) && is_array($column))
+			$db = Database::get_db();
+			$values = array();
+			
+			// TODO: Error check for matching array count
+			foreach($args as $field => $value)
 			{
-				// TODO: Error check for matching array count
-				foreach($column as $key => $column_name)
-				{
-					$where[$key] = '(`' . $db->escape($column_name) . '` = :' . $db->escape($column_name) . ')';
-					$values[$column_name] = $id[$key];
-				}
-				$where = implode(' AND ',$where);
-				$db->query('SELECT * FROM `' . $this->tableName . '` WHERE ' . $where . ' LIMIT 1', $values);
-			}
-			else
-			{
-				if (is_null($column))
-				{
-					$column = $this->idColumnName;
-				}
-				$column = $db->escape($column);
-	            $db->query('SELECT * FROM `' . $this->tableName . '` WHERE `' . $column . '` = :id LIMIT 1', array('id' => $id));
+				$where[] = '(`' . $db->escape($field) . '` = :' . $db->escape($field) . ')';
+				$values[$db->escape($field)] = $value;
 			}
 			
+			$where = ' WHERE ' . implode(' AND ', $where);
+			
+			$db->query('SELECT * FROM `' . $this->table_name . '`' . $where . ' LIMIT 1', $values);
+			
 			// Finally check if there were any returned results
-			if ($db->hasRows())
+			if ($db->has_rows())
             {
-                $row = $db->getRow();
+                $row = $db->get_row();
                 $this->load($row);
-                return true;
+                return TRUE;
             }
 
-            return false;
+            return FALSE;
         }
 
         public function ok()
@@ -128,10 +107,10 @@
 
         public function insert($cmd = 'INSERT INTO')
         {
-            $db = Database::getDatabase();
+            $db = Database::get_db();
 
             if (count($this->columns) == 0)
-				return false;
+				return FALSE;
 
             $data = array();
             
@@ -147,8 +126,8 @@
             $columns = '`' . implode('`, `', array_keys($data)) . '`';
             $values = implode(',', $data);
 
-            $db->query($cmd . ' `' . $this->tableName . '` (' . $columns . ') VALUES (' . $values . ')');
-            $this->id = $db->insertId();
+            $db->query($cmd . ' `' . $this->table_name . '` (' . $columns . ') VALUES (' . $values . ')');
+            $this->id = $db->insert_id();
             return $this->id;
         }
 
@@ -160,14 +139,14 @@
         public function update()
         {
             if (is_null($this->id))
-				return false;
+				return FALSE;
 
-            $db = Database::getDatabase();
+            $db = Database::get_db();
 
             if (count($this->columns) == 0)
-				return false;
+				return FALSE;
 
-            $sql = 'UPDATE ' . $this->tableName . ' SET ';
+            $sql = 'UPDATE ' . $this->table_name . ' SET ';
 
             foreach ($this->columns as $k => $v)
             {
@@ -176,27 +155,27 @@
 			
 			$sql[strlen($sql) - 1] = ' ';
 
-            $sql .= 'WHERE `' . $this->idColumnName . '` = ' . $db->quote($this->id);
+            $sql .= 'WHERE `' . $this->id_column_name . '` = ' . $db->quote($this->id);
             $db->query($sql);
 
-            return $db->affectedRows();
+            return $db->affected_rows();
         }
 
         public function delete()
         {
             if (is_null($this->id))
-				return false;
+				return FALSE;
             
-			$db = Database::getDatabase();
-            $db->query('DELETE FROM `' . $this->tableName . '` WHERE `' . $this->idColumnName . '` = :id LIMIT 1', array('id' => $this->id));
-            return $db->affectedRows();
+			$db = Database::get_db();
+            $db->query('DELETE FROM `' . $this->table_name . '` WHERE `' . $this->id_column_name . '` = :id LIMIT 1', array('id' => $this->id));
+            return $db->affected_rows();
         }
 
         public function load($row)
         {
             foreach ($row as $k => $v)
             {
-                if ($k == $this->idColumnName)
+                if ($k == $this->id_column_name)
 				{
                     $this->id = $v;
                 }
@@ -207,48 +186,38 @@
 			}
         }
 
-        // Grabs a large block of instantiated $class_name objects from the database using only one query.
-        public static function glob($class_name, $sql = null, $extra_columns = array())
+        // Grabs a large block of instantiated objects from the database using only one query.
+        public static function select_multiple($sql = NULL, $extra_columns = array())
         {
-            $db = Database::getDatabase();
+            $db = Database::get_db();
 
-            // Make sure the class exists before we instantiate it...
-            if (!class_exists($class_name))
-                return false;
-
-            $tmp_obj = new $class_name;
+            $tmp_obj = new $this->class_name;
 
             // Also, it needs to be a subclass of Db_Object...
             if (!is_subclass_of($tmp_obj, 'Db_Object'))
-                return false;
+                return FALSE;
 
             if (is_null($sql))
-                $sql = "SELECT * FROM `{$tmp_obj->tableName}`";
+                $sql = "SELECT * FROM `{$tmp_obj->table_name}`";
 
             $objs = array();
-            $rows = $db->getRows($sql);
+            $rows = $db->get_rows($sql);
             foreach ($rows as $row)
             {
-                $o = new $class_name;
+                $o = new $this->class_name;
                 $o->load($row);
                 $objs[$o->id] = $o;
 
                 foreach ($extra_columns as $c)
                 {
-                    $o->addColumn($c);
-                    $o->$c = isset($row[$c]) ? $row[$c] : null;
+                    $o->add_column($c);
+                    $o->$c = isset($row[$c]) ? $row[$c] : NULL;
                 }
             }
             return $objs;
         }
-		
-		// Easily run glob on basic db objects
-		function select_multiple($sql = null, $extra_columns = array())
-		{
-	            return $this->glob(ucfirst($this->tableName), 'SELECT * FROM `' . $this->tableName . '`' . $sql);
-		}
 
-        public function addColumn($key, $val = null)
+        public function add_column($key, $val = NULL)
         {
             if (!in_array($key, array_keys($this->columns)))
 			{
