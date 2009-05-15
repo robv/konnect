@@ -6,6 +6,7 @@
     define('DOC_ROOT', realpath(dirname(__FILE__) . '/../') . '/');
 	
 	include DOC_ROOT . 'core/class.config.php';
+	Config::set_core();
 	
     // Class Autoloader
     function __autoload($class_name)
