@@ -7,7 +7,7 @@ class App_Init {
 	public $data;
 	
 	// $dir is the directory the app sits in
-	private function __construct($dir)
+	public function __construct($dir)
 	{
 		$this->app_name = $config['app_name'];
 		
@@ -31,7 +31,7 @@ class App_Init {
 		
 		Router::exec()->uri_rewrite(Config::$config[$this->app_name]['routes']);
 		
-		$this->initiateApp();
+		$this->initiate();
 	}
 	
 	public function initiate()
