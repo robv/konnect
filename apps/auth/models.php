@@ -4,13 +4,12 @@
 	{
 		function __construct($id = "")
 		{
-			parent::__construct('users', 'id', array('username', 'password', 'level', 'email'), $id);
+			parent::__construct('users', array('username', 'password', 'level', 'email'), $id);
 		}
 
 		function insert()
 		{
-			global $Auth;
-				$this->password = Auth::getAuth()->createHashedPassword($this->password);
+			$this->password = Auth::getAuth()->createHashedPassword($this->password);
 			parent::insert();
 		}
 

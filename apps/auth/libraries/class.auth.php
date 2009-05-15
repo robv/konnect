@@ -10,20 +10,20 @@
         public $level;
         public $user; // Db_Object User object (if available)
 
-        private $loggedIn;
+        private $logged_in;
 
         // Call with no arguments to attempt to restore a previous logged in session
         // which then falls back to a guest user (which can then be logged in using
         // $this->login($un, $pw). Or pass a user_id to simply login that user. The
         // $seriously is just a safeguard to be certain you really do want to blindly
-        // login a user. Set it to true.
-        private function __construct($user_to_impersonate = null)
+        // login a user. Set it to TRUE.
+        private function __construct($user_to_impersonate = NULL)
         {
-            $this->id             = null;
-            $this->username       = null;
+            $this->id             = NULL;
+            $this->username       = NULL;
             $this->level          = 'guest';
-            $this->user           = null;
-            $this->loggedIn       = false;
+            $this->user           = NULL;
+            $this->logged_in      = FALSE;
 
             if (class_exists('User') && (is_subclass_of('User', 'Db_Object')))
                 $this->user = new User();
@@ -32,16 +32,16 @@
                 return $this->impersonate($user_to_impersonate);
 
             if ($this->attemptSessionLogin())
-                return true;
+                return TRUE;
 
             if ($this->attemptCookieLogin())
-                return true;
+                return TRUE;
 
-            return false;
+            return FALSE;
         }
 
         // Get Singleton object
-        public static function getAuth($user_to_impersonate = null)
+        public static function getAuth($user_to_impersonate = NULL)
         {
             if (is_null(self::$me))
                 self::$me = new Auth($user_to_impersonate);
@@ -61,11 +61,11 @@
         {
             $Config = Config::getConfig();
 
-            $this->id             = null;
-            $this->username       = null;
+            $this->id             = NULL;
+            $this->username       = NULL;
             $this->level          = 'guest';
-            $this->user           = null;
-            $this->loggedIn       = false;
+            $this->user           = NULL;
+            $this->loggedIn       = FALSE;
 
             if (class_exists('User') && (is_subclass_of('User', 'Db_Object')))
                 $this->user = new User();
@@ -83,10 +83,10 @@
             if ($db->affectedRows() == 1)
             {
                 $this->impersonate($this->id);
-                return true;
+                return TRUE;
             }
 
-            return false;
+            return FALSE;
         }
 
         public function changePassword($new_password)
@@ -94,17 +94,17 @@
             $db = Database::getDatabase();
             $Config = Config::getConfig();
 
-            if ($Config->useHashedPasswords === true)
+            if ($Config->useHashedPasswords === TRUE)
                 $new_password = $this->createHashedPassword($new_password);
 
             $db->query('UPDATE users SET password = :password WHERE id = :id', array('password' => $new_password, 'id' => $this->id));
             if ($db->affectedRows() == 1)
             {
                 $this->impersonate($this->id);
-                return true;
+                return TRUE;
             }
 
-            return false;
+            return FALSE;
         }
 
         // Is a user logged in? This was broken out into its own function
@@ -135,7 +135,7 @@
             $db = Database::getDatabase();
             $Config = Config::getConfig();
 
-            if ($Config->useHashedPasswords === true)
+            if ($Config->useHashedPasswords === TRUE)
                 $pw = $this->createHashedPassword($pw);
 
             $db->query('SELECT COUNT(*) FROM users WHERE username = :username AND password = BINARY :password', array('username' => $this->username, 'password' => $pw));
@@ -170,16 +170,16 @@
                     $this->user->load($row);
                 }
 
-                if ($Config->useHashedPasswords === false)
+                if ($Config->useHashedPasswords === FALSE)
                     $row['password'] = $this->createHashedPassword($row['password']);
 
                 $this->storeSessionData($this->username, $row['password']);
-                $this->loggedIn = true;
+                $this->loggedIn = TRUE;
 
-                return true;
+                return TRUE;
             }
 
-            return false;
+            return FALSE;
         }
 
         // Attempt to login using data stored in the current session
@@ -188,7 +188,7 @@
             if (isset($_SESSION['un']) && isset($_SESSION['pw']))
                 return $this->attemptLogin($_SESSION['un'], $_SESSION['pw']);
             else
-                return false;
+                return FALSE;
         }
 
         // Attempt to login using data stored in a cookie
@@ -196,14 +196,14 @@
         {
             if (isset($_COOKIE['s']) && is_string($_COOKIE['s']))
             {
-                $s = json_decode($_COOKIE['s'], true);
+                $s = json_decode($_COOKIE['s'], TRUE);
                 if (isset($s['un']) && isset($s['pw']))
                 {
                     return $this->attemptLogin($s['un'], $s['pw']);
                 }
             }
 
-            return false;
+            return FALSE;
         }
 
         // The function that actually verifies an attempted login and
@@ -216,12 +216,12 @@
 
             // We SELECT * so we can load the full user record into the user Db_Object later
             $row = $db->getRow('SELECT * FROM users WHERE username = ' . $db->quote($un));
-            if ($row === false) return false;
+            if ($row === FALSE) return FALSE;
 
-            if ($Config->useHashedPasswords === false)
+            if ($Config->useHashedPasswords === FALSE)
                 $row['password'] = $this->createHashedPassword($row['password']);
 
-            if ($pw != $row['password']) return false;
+            if ($pw != $row['password']) return FALSE;
 
             $this->id       = $row['id'];
             $this->username = $row['username'];
@@ -236,15 +236,15 @@
             }
 
             $this->storeSessionData($un, $pw);
-            $this->loggedIn = true;
+            $this->loggedIn = TRUE;
 
-            return true;
+            return TRUE;
         }
 
         // Takes a username and a *hashed* password
         private function storeSessionData($un, $pw)
         {
-            if (headers_sent()) return false;
+            if (headers_sent()) return FALSE;
             $Config = Config::getConfig();
             $_SESSION['un'] = $un;
             $_SESSION['pw'] = $pw;

@@ -2,16 +2,6 @@
 
 class String
 {	
-	// Singleton object. Leave $me alone.
-	private static $me;
-
-	// Get Singleton object
-	public static function exec()
-	{
-		if (is_null(self::$me))
-			self::$me = new String();
-		return self::$me;
-	}
 
     // Creates a friendly URL slug from a 
 	public static function clean($str, $replacer = '-')
@@ -82,28 +72,9 @@ class String
         return rtrim($str, '/');
     }
 
-    // Fixes MAGIC_QUOTES
-	public static function fix_slashes($arr = '')
-    {
-        if (is_null($arr) || $arr == '') 
-			return null;
-        
-		if (!get_magic_quotes_gpc()) 
-			return $arr;
-		
-		// I COULD NOT get damned array mapping to work with this shizzle, TODO: Refactor with array mapping
-		if (is_array($arr))
-		{
-			foreach($arr as $key => $value)
-			{
-				$arr[$key] = $this->fix_slashes($value);
-			}
-			return $arr;
-		}
-		else
-		{
-			return stripslashes($arr);
-		}
+	public static function strip_slashes($value)
+ 	{
+	    return is_array($value) ? array_map(array(self, 'strip_slashes'), $value) : stripslashes($value);
 	}
 
 	public static function printr($var)
