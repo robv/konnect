@@ -12,4 +12,4 @@
 	*/
 	
 	$config['app_name'] = 'auth';
-	$config['default_controller'] = 'main';
+	$config['default_method'] = 'index';
