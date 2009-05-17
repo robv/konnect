@@ -15,6 +15,8 @@ class App_Init {
 		
 		Config::set($config, $this->data['app_name']);
 		
+		$this->app_name = Config::$config[$this->app_name]['app_name'];
+		
 		// We can't count on user to set routes, so let's make sure something's there
 		if(!isset(Config::$config[$this->data['app_name']]['routes']))
 			Config::$config[$this->data['app_name']]['routes'] = array();

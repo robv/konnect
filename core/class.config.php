@@ -1,20 +1,17 @@
 <?php
 
-class Config
-{
+class Config {
 	public static $config;
 
 	private function __construct() {}
 
-	public static function set($config = array(), $namespace = 'core') 
-	{
+	public static function set($config = array(), $namespace = 'core') {
 		foreach ($config as $k => $v) {
 			self::$config[$namespace][$k] = $v;
 		}
 	}
 
-	public static function set_core($host = NULL)
-	{
+	public static function set_core($host = NULL) {
 		// Allows testing outside of browser by being able to pass host
 		if (is_null($host))
 			$host = $_SERVER['HTTP_HOST'];
