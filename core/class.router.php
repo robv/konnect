@@ -7,15 +7,17 @@
 */
 
 class Router {
-	public static $uri;
+	
+	private static $uri;
 	
 	private function __construct() {}
 
-	/*
-		TODO: If we add this helper, we can make the property on top private, what do you think? 
-	*/
-	public static function uri($segment = null)
+	// Adding set paramenter allows us to set a segment's value without the need for an extra method
+	public static function uri($segment, $set = null)
 	{
+		if(!is_null)
+			return self::$url[$segment] = $set;
+			
 		return isset(self::$uri[$segment]) ? self::$uri[$segment] : null;
 	}
 
