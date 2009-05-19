@@ -3,16 +3,17 @@
 class Controller {
 	
 	public $data;
+	private $default_method;
 	
 	// TODO: Can private functions be extended?
-	public function __construct($method='', $data = '')
+	public function __construct($data)
 	{
-		$default_method = Config::$config[$this->data['app_name']]['default_method'];
 		$this->data = $data;
+		$dm = $this->default_method;
 		
 		 // If no method is set go to default
-		if (empty($method))
-			$this->$default_method();
+		if (is_null(Router::uri(2)))
+			$this->$dm();
 		else
 			$this->$method();
 	}
@@ -28,14 +29,14 @@ class Controller {
 			}
 		}
 		
-		include DOC_ROOT . '/apps/' . $this->data['app_name'] . '/templates/' . $file . '.thtml';
+		include DOC_ROOT . '/apps/' . $this->data['app']['name'] . '/templates/' . $file . '.thtml';
 		
 	}
 	
 	public function install()
 	{
 		// Create tables
-		$sql = file_get_contents(DOC_ROOT . '/apps/' . $this->app_name . '/db.sql');
+		$sql = file_get_contents(DOC_ROOT . '/apps/' . $this->data['app']['name'] . '/db.sql');
 
 		// Do this to split up creations to one per query.
 		$queries = explode('#',$sql);
