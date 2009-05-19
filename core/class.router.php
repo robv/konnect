@@ -15,9 +15,9 @@ class Router {
 	// Adding set paramenter allows us to set a segment's value without the need for an extra method
 	public static function uri($segment, $set = null)
 	{
-		if(!is_null)
-			return self::$url[$segment] = $set;
-			
+		if(!is_null($set))
+			self::$uri[$segment] = $set;
+
 		return isset(self::$uri[$segment]) ? self::$uri[$segment] : null;
 	}
 
@@ -53,10 +53,10 @@ class Router {
 			$uri = $_SERVER['REQUEST_URI'];
 
 		// Lowercase the entire string then strip http, https and ftp (just for fun) our of uri and then explode by "/"
-		self::$uri = explode('/', trim(str_replace(array('http://','https://','ftp://'), '', strtolower($uri)), '/'));
+		self::$uri = explode('/', trim(str_replace(array('http://','https://','ftp://'), '', strtolower($uri), $count), '/'));
 
 		// We want to rebuild the array without the actual domain
-		if (@parse_url($uri))
+		if ($count > 0)
 			array_shift(self::$uri);
 
 		$new_uri = array();			

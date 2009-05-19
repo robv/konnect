@@ -15,4 +15,4 @@ include DOC_ROOT . 'core/class.router.php';
 								'logout' => 'auth/index/logout/'
 						) , 'http://konnectapp.com/login/');
 						
-	var_dump(Router::$uri);
+	var_dump(Router::uri(2));

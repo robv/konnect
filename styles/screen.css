@@ -1,10 +1,115 @@
-/* Main CSS styles go here */
+@import url("screen_reset.css");
 
-/* These are just some sample styles */
-html, body { margin-top:0; padding-top:0; }
-h1 { background-color:#225378; color:#fff; margin:0; padding:1em; font-size:167%; }
-#main { text-align:left; margin:1em 2em; }
-#main p { width:40em; }
-.error { color:red; }
-.legal { font-size:85%; color:#999; }
-.legal a { color:#999; }
+/* @group UNIVSERAL */
+
+html,body { width: 100%; }
+ 
+body { font-size: 62.5%; }
+ 
+.float_left { float: left; }
+.float_right { float: right; }
+ 
+.hr { width: 100%; height: 1px; overflow: hidden; background-color: #ccc; }
+ 
+.hr hr { display: none; }
+ 
+/* slightly enhanced, universal clearfix hack */
+ 
+.clearfix:after { visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }
+ 
+.clearfix { display: inline-block; }
+ 
+/* start commented backslash hack \*/
+ 
+* html .clearfix { height: 1%; }
+ 
+.clearfix { display: block; }
+ 
+/* close commented backslash hack */
+
+
+
+/* @end */
+
+/* @group MESSAGES */
+ 
+.info, .success, .warning, .error, .validation {
+    border: 1px solid;
+    margin: 10px 0px;
+    padding:15px 10px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    list-style-type: disc;
+}
+.info li, .success li, .warning li, .error li, .validation li {
+  margin-left: 10px;
+}
+.info {
+    color: #00529B;
+    background-color: #BDE5F8;
+}
+.info a,.info a:link {
+  color: #00529B !important;
+}
+.success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+}
+.success a,.success a:link {
+  color: #4F8A10 !important;
+}
+.warning {
+    color: #9F6000;
+    background-color: #FEEFB3;
+}
+.warning a,.warning a:link {
+  color: #9F6000 !important;
+}
+.error {
+    color: #D8000C;
+    background-color: #FFBABA;
+}
+.error a,.error a:link {
+  color: #D8000C !important;
+}
+ 
+.validation {
+    color: #D63301;
+    background-color: #FFCCBA;
+}
+ 
+/* @end */
+
+/* @group BASICS */
+
+body {
+	background-color: #ccc;
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+#content_container {
+	width: 990px;
+	margin: 20px auto;
+}
+
+#content_container .full {
+	padding: 20px;
+}
+
+/* @end */
+
+/* @group CONTENT BASICS */
+
+#content {
+	background-color: #fff;
+}
+
+#content h2 {
+	font-size: 2.5em;	
+}
+
+#content p,#content ul,#content h1,#content h2,#content h3 {
+	margin-bottom: 20px;
+}
+
+/* @end */

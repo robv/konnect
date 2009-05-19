@@ -6,23 +6,39 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
 	<title>Konnect</title>
+	<?= Load::css('screen'); ?>
 	
 </head>
 
 <body>
+	
+<div id="content_container">
 
-<h1>Login</h1>
+	<div id="content" class="full">
 
-<p>
-	<label for"username">Username:</label>
-	<input type="text" name="username" id="username" />
-</p>
+		<h2>Login</h2>
 
-<p>
-	<label for"password">Password:</label>
-	<input type="password" name="password" id="password" />
-</p>
+		<form action="" method="post">
 
+			<p>
+				<label for"username">Username:</label>
+				<input type="text" name="username" id="username" />
+			</p>
+
+			<p>
+				<label for"password">Password:</label>
+				<input type="password" name="password" id="password" />
+			</p>
+
+			<p>
+				<input type="submit" name="submit" value="Login" />
+			</p>
+
+		</form>
+	
+	</div>
+
+</div>
 
 </body>
 </html>

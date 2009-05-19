@@ -75,7 +75,7 @@ class Auth
 
         $_SESSION['un'] = '';
         $_SESSION['pw'] = '';
-        setcookie('s', '', time() - 3600, '/', Config::$config['core']['cookie_domain']);
+        setcookie('s', '', time() - 3600, '/', Config::$config['core']['basics']['cookie_domain']);
     }
 
     // Is a user logged in? This was broken out into its own function
@@ -203,7 +203,7 @@ class Auth
 		$_SESSION['un'] = $un;
 		$_SESSION['pw'] = $pw;
 		$s = json_encode(array('un' => $un, 'pw' => $pw));
-		return setcookie('s', $s, time()+60*60*24*30, '/', Config::$config['core']['cookie_domain']);
+		return setcookie('s', $s, time()+60*60*24*30, '/', Config::$config['core']['basics']['cookie_domain']);
     }
 
     private function create_hashed_password($pw)

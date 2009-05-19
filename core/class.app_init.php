@@ -3,7 +3,7 @@
 class App_Init {
 
 	public $config;
-	public $app_name
+	public $app_name;
 	public $data;
 	
 	// $dir is the directory the app sits in
@@ -14,11 +14,11 @@ class App_Init {
 		
 		$this->data['app']['name'] = $config['app_name'];
 		
-		include DOC_ROOT . $dir . '/config/settings.php';
+		include DOC_ROOT . 'apps/' . $dir . '/settings.php';
 		
 		Config::set($config, $this->data['app']['name']);
 		
-		$this->app_name = Config::$config[$this->app_name]['app']['name'];
+		$this->app_name = $this->data['app']['name'];
 		
 		$this->route();
 		$this->load_controller();
@@ -34,7 +34,7 @@ class App_Init {
 
 		require DOC_ROOT . 'apps/' . $this->app_name . '/controllers/controller.' . Router::uri(1) . '.php';
 		
-		$controller_name = String::exec()->uc_slug(Router::uri(1), '_')
+		$controller_name = String::uc_slug(Router::uri(1), '_') . '_Controller';
 		$controller_obj = new $controller_name($this->data);
 	}
 
@@ -50,7 +50,7 @@ class App_Init {
 		$new_routes = array();
 		
 		foreach (Config::$config[$this->data['app']['name']]['routes'] as $k => $v)
-			$new_routes[$this->data['app']['name'] . '/' . $k] = $this->app_name . '/' . $v
+			$new_routes[$this->data['app']['name'] . '/' . $k] = $this->app_name . '/' . $v;
 			
 		Config::$config[$this->data['app']['name']]['routes'] = $new_routes;
 		

@@ -14,8 +14,8 @@ class String
 
 	public static function uc_slug($str, $replacer = '-')
 	{
-		explode($replacer, $str);
-		$str = ucwords($str);
+		$str = explode($replacer, $str);
+		$str = array_map('ucwords', $str);
 		return implode($replacer, $str);
 	}
 	
@@ -74,7 +74,7 @@ class String
 
 	public static function strip_slashes($value)
  	{
-	    return is_array($value) ? array_map(array(self, 'strip_slashes'), $value) : stripslashes($value);
+	    return is_array($value) ? array_map(array('self', 'strip_slashes'), $value) : stripslashes($value);
 	}
 
 	public static function printr($var)

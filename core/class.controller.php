@@ -9,10 +9,11 @@ class Controller {
 	public function __construct($data)
 	{
 		$this->data = $data;
+		$method = Router::uri(2);
 		$dm = $this->default_method;
 		
 		 // If no method is set go to default
-		if (is_null(Router::uri(2)))
+		if (is_null($method))
 			$this->$dm();
 		else
 			$this->$method();

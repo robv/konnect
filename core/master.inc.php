@@ -7,7 +7,6 @@ define('KONNECT', true);
 define('DOC_ROOT', realpath(dirname(__FILE__) . '/../') . '/');
 
 include DOC_ROOT . 'core/class.config.php';
-Config::set_core();
 
 // Setting core configuration variables.
 if (!Config::set_core()) {
