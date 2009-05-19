@@ -117,6 +117,14 @@ body {
 	margin-bottom: 20px;
 }
 
+#content a,#content a:link,#content a:active,#content a:visited {
+	color: #22272D;
+}
+
+#content a:hover {
+	color: #4e5b68;
+}
+
 /* @end */
 
 /* @group FORMS .basic */

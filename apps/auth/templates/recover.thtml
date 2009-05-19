@@ -16,28 +16,25 @@
 
 	<div id="content" class="full">
 
-		<h2>Login</h2>
+		<h2>Password Recovery</h2>
 		
 		<?php Flash::show(); ?>
+
+		<p class="info">We all forget sometimes, type your username below and you're password will be reset.</p>
 
 		<form action="" method="post" class="basic pad" >
 
 			<div>
-				<label for"username">Username:</label>
-				<input type="text" name="username" id="username" />
-			</div>
-
-			<div>
-				<label for"password">Password:</label>
-				<input type="password" name="password" id="password" />
+				<label for"email">Email Address:</label>
+				<input type="text" name="email" id="email" />
 			</div>
 
 			<p>
-				<a href="<?= WEB_ROOT; ?>recover/">Help! I forgot my password!</a>
+				<a href="<?= WEB_ROOT; ?>login/">I remember now...</a>
 			</p>
 
 			<div>
-				<input type="submit" name="submit" value="Login" class="submit" />
+				<input type="submit" name="submit" value="Reset" class="submit" />
 			</div>
 
 		</form>

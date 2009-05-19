@@ -54,7 +54,7 @@ class Main_Controller extends Controller {
 				}
 		}
 			
-		$this->loadView('recover');
+		$this->load_template('recover');
 	
 	}
 	
