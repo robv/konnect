@@ -13,12 +13,12 @@
 
 class Flash {
 	
-	private static function set($message, $name='flasher')
+	public static function set($message, $name='flasher')
 	{
 		$_SESSION['flasher'][$name] = $message;
 	}
 	
-	private static function show($name='flasher')
+	public static function show($name='flasher')
 	{
 		echo isset($_SESSION['flasher'][$name]) ? $_SESSION['flasher'][$name] : '';
 	

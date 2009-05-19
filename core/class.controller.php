@@ -3,7 +3,7 @@
 class Controller {
 	
 	public $data;
-	private $default_method;
+	protected $default_method;
 	
 	// TODO: Can private functions be extended?
 	public function __construct($data)

@@ -14,12 +14,16 @@ if (!Config::set_core()) {
 		<p><code>$_SERVER[\'HTTP_HOST\']</code> reported <code>' . $_SERVER['HTTP_HOST'] . '</code></p>');
 }
 
+// Load all the models
+foreach (Config::$config['core']['installed_apps'] as $app)
+	include DOC_ROOT . 'apps/' . $app . '/models.php';
+
 // Class Autoloader
 function __autoload($class_name)
 {
 	$folders = array();
 
-	foreach(Config::$config['core']['installed_apps'] as $app) {
+	foreach (Config::$config['core']['installed_apps'] as $app) {
 		$folders[] = 'apps/' . $app . '/libraries';
 	}
 

@@ -14,6 +14,8 @@ class App_Init {
 		
 		$this->data['app']['name'] = $config['app_name'];
 		
+		$this->install();
+		
 		include DOC_ROOT . 'apps/' . $dir . '/settings.php';
 		
 		Config::set($config, $this->data['app']['name']);
@@ -55,6 +57,30 @@ class App_Init {
 		Config::$config[$this->data['app']['name']]['routes'] = $new_routes;
 		
 		Router::uri_rewrite(Config::$config[$this->data['app']['name']]['routes']);
+	}
+	
+	private function install()
+	{
+		if (file_exists(DOC_ROOT . 'apps/' . $this->data['app']['name'] . '/tables.sql')) {
+			if(is_writable(DOC_ROOT . 'apps/' . $this->data['app']['name'] . '/tables.sql')) {
+				// Create tables
+				$sql = file_get_contents(DOC_ROOT . 'apps/' . $this->data['app']['name'] . '/tables.sql');
+
+				// Do this to split up creations to one per query.
+				$queries = explode('#',$sql);
+
+				$db = Database::get_db();
+
+					foreach($queries as $query)
+						$db->query($query);
+				
+				rename(DOC_ROOT . 'apps/' . $this->data['app']['name'] . '/tables.sql',DOC_ROOT . 'apps/' . $this->data['app']['name'] . '/tables.sql.bak');
+				
+			} else {
+				die('<h1>You have no installed this app, either run <strong>' . DOC_ROOT . 'apps/' . $this->data['app']['name'] . '/tables.sql' . 
+					'</strong> manually and delete the file or change chmod this file so that it is writable by PHP.</h1>');
+			}
+		}
 	}
 	
 }

@@ -17,22 +17,24 @@
 	<div id="content" class="full">
 
 		<h2>Login</h2>
+		
+		<?php Flash::show(); ?>
 
-		<form action="" method="post">
+		<form action="" method="post" class="basic pad" >
 
-			<p>
+			<div>
 				<label for"username">Username:</label>
 				<input type="text" name="username" id="username" />
-			</p>
+			</div>
 
-			<p>
+			<div>
 				<label for"password">Password:</label>
 				<input type="password" name="password" id="password" />
-			</p>
+			</div>
 
-			<p>
-				<input type="submit" name="submit" value="Login" />
-			</p>
+			<div>
+				<input type="submit" name="submit" value="Login" class="submit" />
+			</div>
 
 		</form>
 	

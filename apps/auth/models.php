@@ -1,8 +1,8 @@
 <?php
 
-class Users extends DBObject
+class Users extends Db_Object
 {
-	function __construct($id = "")
+	function __construct($id = null)
 	{
 		parent::__construct('users', array('username', 'password', 'level', 'email'), $id);
 	}
@@ -16,7 +16,7 @@ class Users extends DBObject
 	function update()
 	{
 		$user = new Users();
-		$user->select($this->id);
+		$user->select(array('id' => $this->id));
 		
 		// Because passwords are stored hashed, we don't want to hash a hash
 		if($user->password !== $this->password)

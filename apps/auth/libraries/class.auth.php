@@ -30,8 +30,7 @@ class Auth
 
 		$this->auth_salt 	  = 'G9yyiNxdyWnp***twitter.com/thisisrobv***PenaMp8DaNDGjvmo';
 
-        if (class_exists('Users') && (is_subclass_of('Users', 'Db_Object')))
-            $this->user = new Users();
+        $this->user = new Users();
 
         if (!is_null($user_to_impersonate))
             return $this->impersonate($user_to_impersonate);
@@ -172,7 +171,7 @@ class Auth
         $db = Database::get_db();
 
         // We SELECT * so we can load the full user record into the user Db_Object later
-        $row = $db->getRow('SELECT * FROM users WHERE username = ' . $db->quote($un));
+        $row = $db->get_row('SELECT * FROM users WHERE username = ' . $db->quote($un));
         if ($row === FALSE) 
 			return FALSE;
 
@@ -184,7 +183,7 @@ class Auth
         $this->level    = $row['level'];
 
         // Load any additional user info into db_object
-		$this->user = new User();
+		$this->user = new Users();
 		$this->user->id = $row['id'];
 		$this->user->load($row);
 

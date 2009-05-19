@@ -18,7 +18,7 @@ class Router {
 		if(!is_null($set))
 			self::$uri[$segment] = $set;
 
-		return isset(self::$uri[$segment]) ? self::$uri[$segment] : null;
+		return (isset(self::$uri[$segment]) && self::$uri[$segment] !== '') ? self::$uri[$segment] : null;
 	}
 
 	// Simply runs both uri_to_array and uri_rewrite so we don't have to run both methods

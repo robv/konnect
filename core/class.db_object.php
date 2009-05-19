@@ -26,7 +26,7 @@
 			}
 			
 			// Passing args to select allows us to combine a select with the initialization of an object
-            if (!is_null($args) || is_array($args))
+            if (!is_null($args))
 				$this->select($args);
 		}
 

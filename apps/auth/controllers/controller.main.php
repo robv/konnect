@@ -14,7 +14,7 @@ class Main_Controller extends Controller {
 	{
 		// Kick out user if already logged in
 		if (Auth::get_auth()->logged_in())
-			Core_Helpers::redirect(WEB_ROOT);
+			Core_Helpers::redirect(WEB_ROOT . 'logout/');
 
 		if (isset($_POST['username'])) {
 			Auth::get_auth()->login($_POST['username'], $_POST['password']);
