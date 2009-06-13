@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>Konnect</title>
+	<?= Load::css('admin/screen'); ?>
+	
+</head>
+
+<body>
+	
+<div id="header">
+	
+	<div class="inner clearfix">
+	
+		<h1><a href="<?= WEB_ROOT; ?>">Site Administration</a></h1>
+	
+		<div id="accounts">
+			<p>Logged in as <strong>robv</strong> <a href="<?= WEB_ROOT; ?>logout/" class="submit round">logout</a></p>
+		</div>
+	
+	</div>
+	
+</div>	
+
+<div id="navigation">
+	
+	<div class="inner clearfix">
+	
+		<ul class="float_left">
+			<li><a href="<?= WEB_ROOT; ?>">Dashboard</a></li>
+			<li><a href="<?= WEB_ROOT; ?>">News</a></li>
+			<li><a href="<?= WEB_ROOT; ?>">Events</a></li>
+			<li><a href="<?= WEB_ROOT; ?>">Document Library</a></li>
+		</ul>
+	
+	</div>
+	
+</div>
+	
+<div id="content_container">
+	
+	<h2 class="page_title">Dashboard</h2>
+	
+	<div id="sub_menu" class="round">
+		<ul class="float_left">
+			<li><a href="#">Users</a></li>
+			<li><a href="#">Members</a></li>
+			<li><a href="#">Phone List</a></li>
+		</ul>
+		<ul class="float_right">
+			<li><a href="#">Users</a></li>
+			<li><a href="#">Members</a></li>
+			<li><a href="#">Phone List</a></li>
+		</ul>
+	</div>
+	
+	<div id="left_column">
+		
+		<h3 class="title roundtop">Filters</h3>
+		<div class="column_box roundbottom">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		</div>
+		
+		<h3 class="title roundtop">Filters</h3>
+		<div class="column_box roundbottom">
+			<ul>
+				<li>Test</li>
+				<li>Tester</li>
+				<li>test</li>
+				<li class="link"><a href="#">Link</a></li>
+				<li class="link"><a href="#">Link</a></li>
+				<li class="link"><a href="#">Link</a></li>
+			</ul>
+		</div>
+		
+	</div>
+	
+	<div id="right_column">
+		
+		<h3 class="title roundtop">Latest Announcements</h3>
+		<div class="column_box roundbottom">
+			<div class="inner">
+				<h1>HTML Ipsum Presents</h1>
+
+				<p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+
+				<h2>Header Level 2</h2>
+
+				<ol>
+				   <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+				   <li>Aliquam tincidunt mauris eu risus.</li>
+				</ol>
+
+				<blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>
+
+				<h3>Header Level 3</h3>
+
+				<ul>
+				   <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+				   <li>Aliquam tincidunt mauris eu risus.</li>
+				</ul>
+
+				<pre><code>#header h1 a { 
+	display: block; 
+	width: 300px; 
+	height: 80px; 
+}</code></pre>
+	
+				<div class="hr"><hr /></div>
+				
+				<h1>HTML Ipsum Presents</h1>
+
+				<p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+
+				<h2>Header Level 2</h2>
+
+				<ol>
+				   <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+				   <li>Aliquam tincidunt mauris eu risus.</li>
+				</ol>
+
+				<blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>
+
+				<h3>Header Level 3</h3>
+
+				<ul>
+				   <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+				   <li>Aliquam tincidunt mauris eu risus.</li>
+				</ul>
+
+				<pre><code>#header h1 a { 
+	display: block; 
+	width: 300px; 
+	height: 80px; 
+}</code></pre>			
+
+			</div>
+		</div>
+		
+	</div>
+	
+</div>
+
+</body>
+</html>

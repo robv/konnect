@@ -14,7 +14,7 @@ class Main_Controller extends Controller {
 	{
 		// Kick out user if already logged in
 		if (Auth::get_auth()->logged_in())
-			Core_Helpers::redirect(WEB_ROOT . 'logout/');
+			Core_Helpers::redirect(WEB_ROOT);
 
 		if (isset($_POST['username'])) {
 			Auth::get_auth()->login($_POST['username'], $_POST['password']);
@@ -22,7 +22,7 @@ class Main_Controller extends Controller {
 			if (Auth::get_auth()->logged_in())
 				Core_Helpers::redirect(WEB_ROOT);
 			else
-				Flash::set('<p class="validation">Sorry, you have entered an incorrect username or password. Please try again.</p>');
+				Flash::set('<p class="flash validation">Sorry, you have entered an incorrect username or password. Please try again.</p>');
 		}
 		
 		$this->load_template('login');
@@ -45,11 +45,11 @@ class Main_Controller extends Controller {
 					
 					Core_Helpers::send_html_mail($recover->email, 'Password Recovery', $msg,$data['config']->email_address);
 					
-					Flash::set('<p class="success">Password has been reset and will be emailed to you shortly.</p>');
+					Flash::set('<p class="flash success">Password has been reset and will be emailed to you shortly.</p>');
 					
 				} else {	
 		
-					Flash::set('<p class="validation">Sorry, you have entered an email address that is not associated with any account.</p>');
+					Flash::set('<p class="flash validation">Sorry, you have entered an email address that is not associated with any account.</p>');
 		
 				}
 		}

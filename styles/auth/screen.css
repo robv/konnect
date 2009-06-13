@@ -1,0 +1,73 @@
+@import url("../screen_reset.css");
+
+/* @group BASICS */
+
+body {
+	background-color: #ccc;
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+/* @end */
+
+/* @group CONTENT BASICS */
+
+h2 {
+	background-color: #222;
+	color: #fff;
+	font: 3.5em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	width: 460px;
+	margin: 50px auto 0;
+	padding: 10px 20px;
+}
+
+#content {
+	background-color: #fff;
+	padding: 20px 20px 10px;
+	width: 460px;
+	margin: 0 auto 50px;
+	font-size: 1.4em;
+}
+
+#content a {
+	background-color: #efefef;
+	color: #222;
+	padding: 5px 8px;
+	font-size: .8em;
+	text-decoration: none;
+	float: left;
+	margin-top: 10px;
+} 
+
+#content a:hover {
+	background-color: #222;
+	color: #fff;
+}
+
+form div,form p {
+	margin-bottom: 20px;
+}
+
+form label {
+	float: left;
+	width: 100px;
+	padding-top: 5px;
+}
+
+form input {
+	border: 1px solid #ccc;
+	padding: 4px 8px;
+}
+
+form input.submit {
+	background-color: #222;
+	color: #fff;
+	border: 0;
+	text-transform: uppercase;
+	padding: 8px 12px;
+	float: right;
+	cursor: pointer;
+}
+
+/* @end */
+
+

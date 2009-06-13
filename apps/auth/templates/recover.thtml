@@ -6,40 +6,40 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
 	<title>Konnect</title>
-	<?= Load::css('screen'); ?>
+	<?= Load::css('auth/screen'); ?>
+	
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+	<?= Load::js('plugins/jquery.corners'); ?>
+	<?= Load::js('common'); ?>
 	
 </head>
 
 <body>
 	
-<div id="content_container">
-
-	<div id="content" class="full">
-
-		<h2>Password Recovery</h2>
-		
-		<?php Flash::show(); ?>
-
-		<p class="info">We all forget sometimes, type your username below and you're password will be reset.</p>
-
-		<form action="" method="post" class="basic pad" >
-
-			<div>
-				<label for"email">Email Address:</label>
-				<input type="text" name="email" id="email" />
-			</div>
-
-			<p>
-				<a href="<?= WEB_ROOT; ?>login/">I remember now...</a>
-			</p>
-
-			<div>
-				<input type="submit" name="submit" value="Reset" class="submit" />
-			</div>
-
-		</form>
+<script type="text/javascript">Site.login();</script>
 	
-	</div>
+<h2 class="roundtop">konnect</h2>
+
+<div id="content" class="roundbottom">
+	
+	<?php Flash::show(); ?>
+
+	<form action="" method="post">
+
+		<div>
+			<label for"email">Email:</label>
+			<input type="text" name="email" id="email" />
+		</div>
+
+		<p>
+			<a href="<?= WEB_ROOT; ?>login/">I remember now, let me log in...</a>
+		</p>
+
+		<div class="clearfix">
+			<input type="submit" name="submit" value="Recover" class="submit round" />
+		</div>
+
+	</form>
 
 </div>
 

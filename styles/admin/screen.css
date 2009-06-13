@@ -1,0 +1,278 @@
+@import url("../screen_reset.css");
+
+/* @group BASICS */
+
+body {
+	background-color: #ccc;
+	color: #222;
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+.submit {
+	background-color: #222;
+	color: #fff;
+	border: 0;
+	text-transform: uppercase;
+	padding: 8px 12px;
+	cursor: pointer;
+}
+
+/* @end */
+
+/* @group HEADER */
+
+#header {
+	background-color: #222;
+	color: #fff;
+	padding: 10px 0;
+}
+
+#header .inner {
+	width: 980px;
+	margin: 0 auto;
+}
+
+#header h1 {
+	font: 2.5em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	float: left;
+	padding: 5px 0;
+}
+
+#header a {
+	color: #fff;
+	text-decoration: none;
+}
+
+#header a:hover {
+	color: #ccc;
+}
+
+#header #accounts {
+	float: right;
+	margin: 15px 0 0;
+}
+
+#header .submit {
+	background-color: #333;
+	margin-left: 10px;
+}
+
+#header .submit:hover {
+	background-color: #121212;
+	color: #fff;
+}
+
+/* @end */
+
+/* @group NAVIGATION */
+
+#navigation {
+	background-color: #333;
+	font-size: 1.2em;
+}
+
+#navigation .inner {
+	width: 980px;
+	margin: 0 auto;
+}
+
+#navigation ul {
+	border-left: 1px dotted #444;
+}
+
+#navigation li,#navigation li a {
+	float: left;
+}
+
+#navigation li a {
+	padding: 14px;
+	color: #fff;
+	text-decoration: none;
+	border-right: 1px dotted #444;
+}
+
+#navigation li a:hover {
+	background-color: #555;
+}
+
+/* @end */
+
+/* @group CONTENT */
+
+#content_container {
+	width: 980px;
+	margin: 20px auto;
+	line-height: 1.4em;
+}
+
+#content_container a {
+	color: #555;
+}
+
+#content_container a:hover {
+	color: #aaa;
+}
+
+#content_container .hr {
+	width: 100%;
+	height: 1px;
+	background-color: #ddd;
+	margin-bottom: 15px;
+}
+
+#content_container .hr hr {
+	display: none;
+}
+
+#content_container h2.page_title {
+	font: 2.5em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	border-bottom: 1px solid #aaa;
+	padding-bottom: 5px;
+	margin-bottom: 10px;
+}
+
+#content_container #sub_menu {
+	width: 950px;
+	height: 40px;
+	overflow: hidden;
+	background-color: #fff;
+	font-size: 1.2em;
+	padding: 0 15px;
+	margin-bottom: 10px;
+}
+
+#content_container #sub_menu ul {
+	border-left: 1px dotted #ddd;
+}
+
+#content_container #sub_menu li,#content_container #sub_menu li a {
+	float: left;
+}
+
+#content_container #sub_menu li a {
+	display: block;
+	padding: 14px;
+	text-decoration: none;
+	color: #333;
+	border-right: 1px dotted #ddd;
+}
+
+#content_container #sub_menu li a:hover {
+	background-color: #efefef;
+}
+
+/* @end */
+
+/* @group LEFT */
+
+#left_column {
+	width: 250px;
+	float: left;
+}
+
+#left_column h3.title {
+	background-color: #222;
+	color: #fff;
+	padding: 8px 12px;
+	font-size: 1.2em;
+	text-transform: uppercase;
+}
+
+#left_column .column_box {
+	background-color: #fff;
+	padding: 15px 0 1px;
+	margin-bottom: 15px;
+}
+
+#left_column .column_box p {
+	padding: 0 15px;
+}
+
+#left_column .column_box p, #left_column .column_box ul {
+	margin-bottom: 15px;
+}
+
+#left_column ul {
+	border-top: 1px dotted #ddd;
+}
+
+#left_column ul li {
+	padding: 8px 15px;
+	border-bottom: 1px dotted #ddd;
+}
+
+#left_column ul li.link {
+	padding: 0;
+}
+
+#left_column ul li.link a {
+	padding: 8px 15px;
+	display: block;
+	color: #222;
+}
+
+#left_column ul li.link a:hover {
+	background-color: #efefef;
+}
+
+/* @end */
+
+/* @group RIGHT */
+
+#right_column {
+	float: right;
+	width: 700px;
+}
+
+#right_column h3.title {
+	background-color: #222;
+	color: #fff;
+	padding: 8px 12px;
+	font-size: 1.2em;
+	text-transform: uppercase;
+}
+
+#right_column .column_box {
+	background-color: #fff;
+	padding: 15px 0 1px;
+	margin-bottom: 15px;
+	font-size: 1.2em;
+}
+
+#right_column .column_box p, #right_column .column_box ul {
+	margin-bottom: 15px;
+}
+
+#right_column .column_box .inner {
+	padding: 10px 20px;
+}
+
+#right_column .column_box .inner h1, #right_column .column_box .inner h2, #right_column .column_box .inner h3, #right_column .column_box .inner h4, #right_column .column_box .inner h5, #right_column .column_box .inner p, #right_column .column_box .inner ul, #right_column .column_box .inner pre, #right_column .column_box .inner ol, #right_column .column_box .inner blockquote {
+	margin-bottom: 20px;
+}
+
+#right_column .column_box .inner h1 {
+	font-size: 2.5em;
+}
+
+#right_column .column_box .inner h2 {
+	font-size: 2em;
+}
+
+#right_column .column_box .inner h3 {
+	font-size: 1.5em;
+}
+
+#right_column .column_box .inner pre {
+	border: 1px solid #ccc;
+	color: #777;
+	padding: 20px;
+}
+
+#right_column .column_box .inner blockquote {
+	font-style: italic;
+	border-left: 4px solid #ddd;
+	padding-left: 15px;
+}
+
+/* @end */

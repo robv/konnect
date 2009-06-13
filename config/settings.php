@@ -7,8 +7,8 @@ if (!defined('KONNECT'))
 // This is where you declare your server enviroment settings which are set dynamically by matching
 // any one of the keys in your servers array to the current host name
 
-$core['default_app'] = 'auth';
-$core['installed_apps'] = array('auth');
+$core['default_app'] = 'admin';
+$core['installed_apps'] = array('auth','admin');
 
 $core['routes'] = array(
 	'login' => 'auth/main/login/',

@@ -8,17 +8,11 @@
         protected $columns = array();
         protected $class_name;
 
-        protected function __construct($table_name, $columns, $args = NULL)
+        protected function __construct($table_name, $id_column_name, $columns, $args = NULL)
         {
-            $this->class_name    = get_class($this);
-            $this->table_name    = $table_name;
-
-            // A note on hardcoding $this->id_column_name = 'id'...
-            // In three years working with this framework, I've used
-            // a different id name exactly once - so I've decided to
-            // drop the option from the constructor. You can overload
-            // the constructor yourself if you have the need.
-            $this->id_column_name = 'id';
+            $this->class_name = get_class($this);
+            $this->table_name = $table_name;
+            $this->id_column_name = $id_column_name;
 
             foreach ($columns as $column)
 			{
