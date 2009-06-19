@@ -15,7 +15,7 @@ class Error
     }
 
     // Get Singleton object
-    public static function getError()
+    public static function instance()
     {
         if(is_null(self::$me))
             self::$me = new Error();

@@ -1,27 +1,20 @@
 <?php
 
-class Users extends Db_Object
-{
-	function __construct($id = null)
+class Form_Information extends Db_Object {
+
+	function __construct($id = '')
 	{
-		parent::__construct('users', 'id', array('username', 'password', 'level', 'email'), $id);
+		parent::__construct('form_information', 'id', array('display_name', 'name', 'type', 'value', 'validation', 'class', 'layout', 'options'), $id);
 	}
 
-	function insert()
-	{
-		$this->password = Auth::get_auth()->create_hashed_password($this->password);
-		parent::insert();
-	}
-
-	function update()
-	{
-		$user = new Users();
-		$user->select(array('id' => $this->id));
-		
-		// Because passwords are stored hashed, we don't want to hash a hash
-		if($user->password !== $this->password)
-			$this->password = Auth::get_auth()->create_hashed_password($this->password);
-			
-		parent::update();
-	}
 }
+
+class Pages extends Db_Object {
+
+	function __construct($id = '')
+	{
+		parent::__construct('pages', 'id', array('title', 'content'), $id);
+	}
+
+}
+

@@ -36,9 +36,6 @@ function __autoload($class_name)
 	}
 }
 
-// Global include files
-// require DOC_ROOT . 'core/class.db_object.php'; // TODO: Will this be autoloaded on extends?
-
 // Fix magic quotes
 if (get_magic_quotes_gpc()) {
 	$_POST    = String::strip_slashes($_POST);

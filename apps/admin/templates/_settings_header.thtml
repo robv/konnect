@@ -1,0 +1,8 @@
+<h2 class="page_title">Administration Settings</h2>
+
+<div id="sub_menu" class="round">
+	<ul class="float_left">
+		<li><a href="<?= WEB_ROOT . Router::uri(0) . '/index/users/'; ?>">Users</a></li>
+		<li><a href="<?= WEB_ROOT . Router::uri(0) . '/models/'; ?>">Models</a></li>
+	</ul>
+</div>

@@ -1,0 +1,29 @@
+<?php include DOC_ROOT . 'apps/' . Router::uri(0) . '/templates/_header.thtml'; ?>
+	
+<?php include DOC_ROOT . 'apps/' . Router::uri(0) . '/templates/_settings_header.thtml'; ?>
+	
+	<div id="left_column">
+		
+		<h3 class="title roundtop info">Tip</h3>
+		<div class="column_box roundbottom info">
+			<p><strong>Wondering where to put this?</strong><br />In your apps directory, find the app that these newly created tables relate 
+			to and paste them in that app's <em>'models.php'</em> file. Once that's done Konnect will be aware of the new tables and you'll be able to 
+			get to work.</p>
+		</div>
+		
+	</div>
+	
+	<div id="right_column">
+		
+		<h3 class="title roundtop">Models</h3>
+		<div class="column_box roundbottom">
+			<div class="inner">
+			
+				<textarea class="full"><?= $object_out; ?></textarea>
+
+			</div>
+		</div>
+		
+	</div>
+
+<?php include DOC_ROOT . 'apps/' . Router::uri(0) . '/templates/_footer.thtml'; ?>

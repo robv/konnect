@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>Konnect</title>
+	<?= Load::css('admin/screen'); ?>
+	
+</head>
+
+<body>
+	
+<div id="header">
+	
+	<div class="inner clearfix">
+	
+		<h1><a href="<?= WEB_ROOT; ?>">Site Administration</a></h1>
+	
+		<div id="accounts">
+			<p>Logged in as <strong>robv</strong> <a href="<?= WEB_ROOT; ?>logout/" class="submit round">logout</a></p>
+		</div>
+	
+	</div>
+	
+</div>	
+
+<div id="navigation">
+	
+	<div class="inner clearfix">
+	
+		<ul class="float_left">
+			<li><a href="<?= WEB_ROOT; ?>">Dashboard</a></li>
+			<li><a href="<?= WEB_ROOT; ?>">News</a></li>
+			<li><a href="<?= WEB_ROOT; ?>">Events</a></li>
+			<li><a href="<?= WEB_ROOT; ?>">Document Library</a></li>
+		</ul>
+		
+		<ul class="float_right">
+			<li><a href="<?= WEB_ROOT . Router::uri(0); ?>/models/">Settings</a></li>
+		</ul>
+	
+	</div>
+	
+</div>
+	
+<div id="content_container">

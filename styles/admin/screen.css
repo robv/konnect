@@ -17,6 +17,23 @@ body {
 	cursor: pointer;
 }
 
+h1.info, h1.success, h1.warning, h1.error, h1.validation, h2.info, h2.success, h2.warning, h2.error, h2.validation, h3.info, h3.success, h3.warning, h3.error, h3.validation {
+    border: 0;
+    margin: 0;
+}
+
+h1.info, h2.info, h3.info {
+  background-color: #00529B !important;
+}
+
+h1.success, h2.success, h3.success {
+  background-color: #4F8A10 !important;
+}
+
+h1.warning, h2.warning, h3.warning {
+  background-color: #9F6000 !important;
+}
+
 /* @end */
 
 /* @group HEADER */
@@ -273,6 +290,11 @@ body {
 	font-style: italic;
 	border-left: 4px solid #ddd;
 	padding-left: 15px;
+}
+
+#right_column textarea.full {
+	width: 100%;
+	height: 300px;
 }
 
 /* @end */

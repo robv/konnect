@@ -3,136 +3,120 @@
 class Forms {
 	
 	public $fields = array();
+	public $iterations;
 	
 	public $name;
-	public $wrapper;
-	public $format;
-	public $iterations;
-	public $output;
-	public $validation;
-	public $seperator;
+	public $form_wrapper = '<div id="%group%">%body%</div>';
+	public $row_wrapper = "<div><label for=\"%id%\">%name%:</label><div class=\"input_field\">%field%</div></div>\n";
+	public $row_seperator = '<div class="hr"><hr /></div>';
+	
+	public $this->output;
 	
 	
 	// Build all your info first and then send it to constructor for display
-	function __construct($name='form',$iterations='1',$wrapper='',$seperator='')
+	function __construct($name = 'form', $iterations = '1')
 	{
 		
-		// I understand this is a stupid way to do this but seems like the most readable / simple
-		if(empty($wrapper))
-			//$wrapper = '<form action="" method="post" enctype="multipart/form-data">'."\n".'%body%'."\n".'</form>';
-			$wrapper = '%body%';
-		if(empty($format))
-			$format='<div class="%row_class%"><label for="%id%">%name%:</label><div class="input_field">%field%</div></div>'."\n";
-		if(empty($seperator))
-			$seperator = '<div class="hr"><hr /></div>';
-		
 		$this->name = $name;
-		$this->wrapper = str_replace("%group%",$this->name,$wrapper);
-		$this->format = $format;
 		$this->iterations = $iterations;
-		$this->seperator = $seperator;
-	
-		if(isset($_SESSION['forms'][$this->name]) && submit()){
-			if(!empty($_SESSION['forms'][$this->name])){
-				$this->fields = safe_unserialize($_SESSION['forms'][$this->name]['fields']);
-				$this->iterations = $_SESSION['forms'][$this->name]['iterations'];
-			}
-		}
+		
+		$this->form_wrapper = str_replace("%group%", $this->name, $this->form_wrapper);
 		
 	}
 
-	function addfield($name,$type,$info=''){
+/*
+
+	Info Array Example:
+	type (field type: text, textarea, etc)
+	display_name
+	class
+	layout (would replace "this->row_wrapper")
+	options (this is an array with extra shizzle...)
+		size
+		col
+		rows
+		etc....
+	
+*/
+
+	function add_field($name,$info='') 
+	{
 			
-		if(!is_array($info))
+		if (!is_array($info))
 			$info = array();
 			
-		foreach($info as $k => $v):
-		
+		foreach ($info as $k => $v) {
 			$this->fields['0'][$name][$k] = $v;
+		}
 		
-		endforeach;
-		
-		// These weren't set in the loop
-		$this->fields['0'][$name]['type'] = $type;
-		$this->fields['0'][$name]['name'] = str_replace(' ','_',$name);
+		$this->fields['0'][$name]['name'] = $name;
 
-		// This is just to ensure these required fields are set
+		// Display name is required so let's make sure it's set
 		$this->fields['0'][$name]['display'] = (isset($info['display'])) ? $info['display'] : ucwords(str_replace('_',' ',$name));
-		//$this->fields['0'][$name]['id'] = (isset($info['id'])) ? $info['id'] : str_replace('_',' ',$name);
+
+		// If id isn't set then set it to "name"
 		$this->fields['0'][$name]['id'] = (isset($info['id'])) ? $info['id'] : $this->fields['0'][$name]['name'];
+		
+		// If value is set then use it
 		$this->fields['0'][$name]['value'] = (isset($info['value'])) ? $info['value'] : '';
 		
 	}
 	
-	function iterate(){
+	function iterate() 
+	{
+		$original_fields = $this->fields;			
+	
+		// Loop through iterations and build new field names
+		for ($i = 0; $i < $this->iterations; $i++) {
 
-		$foreach_fields = $this->fields;			
+			foreach ($original_fields['0'] as $name => $info) {
+
+				// Grab original information
+				$this->fields[$i][$name] = $info;
 	
-			// Loop through iterations and build new field names
-			for($i=0;$i<$this->iterations;$i++){
-			
-				foreach($foreach_fields['0'] as $name => $value) :
-				
-					// Grab original information
-					$this->fields[$i][$name] = $value;
-					
-					// These are the ones we have to alter for iterations
-					$this->fields[$i][$name]['id'] = $value['id'].'_'.$i;
-					$this->fields[$i][$name]['name'] = $value['name'].'_'.$i;
-					$this->fields[$i][$name]['value'] = isset($_POST[$name.'_'.$i]) ? $_POST[$name.'_'.$i] : $value['value'];
-					$this->fields[$i][$name]['iteration'] = $i;
-					
-					if(isset($value['options']['title'])) // This is specifically for slug as of now because it needs to replace %n% with iteration
-						$this->fields[$i][$name]['options']['title'] = str_replace('%n%',$i,$value['options']['title']);
-					
-				endforeach;
+				// These are the ones we have to alter for iterations
+				$this->fields[$i][$name]['id'] = $value['id'].'_'.$i;
+				$this->fields[$i][$name]['name'] = $value['name'].'_'.$i;
+				$this->fields[$i][$name]['value'] = isset($_POST[$name.'_'.$i]) ? $_POST[$name.'_'.$i] : $value['value'];
+				$this->fields[$i][$name]['iteration'] = $i;
+	
+				if (isset($value['options']['title'])) // This is specifically for slug as of now because it needs to replace %n% with iteration
+					$this->fields[$i][$name]['options']['title'] = str_replace('%n%',$i,$value['options']['title']);
+	
 			}
-	
+		}
 	}
 	
 	
 	function display()
 	{
-		
 		$field_output = '';
 		
-		foreach($this->fields as $fields):
+		foreach ($this->fields as $fields) {
 		
-			foreach($fields as $fieldName => $field):
-			
-				$type = $field['type'];
+			foreach ($fields as $name => $info) {
 				
-				if($type === 'hidden' || $type === 'company_id'){ // should not show anything for hidden fields
+				if ($info['type'] === 'hidden') {
 				
-					$field_output .= $this->$type($field);
+					$field_output .= $this->display_input($info);
 				
 				} else {
 					
-					if($field['id'] === 'monday_status_0'){
-						$field_output .= '<h3>Store Hours</h3><div class="hr"><hr /></div>';
-					}
-					if($field['id'] === 'owner_name_0'){
-						$field_output .= '<h3>Owner Information</h3><div class="hr"><hr /></div>';
-					}
+					$field_output .= isset($info['layout']) ? $info['layout'] : $this->row_wrapper;
 					
-					$field_output .= $this->format
-					$field_output = str_replace("%id%",$field['id'],$field_output);
-					$field_output = str_replace("%name%",$field['display'],$field_output);
-					$field_output = str_replace("%field%",$this->$type($field),$field_output);
-					if(isset($field['options']['row_class']))
-						$field_output = str_replace("%row_class%",$field['options']['row_class'],$field_output);
+					$field_output = str_replace("%id%",$info['id'],$field_output);
+					$field_output = str_replace("%name%",$info['display'],$field_output);
+					$field_output = str_replace("%field%",$this->display_input($info),$field_output);
+					
 				}
 			
-			endforeach;
+			}
 		
-			$field_output .= $this->seperator;
+			$field_output .= $this->row_seperator;
 		
-		endforeach;
+		}
 		
-		$this->output = str_replace('%body%',$field_output,$this->wrapper);
-			
-		$_SESSION['forms'][$this->name]['fields'] = safe_serialize($this->fields);
-		$_SESSION['forms'][$this->name]['iterations'] = $this->iterations;
+		$this->output = str_replace('%body%', $field_output, $this->form_wrapper);
 		
 		return $this->output;
 	
@@ -142,30 +126,29 @@ class Forms {
 	// Currently does not support validation types with extra options
 	function validate()
 	{
-		global $Error;
 		
 		$field_output = '';
 		
-		foreach($this->fields as $fields):
+		foreach($this->fields as $fields) {
 		
-			foreach($fields as $fieldName => $field):
+			foreach($fields as $name => $info) {
 					
-				if(isset($field['validate'])){
+				if(isset($info['validation'])){
 					
-					$vtypes = explode('&',$field['validate']);	
+					$validation = explode(',',$info['validation']);	
 					
-					foreach($vtypes as $vfunction):
+					foreach($validation as $validator) {
 						
-						if(!empty($vfunction))
-							$Error->$vfunction($field['value'],$field['name'],$field['display'].$field['value']);
+						if(!empty($validator))
+							Error::instance()->$validator($info['value'], $info['name'], $info['display']);
 					
-					endforeach;
+					}
 				
 				}
 					
-			endforeach;
+			 }
 
-		endforeach;
+		}
 
 	}
 	
@@ -173,53 +156,76 @@ class Forms {
 // ALL THE INPUT TYPES ARE LISTED BELOW...	
 	
 	
-	// OTHER FUNCTIONS SUCH AS TEXT,HIDDEN, AND CHECKBOX ARE BASED OFF OF THIS
-	function basicinput($info)
+	// THIS HANDLES ALL INPUTS
+	function display_input($info)
 	{
 		$attributes = isset($info['options']['size']) ? ' size="'.$info['options']['size'].'"' : '';
 		$attributes .= isset($info['options']['src']) ? ' src="'.$info['options']['src'].'"' : '';
-		$attributes .= isset($info['options']['class']) ? ' class="'.$info['options']['class'].'"' : ' class="input_default"';
 		$attributes .= isset($info['options']['title']) ? ' title="'.$info['options']['title'].'"' : '';
-		$attributes .= isset($info['name']) ? ' name="'.$info['name'].'"' : '';
+		
 		$attributes .= isset($info['id']) ? ' id="'.$info['id'].'"' : '';
-		$attributes .= isset($info['value']) ? ' value="'.$info['value'].'"' : '';
+		$attributes .= isset($info['name']) ? ' name="'.$info['name'].'"' : '';
 		$attributes .= isset($info['type']) ? ' type="'.$info['type'].'"' : '';
+		$attributes .= isset($info['class']) ? ' class="'.$info['class'].'"' : ' class="input_default"';
+		
+		$attributes .= isset($info['value']) ? ' value="'.$info['value'].'"' : '';
+		
+		
+		$out = $this->$info['type']($info);
+		
+		// You can amend information right after input field by using "extra" in options field
+		if (isset($info['options']['extra']))
+			$out .= $info['options']['extra'];
+		
+		return $out;
+	}
+	
+	
+	// OTHER FUNCTIONS SUCH AS TEXT,HIDDEN, AND CHECKBOX ARE BASED OFF OF THIS
+	function basicinput($info)
+	{
 		
 		$out = '<input'.$attributes.' />';
 		
-		if($info['type'] === 'file' && !empty($info['value'])){
+		// If the field type is "file" then lets check if a value exists and link to it,
+		// so people can see what's already been uploaded
+		if ($info['type'] === 'file' && !empty($info['value'])) {
 			
-			$gd = new GD();
-			if($gd->loadFile('./files/uploads/large/'.$info['value']))
-				$out .= '<span class="current">Current File: <a href="'.WEB_ROOT.'files/uploads/large/'.$info['value'].'" rel="facebox">'.$info['value'].'</a></span>';
+			// Located in libraries folder
+			$gd = new Gd();
+			
+			if ($gd->load_file('./files/uploads/large/' . $info['value']))
+				$out .= '<span class="current">Current File: <a href="' . WEB_ROOT . 'files/uploads/large/' . $info['value'] . '" rel="facebox">' . $info['value'] . '</a></span>';
 			else
-				$out .= '<span class="current">Current File: <a href="'.WEB_ROOT.'files/uploads/original/'.$info['value'].'" target="new">'.$info['value'].'</a></span>';
+				$out .= '<span class="current">Current File: <a href="' . WEB_ROOT . 'files/uploads/original/' . $info['value'] . '" target="new">' . $info['value'] . '</a></span>';
 		
 		}
 		
-		if(isset($info['options']['extra']))
-			$out .= $info['options']['extra'];
 
 		return $out;
 	}
 
-	function text($info){
+	function text($info)
+	{
 		$info['type'] = 'text';
 		return $this->basicinput($info);
 	}
 
 	// Requires jquery slug plugin
-	function slug($info){
-		$info['options']['class'] = 'slug input_default';
+	function slug($info)
+	{	
+		if (isset($info['options']['class']))
+			$info['options']['class'] .= ' slug input_default';
+		else
+			$info['options']['class'] = 'slug input_default';
+		
 		$info['type'] = 'text';
 		return $this->basicinput($info);
 	}
 
-	function hidden($info){
+	function hidden($info)
+	{
 		$info['type'] = 'hidden';
-		
-		if(empty($info['value']) && isset($info['options']['value']))
-			$info['value'] = $info['options']['value'];
 		
 		return $this->basicinput($info);
 	}
