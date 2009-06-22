@@ -10,7 +10,7 @@ class Forms {
 	public $row_wrapper = "<div><label for=\"%id%\">%name%:</label><div class=\"input_field\">%field%</div></div>\n";
 	public $row_seperator = '<div class="hr"><hr /></div>';
 	
-	public $this->output;
+	public $output;
 	
 	
 	// Build all your info first and then send it to constructor for display
@@ -25,7 +25,6 @@ class Forms {
 	}
 
 /*
-
 	Info Array Example:
 	type (field type: text, textarea, etc)
 	display_name
@@ -36,26 +35,26 @@ class Forms {
 		col
 		rows
 		etc....
-	
 */
-
 	function add_field($name,$info='') 
 	{
 			
 		if (!is_array($info))
 			$info = array();
 			
-		foreach ($info as $k => $v) {
+		foreach ($info as $k => $v) 
+		{
 			$this->fields['0'][$name][$k] = $v;
 		}
 		
-		$this->fields['0'][$name]['name'] = $name;
+		// Get rid of white spaces
+		$this->fields['0'][$name]['name'] = str_replace(' ', '_', $name);
 
 		// Display name is required so let's make sure it's set
 		$this->fields['0'][$name]['display'] = (isset($info['display'])) ? $info['display'] : ucwords(str_replace('_',' ',$name));
 
 		// If id isn't set then set it to "name"
-		$this->fields['0'][$name]['id'] = (isset($info['id'])) ? $info['id'] : $this->fields['0'][$name]['name'];
+		$this->fields['0'][$name]['id'] = (isset($info['id'])) ? str_replace(' ', '_', $info['id']) : $this->fields['0'][$name]['name'];
 		
 		// If value is set then use it
 		$this->fields['0'][$name]['value'] = (isset($info['value'])) ? $info['value'] : '';
@@ -67,22 +66,21 @@ class Forms {
 		$original_fields = $this->fields;			
 	
 		// Loop through iterations and build new field names
-		for ($i = 0; $i < $this->iterations; $i++) {
-
-			foreach ($original_fields['0'] as $name => $info) {
-
+		for ($i = 0; $i < $this->iterations; $i++) 
+		{
+			foreach ($original_fields['0'] as $name => $info) 
+			{
 				// Grab original information
 				$this->fields[$i][$name] = $info;
 	
 				// These are the ones we have to alter for iterations
-				$this->fields[$i][$name]['id'] = $value['id'].'_'.$i;
-				$this->fields[$i][$name]['name'] = $value['name'].'_'.$i;
-				$this->fields[$i][$name]['value'] = isset($_POST[$name.'_'.$i]) ? $_POST[$name.'_'.$i] : $value['value'];
+				$this->fields[$i][$name]['id'] = $info['id'].'_'.$i;
+				$this->fields[$i][$name]['name'] = $info['name'].'_'.$i;
+				$this->fields[$i][$name]['value'] = isset($_POST[$name.'_'.$i]) ? $_POST[$name.'_'.$i] : $info['value'];
 				$this->fields[$i][$name]['iteration'] = $i;
 	
 				if (isset($value['options']['title'])) // This is specifically for slug as of now because it needs to replace %n% with iteration
-					$this->fields[$i][$name]['options']['title'] = str_replace('%n%',$i,$value['options']['title']);
-	
+					$this->fields[$i][$name]['options']['title'] = str_replace('%n%',$i,$info['options']['title']);
 			}
 		}
 	}
@@ -92,34 +90,29 @@ class Forms {
 	{
 		$field_output = '';
 		
-		foreach ($this->fields as $fields) {
-		
-			foreach ($fields as $name => $info) {
-				
-				if ($info['type'] === 'hidden') {
-				
+		foreach ($this->fields as $fields) 
+		{
+			foreach ($fields as $name => $info) 
+			{	
+				if ($info['type'] === 'hidden') 
+				{				
 					$field_output .= $this->display_input($info);
-				
-				} else {
-					
+				}
+				else 
+				{	
 					$field_output .= isset($info['layout']) ? $info['layout'] : $this->row_wrapper;
 					
 					$field_output = str_replace("%id%",$info['id'],$field_output);
 					$field_output = str_replace("%name%",$info['display'],$field_output);
-					$field_output = str_replace("%field%",$this->display_input($info),$field_output);
-					
+					$field_output = str_replace("%field%",$this->display_input($info),$field_output);	
 				}
-			
 			}
-		
 			$field_output .= $this->row_seperator;
-		
 		}
 		
 		$this->output = str_replace('%body%', $field_output, $this->form_wrapper);
 		
 		return $this->output;
-	
 	}
 
 
@@ -129,27 +122,22 @@ class Forms {
 		
 		$field_output = '';
 		
-		foreach($this->fields as $fields) {
-		
-			foreach($fields as $name => $info) {
-					
-				if(isset($info['validation'])){
-					
+		foreach($this->fields as $fields) 
+		{
+			foreach($fields as $name => $info) 
+			{		
+				if (isset($info['validation']))
+				{	
 					$validation = explode(',',$info['validation']);	
 					
-					foreach($validation as $validator) {
-						
+					foreach($validation as $validator) 
+					{	// TODO: Make this more robust, right now, only handles very basic error methods
 						if(!empty($validator))
 							Error::instance()->$validator($info['value'], $info['name'], $info['display']);
-					
 					}
-				
 				}
-					
-			 }
-
+			}
 		}
-
 	}
 	
 	
@@ -159,16 +147,21 @@ class Forms {
 	// THIS HANDLES ALL INPUTS
 	function display_input($info)
 	{
-		$attributes = isset($info['options']['size']) ? ' size="'.$info['options']['size'].'"' : '';
-		$attributes .= isset($info['options']['src']) ? ' src="'.$info['options']['src'].'"' : '';
-		$attributes .= isset($info['options']['title']) ? ' title="'.$info['options']['title'].'"' : '';
-		
-		$attributes .= isset($info['id']) ? ' id="'.$info['id'].'"' : '';
-		$attributes .= isset($info['name']) ? ' name="'.$info['name'].'"' : '';
-		$attributes .= isset($info['type']) ? ' type="'.$info['type'].'"' : '';
-		$attributes .= isset($info['class']) ? ' class="'.$info['class'].'"' : ' class="input_default"';
-		
-		$attributes .= isset($info['value']) ? ' value="'.$info['value'].'"' : '';
+		// Pretty basic, just about every input type can include these...
+		$info['attributes'] = '';
+		$info['attributes'] .= isset($info['id']) ? ' id="'.$info['id'].'"' : '';
+		$info['attributes'] .= isset($info['name']) ? ' name="'.$info['name'].'"' : '';
+		$info['attributes'] .= isset($info['type']) ? ' type="'.$info['type'].'"' : '';
+		$info['attributes'] .= isset($info['class']) ? ' class="'.$info['class'].'"' : ' class="input_default"';	
+
+		$info['attributes'] .= isset($info['value']) ? ' value="'.$info['value'].'"' : '';
+
+		// These are more than likely specific to one input type or another
+		$info['attributes'] .= isset($info['options']['size']) ? ' size="'.$info['options']['size'].'"' : '';
+		$info['attributes'] .= isset($info['options']['src']) ? ' src="'.$info['options']['src'].'"' : '';
+		$info['attributes'] .= isset($info['options']['title']) ? ' title="'.$info['options']['title'].'"' : '';
+		$info['attributes'] .= isset($info['options']['rows']) ? ' cols="'.$info['options']['cols'].'"' : '';
+		$info['attributes'] .= isset($info['options']['rows']) ? ' rows="'.$info['options']['rows'].'"' : '';
 		
 		
 		$out = $this->$info['type']($info);
@@ -182,33 +175,16 @@ class Forms {
 	
 	
 	// OTHER FUNCTIONS SUCH AS TEXT,HIDDEN, AND CHECKBOX ARE BASED OFF OF THIS
-	function basicinput($info)
+	function basic_input($info)
 	{
-		
-		$out = '<input'.$attributes.' />';
-		
-		// If the field type is "file" then lets check if a value exists and link to it,
-		// so people can see what's already been uploaded
-		if ($info['type'] === 'file' && !empty($info['value'])) {
-			
-			// Located in libraries folder
-			$gd = new Gd();
-			
-			if ($gd->load_file('./files/uploads/large/' . $info['value']))
-				$out .= '<span class="current">Current File: <a href="' . WEB_ROOT . 'files/uploads/large/' . $info['value'] . '" rel="facebox">' . $info['value'] . '</a></span>';
-			else
-				$out .= '<span class="current">Current File: <a href="' . WEB_ROOT . 'files/uploads/original/' . $info['value'] . '" target="new">' . $info['value'] . '</a></span>';
-		
-		}
-		
-
+		$out = '<input'.$info['attributes'].' />';
 		return $out;
 	}
 
 	function text($info)
 	{
 		$info['type'] = 'text';
-		return $this->basicinput($info);
+		return $this->basic_input($info);
 	}
 
 	// Requires jquery slug plugin
@@ -220,41 +196,52 @@ class Forms {
 			$info['options']['class'] = 'slug input_default';
 		
 		$info['type'] = 'text';
-		return $this->basicinput($info);
+		return $this->basic_input($info);
 	}
 
 	function hidden($info)
 	{
 		$info['type'] = 'hidden';
 		
-		return $this->basicinput($info);
+		return $this->basic_input($info);
 	}
 
 	function checkbox($info){
 		$info['type'] = 'checkbox';
-		return $this->basicinput($info);
+		return $this->basic_input($info);
 	}
 
 	function password($info){
 		$info['type'] = 'password';
-		return $this->basicinput($info);
+		return $this->basic_input($info);
 	}
 
 	function file($info){
-		$info['type'] = 'file';
-		$name = isset($info['name']) ? $info['name'] : '';
-		$info['options']['extra'] = '<p class="form_inner_form"><input type="checkbox" name="'.$name.'_crop" id="'.$name.'_crop" checked="checked" value="yes" /><label for="'.$name.'_crop">This is an image and I want to crop it after upload</label></p>';
-		return $this->basicinput($info);
+
+		$info['options']['extra'] = '<p class="form_inner_form"><input type="checkbox" name="'.$name.'_crop" id="'.$name.'_crop" checked="checked" value="yes" /><label for="'.$name.'_crop">Crop After Upload</label></p>';
+
+		$out = $this->basic_input($info);
+		
+		// Located in libraries folder
+		$gd = new Gd();
+		
+		// Check if there is already and image / file in place and display it to the user
+		if ($gd->load_file('./files/uploads/large/' . $info['value']))
+			$out .= '<span class="current">Current Image: <a href="' . WEB_ROOT . 'files/uploads/large/' . $info['value'] . '" rel="facebox">' . $info['value'] . '</a></span>';
+		else
+			$out .= '<span class="current">Current File: <a href="' . WEB_ROOT . 'files/uploads/original/' . $info['value'] . '" target="new">' . $info['value'] . '</a></span>';		
+		
+		return $out;
 	}
 
 	function submit($info){
 		$info['type'] = 'submit';
-		return $this->basicinput($info);
+		return $this->basic_input($info);
 	}
 
 	function image($info){
 		$info['type'] = 'image';
-		return $this->basicinput($info);
+		return $this->basic_input($info);
 	}
 
 	function textarea($info){
@@ -412,7 +399,7 @@ class Forms {
 		
 		$info['type'] = 'hidden';
 		$info['value'] = $company->id;
-		return $this->basicinput($info);
+		return $this->basic_input($info);
 	}
 
 	function tables($info){
