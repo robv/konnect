@@ -23,7 +23,7 @@ $form = new Forms;
 */
 
 $info = array(
-			'type' => 'text',
+			'type' => 'hidden',
 			'display_name' => 'Sample Input',
 			'value' => 'Default Value!',
 			'options' => array(

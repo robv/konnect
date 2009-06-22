@@ -94,18 +94,16 @@ class Forms {
 		{
 			foreach ($fields as $name => $info) 
 			{	
-				if ($info['type'] === 'hidden') 
-				{				
-					$field_output .= $this->display_input($info);
-				}
-				else 
-				{	
+				// If the field type is hidden then we want to modify the layout
+				// TODO: There should be a better way to send default values for specific field types
+				if ($info['type'] === 'hidden') 			
+					$info['layout'] = '%field%';
+					
 					$field_output .= isset($info['layout']) ? $info['layout'] : $this->row_wrapper;
 					
 					$field_output = str_replace("%id%",$info['id'],$field_output);
 					$field_output = str_replace("%name%",$info['display'],$field_output);
 					$field_output = str_replace("%field%",$this->display_input($info),$field_output);	
-				}
 			}
 			$field_output .= $this->row_seperator;
 		}
@@ -160,7 +158,7 @@ class Forms {
 		$info['attributes'] .= isset($info['options']['size']) ? ' size="'.$info['options']['size'].'"' : '';
 		$info['attributes'] .= isset($info['options']['src']) ? ' src="'.$info['options']['src'].'"' : '';
 		$info['attributes'] .= isset($info['options']['title']) ? ' title="'.$info['options']['title'].'"' : '';
-		$info['attributes'] .= isset($info['options']['rows']) ? ' cols="'.$info['options']['cols'].'"' : '';
+		$info['attributes'] .= isset($info['options']['cols']) ? ' cols="'.$info['options']['cols'].'"' : '';
 		$info['attributes'] .= isset($info['options']['rows']) ? ' rows="'.$info['options']['rows'].'"' : '';
 		
 		
@@ -201,8 +199,6 @@ class Forms {
 
 	function hidden($info)
 	{
-		$info['type'] = 'hidden';
-		
 		return $this->basic_input($info);
 	}
 
