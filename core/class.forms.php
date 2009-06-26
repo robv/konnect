@@ -14,14 +14,12 @@ class Forms {
 	
 	
 	// Build all your info first and then send it to constructor for display
-	function __construct($name = 'form', $iterations = '1')
+	public function __construct($name = 'form', $iterations = '1')
 	{
-		
 		$this->name = $name;
 		$this->iterations = $iterations;
 		
 		$this->form_wrapper = str_replace("%group%", $this->name, $this->form_wrapper);
-		
 	}
 
 /*
@@ -36,7 +34,7 @@ class Forms {
 		rows
 		etc....
 */
-	function add_field($name,$info='') 
+	public function add_field($name,$info='') 
 	{
 			
 		if (!is_array($info))
@@ -61,7 +59,7 @@ class Forms {
 		
 	}
 	
-	function iterate() 
+	public function iterate() 
 	{
 		$original_fields = $this->fields;			
 	
@@ -86,7 +84,7 @@ class Forms {
 	}
 	
 	
-	function display()
+	public function display()
 	{
 		$field_output = '';
 		
@@ -115,7 +113,7 @@ class Forms {
 
 
 	// Currently does not support validation types with extra options
-	function validate()
+	public function validate()
 	{
 		
 		$field_output = '';
@@ -143,7 +141,7 @@ class Forms {
 	
 	
 	// THIS HANDLES ALL INPUTS
-	function display_input($info)
+	public function display_input($info)
 	{
 		// Pretty basic, just about every input type can include these...
 		$info['attributes'] = '';
@@ -173,20 +171,20 @@ class Forms {
 	
 	
 	// OTHER FUNCTIONS SUCH AS TEXT,HIDDEN, AND CHECKBOX ARE BASED OFF OF THIS
-	function basic_input($info)
+	public function basic_input($info)
 	{
 		$out = '<input' . $info['attributes'] . ' />';
 		return $out;
 	}
 
-	function text($info)
+	public function text($info)
 	{
 		$info['type'] = 'text';
 		return $this->basic_input($info);
 	}
 
 	// Requires jquery slug plugin
-	function slug($info)
+	public function slug($info)
 	{	
 		if (isset($info['options']['class']))
 			$info['options']['class'] .= ' slug input_default';
@@ -197,22 +195,22 @@ class Forms {
 		return $this->basic_input($info);
 	}
 
-	function hidden($info)
+	public function hidden($info)
 	{
 		return $this->basic_input($info);
 	}
 
-	function checkbox($info)
+	public function checkbox($info)
 	{
 		return $this->basic_input($info);
 	}
 
-	function password($info)
+	public function password($info)
 	{
 		return $this->basic_input($info);
 	}
 
-	function file($info)
+	public function file($info)
 	{
 		$info['options']['extra'] = '<p class="form_inner_form"><input type="checkbox" name="' . $name.'_crop" id="' . $name.'_crop" checked="checked" value="yes" /><label for="' . $name.'_crop">Crop After Upload</label></p>';
 
@@ -230,17 +228,17 @@ class Forms {
 		return $out;
 	}
 
-	function submit($info)
+	public function submit($info)
 	{
 		return $this->basic_input($info);
 	}
 
-	function image($info)
+	public function image($info)
 	{
 		return $this->basic_input($info);
 	}
 
-	function textarea($info)
+	public function textarea($info)
 	{
 		if(!isset($info['options']['cols']))
 			$info['options']['cols'] = 50;
@@ -265,7 +263,7 @@ class Forms {
 		return $out;
 	}	
 	
-	function dropdown($info)
+	public function dropdown($info)
 	{	
 		$attributes = isset($info['options']['class']) ? ' class="' . $info['options']['class'] . '"' : '';
 		$attributes .= isset($info['options']['title']) ? ' title="' . $info['options']['title'] . '"' : '';
@@ -304,7 +302,7 @@ class Forms {
 	display_field = field to display to end user can be multiple fields comma seperated
 	value_field = field to pass through the form
 */
-	function related($info)
+	public function related($info)
 	{
 		$out = '<select name="' . $info['name'] . '" id="' . $info['id'] . '">';
 
@@ -356,7 +354,7 @@ class Forms {
 		parent = parent field id
 	*/
 	
-	function related_dependent($info)
+	public function related_dependent($info)
 	{
 		// $default variable used in sublist javascript function
 		$default = 'false';
@@ -405,7 +403,7 @@ class Forms {
 	
 ///////////////// FUNCTIONS THAT USE OTHER FORM TYPES ////////////////////////////////
 
-	function tables($info){
+	public function tables($info){
     	$db = Database::get_instance();
 		
 		$result = $db->query('SHOW TABLES');
@@ -416,7 +414,7 @@ class Forms {
 	}
 
 
-	function states($info){
+	public function states($info){
 		$info['options'] = array('AL'=>"Alabama",
 		                'AK'=>"Alaska", 
 		                'AZ'=>"Arizona", 
@@ -474,7 +472,7 @@ class Forms {
 		return $out;
 	}
 
-	function timestamp($info){
+	public function timestamp($info){
 		
 		$info['options']['class'] = 'input_timestamp';
 		
@@ -512,7 +510,7 @@ class Forms {
 
 
 	// requires javascript files
-	function dater($info){
+	public function dater($info){
 		
 		$info['options']['class'] = 'input_date';
 		
@@ -550,7 +548,7 @@ class Forms {
 	
 	
 	// requires javascript files
-	function thumbnailer($info){
+	public function thumbnailer($info){
 		
 		$out = '<script language="javascript">
 				jQuery(function($) {
@@ -584,7 +582,7 @@ class Forms {
 	
 	// TO USE THIS YOU WOULD NEED TO MAKE SURE THE
 	// TINYMCE JAVASCRIPT LIBRARY IS SET UP
-	function htmleditorsimple($info){
+	public function htmleditorsimple($info){
 		
 			$out = '<script language="javascript" type="text/javascript">
 				tinyMCE.init({
@@ -627,7 +625,7 @@ class Forms {
 	
 	// TO USE THIS YOU WOULD NEED TO MAKE SURE THE
 	// TINYMCE JAVASCRIPT LIBRARY IS SET UP
-	function htmleditor($info){
+	public function htmleditor($info){
 		
 			$out = '<script language="javascript" type="text/javascript">
 				tinyMCE.init({
