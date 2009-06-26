@@ -74,9 +74,9 @@ class Forms {
 				$this->fields[$i][$name] = $info;
 	
 				// These are the ones we have to alter for iterations
-				$this->fields[$i][$name]['id'] = $info['id'].'_'.$i;
-				$this->fields[$i][$name]['name'] = $info['name'].'_'.$i;
-				$this->fields[$i][$name]['value'] = isset($_POST[$name.'_'.$i]) ? $_POST[$name.'_'.$i] : $info['value'];
+				$this->fields[$i][$name]['id'] = $info['id'] . '_' . $i;
+				$this->fields[$i][$name]['name'] = $info['name'] . '_' . $i;
+				$this->fields[$i][$name]['value'] = isset($_POST[$name.'_' . $i]) ? $_POST[$name.'_' . $i] : $info['value'];
 				$this->fields[$i][$name]['iteration'] = $i;
 	
 				if (isset($value['options']['title'])) // This is specifically for slug as of now because it needs to replace %n% with iteration
@@ -147,19 +147,19 @@ class Forms {
 	{
 		// Pretty basic, just about every input type can include these...
 		$info['attributes'] = '';
-		$info['attributes'] .= isset($info['id']) ? ' id="'.$info['id'].'"' : '';
-		$info['attributes'] .= isset($info['name']) ? ' name="'.$info['name'].'"' : '';
-		$info['attributes'] .= isset($info['type']) ? ' type="'.$info['type'].'"' : '';
-		$info['attributes'] .= isset($info['class']) ? ' class="'.$info['class'].'"' : ' class="input_default"';	
+		$info['attributes'] .= isset($info['id']) ? ' id="' . $info['id'] . '"' : '';
+		$info['attributes'] .= isset($info['name']) ? ' name="' . $info['name'] . '"' : '';
+		$info['attributes'] .= isset($info['type']) ? ' type="' . $info['type'] . '"' : '';
+		$info['attributes'] .= isset($info['class']) ? ' class="' . $info['class'] . '"' : ' class="input_default"';	
 
-		$info['attributes'] .= isset($info['value']) ? ' value="'.$info['value'].'"' : '';
+		$info['attributes'] .= isset($info['value']) ? ' value="' . $info['value'] . '"' : '';
 
 		// These are more than likely specific to one input type or another
-		$info['attributes'] .= isset($info['options']['size']) ? ' size="'.$info['options']['size'].'"' : '';
-		$info['attributes'] .= isset($info['options']['src']) ? ' src="'.$info['options']['src'].'"' : '';
-		$info['attributes'] .= isset($info['options']['title']) ? ' title="'.$info['options']['title'].'"' : '';
-		$info['attributes'] .= isset($info['options']['cols']) ? ' cols="'.$info['options']['cols'].'"' : '';
-		$info['attributes'] .= isset($info['options']['rows']) ? ' rows="'.$info['options']['rows'].'"' : '';
+		$info['attributes'] .= isset($info['options']['size']) ? ' size="' . $info['options']['size'] . '"' : '';
+		$info['attributes'] .= isset($info['options']['src']) ? ' src="' . $info['options']['src'] . '"' : '';
+		$info['attributes'] .= isset($info['options']['title']) ? ' title="' . $info['options']['title'] . '"' : '';
+		$info['attributes'] .= isset($info['options']['cols']) ? ' cols="' . $info['options']['cols'] . '"' : '';
+		$info['attributes'] .= isset($info['options']['rows']) ? ' rows="' . $info['options']['rows'] . '"' : '';
 		
 		
 		$out = $this->$info['type']($info);
@@ -175,7 +175,7 @@ class Forms {
 	// OTHER FUNCTIONS SUCH AS TEXT,HIDDEN, AND CHECKBOX ARE BASED OFF OF THIS
 	function basic_input($info)
 	{
-		$out = '<input'.$info['attributes'].' />';
+		$out = '<input' . $info['attributes'] . ' />';
 		return $out;
 	}
 
@@ -202,19 +202,19 @@ class Forms {
 		return $this->basic_input($info);
 	}
 
-	function checkbox($info){
-		$info['type'] = 'checkbox';
+	function checkbox($info)
+	{
 		return $this->basic_input($info);
 	}
 
-	function password($info){
-		$info['type'] = 'password';
+	function password($info)
+	{
 		return $this->basic_input($info);
 	}
 
-	function file($info){
-
-		$info['options']['extra'] = '<p class="form_inner_form"><input type="checkbox" name="'.$name.'_crop" id="'.$name.'_crop" checked="checked" value="yes" /><label for="'.$name.'_crop">Crop After Upload</label></p>';
+	function file($info)
+	{
+		$info['options']['extra'] = '<p class="form_inner_form"><input type="checkbox" name="' . $name.'_crop" id="' . $name.'_crop" checked="checked" value="yes" /><label for="' . $name.'_crop">Crop After Upload</label></p>';
 
 		$out = $this->basic_input($info);
 		
@@ -230,18 +230,18 @@ class Forms {
 		return $out;
 	}
 
-	function submit($info){
-		$info['type'] = 'submit';
+	function submit($info)
+	{
 		return $this->basic_input($info);
 	}
 
-	function image($info){
-		$info['type'] = 'image';
+	function image($info)
+	{
 		return $this->basic_input($info);
 	}
 
-	function textarea($info){
-		
+	function textarea($info)
+	{
 		if(!isset($info['options']['cols']))
 			$info['options']['cols'] = 50;
 		
@@ -250,14 +250,14 @@ class Forms {
 		
 		$info['value'] = isset($info['value']) ? $info['value'] : '';
 		
-		$attributes = isset($info['options']['rows']) ? ' rows="'.$info['options']['rows'].'"' : 5;
-		$attributes .= isset($info['options']['cols']) ? ' cols="'.$info['options']['cols'].'"' : 50;
-		$attributes .= isset($info['options']['class']) ? ' class="'.$info['options']['class'].'"' : ' class="input_full"';
-		$attributes .= isset($info['options']['title']) ? ' title="'.$info['options']['title'].'"' : '';
-		$attributes .= isset($info['name']) ? ' name="'.$info['name'].'"' : '';
-		$attributes .= isset($info['id']) ? ' id="'.$info['id'].'"' : '';
+		$attributes = isset($info['options']['rows']) ? ' rows="' . $info['options']['rows'] . '"' : 5;
+		$attributes .= isset($info['options']['cols']) ? ' cols="' . $info['options']['cols'] . '"' : 50;
+		$attributes .= isset($info['options']['class']) ? ' class="' . $info['options']['class'] . '"' : ' class="input_full"';
+		$attributes .= isset($info['options']['title']) ? ' title="' . $info['options']['title'] . '"' : '';
+		$attributes .= isset($info['name']) ? ' name="' . $info['name'] . '"' : '';
+		$attributes .= isset($info['id']) ? ' id="' . $info['id'] . '"' : '';
 		
-		$out = '<textarea'.$attributes.'>'.$info['value'].'</textarea>';
+		$out = '<textarea' . $attributes.'>' . $info['value'] . '</textarea>';
 		
 		if(isset($info['options']['extra']))
 			$out .= $info['options']['extra'];
@@ -265,25 +265,25 @@ class Forms {
 		return $out;
 	}	
 	
-	function dropdown($info){
+	function dropdown($info)
+	{	
+		$attributes = isset($info['options']['class']) ? ' class="' . $info['options']['class'] . '"' : '';
+		$attributes .= isset($info['options']['title']) ? ' title="' . $info['options']['title'] . '"' : '';
+		$attributes .= isset($info['name']) ? ' name="' . $info['name'] . '"' : '';
+		$attributes .= isset($info['id']) ? ' id="' . $info['id'] . '"' : '';
 		
-		$attributes = isset($info['options']['class']) ? ' class="'.$info['options']['class'].'"' : '';
-		$attributes .= isset($info['options']['title']) ? ' title="'.$info['options']['title'].'"' : '';
-		$attributes .= isset($info['name']) ? ' name="'.$info['name'].'"' : '';
-		$attributes .= isset($info['id']) ? ' id="'.$info['id'].'"' : '';
+		$out = '<select' . $attributes . '>';
 		
-		$out = '<select'.$attributes.'>';
-		
-			// Pass selectName as option to change default view
+			// Pass default as option to change default view
 			if(isset($info['options']['default']))
-				$out .= '<option value="">'.$info['default'].'</option>';
+				$out .= '<option value="">' . $info['default'] . '</option>';
 			
 			if(!empty($info['options'])){
 				foreach($info['options'] as $key => $value) :
 					if($key !== 'default' && $key !== 'class' && $key !== 'title'){
 						if($info['value'] === $key){ $selected = ' selected'; }
 						else{ $selected = ''; }
-						$out .= '<option value="'.$key.'"'.$selected.'>'.$value.'</option>';
+						$out .= '<option value="' . $key . '"' . $selected . '>' . $value . '</option>';
 					}
 				endforeach;
 			}
@@ -296,24 +296,47 @@ class Forms {
 		return $out;
 	}
 
-	// Build a select menu using the get_options function in functions.inc
-	function related($info){
+/*
+	Options for related type:
+	default = default value to be shown, value is empty
+	sql = this will be appended to the sql statement which by default is SELECT * FROM table
+	seperator = if display is comma seperated then use this to seperate the values (ie FirstName LastName or FirstName and LastName)
+	display_field = field to display to end user can be multiple fields comma seperated
+	value_field = field to pass through the form
+*/
+	function related($info)
+	{
+		$out = '<select name="' . $info['name'] . '" id="' . $info['id'] . '">';
 
-		$out = '<select name="'.$info['name'].'" id="'.$info['id'].'">';
+		// Pass default as option to change default view
+		if(isset($info['options']['default']))
+			$out .= '<option value="">' . $info['options']['default'] . '</option>';
 
-		// Pass selectName as option to change default view
-		if(isset($info['options']['selectName']))
-			$out .= '<option value="">'.$info['options']['selectName'].'</option>';
+		if(!isset($info['options']['sql']))
+			$info['options']['sql'] = '';
 
-			if(!isset($info['options']['sql']))
-				$info['options']['sql'] = '';
+		if(!isset($info['options']['seperator']))
+			$info['options']['seperator'] = '';
+			
+		$display_fields = explode(',', $info['options']['display_field']);
 
-			$out .=  $this->get_options($info['options']['table'],$info['options']['val'],$info['options']['text'],$info['value'],NULL,$info['options']['sql']);
+		$objects = new $info['options']['object'];
+		$objects = $objects->select_multiple($info['options']['sql']);
+		
+		foreach ($objects as $object) 
+		{
+			$value_field = $info['options']['value_field'];
+			$display = array();
+			
+			foreach ($display_fields as $display_field)
+			{
+				$display[] = $object->$display_field;
+			}
+			
+			$out .= '<select value="' . $object->value_field . '">' . implode($info['options']['seperator'], $display) . '</select>';
+		}
 
 		$out .= '</select>';
-		
-		if(Auth::getAuth()->user->level === 'admin')
-			$out .= '<div class="clearfix modal_add"><a href="'.WEB_ROOT.'franchiser/default/modalForm/'.deslugify($info['options']['table'],'-').'/?table='.$info['options']['table'].'&textField='.$info['options']['text'].'&valueField='.$info['options']['val'].'&idField='.$info['id'].'" rel="facebox[.modal_large]" class="add">Add Entry</a></div>';
 
 		if(isset($info['options']['extra']))
 			$out .= $info['options']['extra'];
@@ -321,21 +344,24 @@ class Forms {
 		return $out;
 	}
 
-	// Build a select menu using the get_options function in functions.inc
-	function related_dependent($info){
 
-		$out = '<script language="javascript">
-			$(document).ready(function()
-			{
-				makeSublist(\''.$info['options']['parent'].'_'.$info['iteration'].'\',\''.$info['id'].'\', false, \'\');	
-			});
-		</script>';
-
-		$out .= '<select name="'.$info['name'].'" id="'.$info['id'].'">';
-
+	function related_dependent($info)
+	{
+		// $default variable used in sublist javascript function
+		$default = 'false';
 		// Pass selectName as option to change default view
-		if(isset($info['options']['selectName']))
-			$out .= '<option value="">'.$info['options']['selectName'].'</option>';
+		if(isset($info['options']['default']))
+		{
+			$out .= '<option value="" class="default">' . $info['options']['default'] . '</option>';
+			$default = 'true';
+		}
+		
+		$out = '<script language="javascript">' . 
+				'$(document).ready(function(){ ' . 
+				'sublist(\'' . $info['options']['parent'] . '_' . $info['iteration'] . '\',\'' . $info['id'] . '\', ' . $default . ', \'\'); ' .
+				'}); </script>';
+
+		$out .= '<select name="' . $info['name'] . '" id="' . $info['id'] . '">';
 
 			if(!isset($info['sql']))
 				$info['sql'] = '';
@@ -344,64 +370,20 @@ class Forms {
 		$out .= '</select>';
 
 		if(Auth::getAuth()->user->level === 'admin')
-			$out .= '<div class="clearfix modal_add"><a href="'.WEB_ROOT.'franchiser/default/modalForm/'.deslugify($info['options']['table'],'-').'/?table='.$info['options']['table'].'&textField='.$info['options']['text'].'&valueField='.$info['options']['val'].'&idField='.$info['id'].'" rel="facebox[.modal_large]" class="add">Add Entry</a></div>';
+			$out .= '<div class="clearfix modal_add"><a href="' . WEB_ROOT . 'franchiser/default/modalForm/' . deslugify($info['options']['table'],'-') . '/?table=' . $info['options']['table'] . '&textField=' . $info['options']['text'] . '&valueField=' . $info['options']['val'] . '&idField=' . $info['id'] . '" rel="facebox[.modal_large]" class="add">Add Entry</a></div>';
 
 		if(isset($info['options']['extra']))
 			$out .= $info['options']['extra'];
 
 		return $out;
 	}
-
-		// This is used in related() function
-		function get_options($table, $val, $text, $default = null, $class = null, $sql = '')
-	    {
-	        $db = Database::getDatabase(true);
-	        $out = '';
-			
-	        $rows = $db->getRows("SELECT * FROM `$table` $sql");
-	        foreach($rows as $row)
-	        {
-				if(!is_null($class))
-					$option_class = ' class="sub_' . $row[$class] . '"';
-				else
-					$option_class = '';
-				
-	            $the_text = '';
-	            if(!is_array($text)) $text = array($text); // Allows you to concat multiple fields for display
-	            foreach($text as $t)
-	                $the_text .= $row[$t] . ' ';
-	            $the_text = htmlspecialchars(trim($the_text));
-
-	            if(!is_null($default) && $row[$val] == $default)
-	                $out .= '<option value="' . htmlspecialchars($row[$val], ENT_QUOTES) . '"'.$option_class.' selected="selected">' . $the_text . '</option>';
-	            elseif(is_array($default) && in_array($row[$val],$default))
-	                $out .= '<option value="' . htmlspecialchars($row[$val], ENT_QUOTES) . '"'.$option_class.' selected="selected">' . $the_text . '</option>';
-	            else
-	                $out .= '<option value="' . htmlspecialchars($row[$val], ENT_QUOTES) . '"'.$option_class.'>' . $the_text . '</option>';
-	        }
-	        return $out;
-	    }
 	
 	
 ///////////////// FUNCTIONS THAT USE OTHER FORM TYPES ////////////////////////////////
 
-
-	function company_id($info){
-		
-		$ap = new AlterPath(array()); 
-		$data['url_structure'] = $ap->pick_off();
-		$company = new Companies();
-		$company->select($data['url_structure']['1'],'slug');
-		
-		$info['type'] = 'hidden';
-		$info['value'] = $company->id;
-		return $this->basic_input($info);
-	}
-
 	function tables($info){
-    	$db = Database::getDatabase();
+    	$db = Database::get_instance();
 		
-		$arrTables = array();
 		$result = $db->query('SHOW TABLES');
 		while($row = mysql_fetch_array($result)) $info['options'][$row['0']] = $row['0'];
 		$out = $this->dropdown($info);
@@ -467,64 +449,6 @@ class Forms {
 
 		return $out;
 	}
-	
-	function time_range($info){
-		$info['options'] = array(
-								'6:00 am' => '6:00 am',
-								'6:30 am' => '6:30 am',
-								'7:00 am' => '7:00 am',
-								'7:30 am' => '7:30 am',
-								'8:00 am' => '8:00 am',
-								'8:30 am' => '8:30 am',
-								'9:00 am' => '9:00 am',
-								'9:30 am' => '9:30 am',
-								'10:00 am' => '10:00 am',
-								'10:30 am' => '10:30 am',
-								'11:00 am' => '11:00 am',
-								'11:30 am' => '11:30 am',
-								'12:00 pm' => '12:00 pm',
-								'12:30 pm' => '12:30 pm',
-								'1:00 pm' => '1:00 pm',
-								'1:30 pm' => '1:30 pm',
-								'2:00 pm' => '2:00 pm',
-								'2:30 pm' => '2:30 pm',
-								'3:00 pm' => '3:00 pm',
-								'3:30 pm' => '3:30 pm',
-								'4:00 pm' => '4:00 pm',
-								'4:30 pm' => '4:30 pm',
-								'5:00 pm' => '5:00 pm',
-								'5:30 pm' => '5:30 pm',
-								'6:00 pm' => '6:00 pm',
-								'6:30 pm' => '6:30 pm',
-								'7:00 pm' => '7:00 pm',
-								'7:30 pm' => '7:30 pm',
-								'8:00 pm' => '8:00 pm',
-								'8:30 pm' => '8:30 pm',
-								'9:00 pm' => '9:00 pm',
-								'9:30 pm' => '9:30 pm',
-								'10:00 pm' => '10:00 pm',
-								'10:30 pm' => '10:30 pm',
-								'11:00 pm' => '11:00 pm',
-								'11:30 pm' => '11:30 pm',
-							);
-
-		$infocop = $info;
-		
-		if(!empty($info['value']))
-			$ex = explode(' to ',$info['value']);
-			
-		$info['value'] = isset($ex['0']) ? $ex['0'] : '';
-		$infocop['value'] = isset($ex['1']) ? $ex['1'] : '';
-
-		$out = $this->dropdown($info);
-		
-		
-		$infocop['name'] = 'second_'.$infocop['name'];
-		$infocop['id'] = 'second_'.$infocop['id'];
-		$out .= ' - ' . $this->dropdown($infocop);
-		
-		return $out;
-	}
 
 	function timestamp($info){
 		
@@ -541,17 +465,17 @@ class Forms {
 	    '	<script type="text/javascript">
 		    	$(function()
 	            	{
-						$(\'#'.$info['name'].'\').DatePicker({
-							date: $(\'#'.$info['name'].'\').val(),
-							current: $(\'#'.$info['name'].'\').val(),
+						$(\'#' . $info['name'] . '\').DatePicker({
+							date: $(\'#' . $info['name'] . '\').val(),
+							current: $(\'#' . $info['name'] . '\').val(),
 							starts: 1,
 							format: \'m/d/Y\',
 							position: \'right\',
 							onBeforeShow: function(){
-								$(\'#'.$info['name'].'\').DatePickerSetDate($(\'#'.$info['name'].'\').val(), true);
+								$(\'#' . $info['name'] . '\').DatePickerSetDate($(\'#' . $info['name'] . '\').val(), true);
 							},
 							onChange: function(formated, dates){
-								$(\'#'.$info['name'].'\').val(formated + " @ '.date('h:i a').'");
+								$(\'#' . $info['name'] . '\').val(formated + " @ '.date('h:i a').'");
 							}
 						});
 
@@ -579,17 +503,17 @@ class Forms {
 	    '	<script type="text/javascript">
 		    	$(function()
 	            	{
-						$(\'#'.$info['id'].'\').DatePicker({
-							date: $(\'#'.$info['id'].'\').val(),
-							current: $(\'#'.$info['id'].'\').val(),
+						$(\'#' . $info['id'] . '\').DatePicker({
+							date: $(\'#' . $info['id'] . '\').val(),
+							current: $(\'#' . $info['id'] . '\').val(),
 							starts: 1,
 							format: \'m/d/Y\',
 							position: \'right\',
 							onBeforeShow: function(){
-								$(\'#'.$info['id'].'\').DatePickerSetDate($(\'#'.$info['id'].'\').val(), true);
+								$(\'#' . $info['id'] . '\').DatePickerSetDate($(\'#' . $info['id'] . '\').val(), true);
 							},
 							onChange: function(formated, dates){
-								$(\'#'.$info['id'].'\').val(formated);
+								$(\'#' . $info['id'] . '\').val(formated);
 							}
 						});
 
@@ -610,7 +534,7 @@ class Forms {
 						var $this = $(this);
 						$(\'.input_thumbs img\').removeClass(\'on\');
 						$this.addClass(\'on\');
-						$(\'#'.$info['id'].'\').val($this.attr(\'title\'));
+						$(\'#' . $info['id'] . '\').val($this.attr(\'title\'));
 				    });	
 				});
 		</script>';
@@ -622,7 +546,7 @@ class Forms {
 		foreach($images as $image){
 			
 			$imgobj = new Media_gallery($image);
-			$out .= '<img src="'.WEB_ROOT.'files/uploads/small/'.$imgobj->file.'" title="'.WEB_ROOT.'files/uploads/original/'.$imgobj->file.'" />';
+			$out .= '<img src="'.WEB_ROOT.'files/uploads/small/' . $imgobj->file.'" title="'.WEB_ROOT.'files/uploads/original/' . $imgobj->file.'" />';
 			
 		}
 		
@@ -634,59 +558,6 @@ class Forms {
 	
 	}
 	
-
-	function hour($name)
-	{
-		if(empty($this->fields['0'][$name]['value']))
-			$this->fields['0'][$name]['value'] = date('h');
-		
-		$hours = array(12, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11);
-
-		foreach($hours as $hour) :
-			$this->fields['0'][$name]['options'][$hour] = $hour;
-		endforeach;
-	
-		$output = $this->dropdown($name);
-	
-		return $output;
-		
-	}
-	
-
-	function minute($name)
-	{
-		if(empty($this->fields['0'][$name]['value']))
-			$this->fields['0'][$name]['value'] = date('i');
-		
-		$minutes = array('00', 15, 30, 45);
-
-		foreach($minutes as $minute) :
-			$this->fields['0'][$name]['options'][$minute] = $minute;
-		endforeach;
-	
-		$output = $this->dropdown($name);
-	
-		return $output;
-	}
-	
-
-	function ampm($name)
-	{
-		if(empty($this->fields['0'][$name]['value']))
-			$this->fields['0'][$name]['value'] = date('a');
-		
-		$ampms = array('am','pm');
-
-		foreach($ampms as $ampm) :
-			$this->fields['0'][$name]['options'][$ampm] = $ampm;
-		endforeach;
-	
-		$output = $this->dropdown($name);
-	
-		return $output;
-	}
-	
-	
 	// TO USE THIS YOU WOULD NEED TO MAKE SURE THE
 	// TINYMCE JAVASCRIPT LIBRARY IS SET UP
 	function htmleditorsimple($info){
@@ -694,7 +565,7 @@ class Forms {
 			$out = '<script language="javascript" type="text/javascript">
 				tinyMCE.init({
 					mode : "exact",
-					elements : "'.$info['name'].'",
+					elements : "' . $info['name'] . '",
 					theme : "advanced",
 					skin:"thebigreason",
 					theme_advanced_buttons1: "formatselect,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,|,link,unlink,|,code,fullscreen",
@@ -737,7 +608,7 @@ class Forms {
 			$out = '<script language="javascript" type="text/javascript">
 				tinyMCE.init({
 					mode : "exact",
-					elements : "'.$info['name'].'",
+					elements : "' . $info['name'] . '",
 					theme : "advanced",
 					skin:"thebigreason",
 					theme_advanced_buttons1: "formatselect,bold,italic,underline,strikethrough,|,bullist,numlist,|,image,media,|,justifyleft,justifycenter,justifyright,|,link,unlink,|,charmap,pastetext,pasteword,|,code,fullscreen",

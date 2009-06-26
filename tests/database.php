@@ -15,11 +15,11 @@ $config['username'] = 'root';
 $config['password'] = 'rootpassword';
 $config['die'] = true;
 
-var_dump(Database::get_db($config)->query('SELECT * FROM blog_entries')->get_rows());
+var_dump(Database::get_instance($config)->query('SELECT * FROM blog_entries')->get_rows());
 
 echo "\n\n\n";
 
-echo Database::get_db()->escape('shit and shit + / shit""');
+echo Database::get_instance()->escape('shit and shit + / shit""');
 
 echo "\n\n\n";
 

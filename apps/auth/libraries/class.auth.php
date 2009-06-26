@@ -106,7 +106,7 @@ class Auth
     // Check if the submitted password matches what we have on file, takes a *plain text* password
     public function password_is_correct($pw)
     {
-        $db = Database::get_db();
+        $db = Database::get_instance();
         $pw = $this->create_hashed_password($pw);
 
         $db->query('SELECT COUNT(*) FROM users WHERE username = :username AND password = BINARY :password', array('username' => $this->username, 'password' => $pw));
@@ -119,7 +119,7 @@ class Auth
     // Takes a username
     public function impersonate($user_to_impersonate)
     {
-		$db = Database::get_db();
+		$db = Database::get_instance();
 		$row = $db->getRow('SELECT * FROM users WHERE username = ' . $db->quote($user_to_impersonate));
 
         if (is_array($row)) {
@@ -168,7 +168,7 @@ class Auth
     // Takes a username and a hashed password
     private function attempt_login($un, $pw)
     {
-        $db = Database::get_db();
+        $db = Database::get_instance();
 
         // We SELECT * so we can load the full user record into the user Db_Object later
         $row = $db->get_row('SELECT * FROM users WHERE username = ' . $db->quote($un));

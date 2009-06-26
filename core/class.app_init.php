@@ -69,7 +69,7 @@ class App_Init {
 				// Do this to split up creations to one per query.
 				$queries = explode('#',$sql);
 
-				$db = Database::get_db();
+				$db = Database::get_instance();
 
 					foreach($queries as $query)
 						$db->query($query);

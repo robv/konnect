@@ -23,7 +23,7 @@ class Main_Controller extends Controller {
 	
 	public function models()
 	{
-		$db = Database::get_db();
+		$db = Database::get_instance();
 		
 		$out = '';
 		$arrTables = array();

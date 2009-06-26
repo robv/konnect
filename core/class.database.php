@@ -37,7 +37,7 @@ class Database
     }
 
     // Get Singleton object
-    public static function get_db($config = NULL, $connect = TRUE)
+    public static function get_instance($config = NULL, $connect = TRUE)
     {
         if(is_null(self::$me))
             self::$me = new Database($config, $connect);

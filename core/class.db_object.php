@@ -56,7 +56,7 @@
 		// $args should be an array formatted like $args[field_name] = field_value, matching functionality of Database::query
         public function select($args)
         {
-			$db = Database::get_db();
+			$db = Database::get_instance();
 			$values = array();
 			
 			// TODO: Error check for matching array count
@@ -101,7 +101,7 @@
 
         public function insert($cmd = 'INSERT INTO')
         {
-            $db = Database::get_db();
+            $db = Database::get_instance();
 
             if (count($this->columns) == 0)
 				return FALSE;
@@ -135,7 +135,7 @@
             if (is_null($this->id))
 				return FALSE;
 
-            $db = Database::get_db();
+            $db = Database::get_instance();
 
             if (count($this->columns) == 0)
 				return FALSE;
@@ -160,7 +160,7 @@
             if (is_null($this->id))
 				return FALSE;
             
-			$db = Database::get_db();
+			$db = Database::get_instance();
             $db->query('DELETE FROM `' . $this->table_name . '` WHERE `' . $this->id_column_name . '` = :id LIMIT 1', array('id' => $this->id));
             return $db->affected_rows();
         }
@@ -183,7 +183,7 @@
         // Grabs a large block of instantiated objects from the database using only one query.
         public static function select_multiple($sql = NULL, $extra_columns = array())
         {
-            $db = Database::get_db();
+            $db = Database::get_instance();
 
             $tmp_obj = new $this->class_name;
 
