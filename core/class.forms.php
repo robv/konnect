@@ -333,7 +333,7 @@ class Forms {
 				$display[] = $object->$display_field;
 			}
 			
-			$out .= '<select value="' . $object->value_field . '">' . implode($info['options']['seperator'], $display) . '</select>';
+			$out .= '<select value="' . $object->$value_field . '">' . implode($info['options']['seperator'], $display) . '</select>';
 		}
 
 		$out .= '</select>';
@@ -345,6 +345,17 @@ class Forms {
 	}
 
 
+	/*
+		Options for related type:
+		default = default value to be shown, value is empty
+		sql = this will be appended to the sql statement which by default is SELECT * FROM table
+		seperator = if display is comma seperated then use this to seperate the values (ie FirstName LastName or FirstName and LastName)
+		display_field = field to display to end user can be multiple fields comma seperated
+		value_field = field to pass through the form
+		related_field = field in child table that relates to parent table
+		parent = parent field id
+	*/
+	
 	function related_dependent($info)
 	{
 		// $default variable used in sublist javascript function
@@ -365,12 +376,25 @@ class Forms {
 
 			if(!isset($info['sql']))
 				$info['sql'] = '';
-			$out .=  $this->get_options($info['options']['table'],$info['options']['val'],$info['options']['text'],$info['value'],$info['options']['dependent']);
+
+			$objects = new $info['options']['object'];
+			$objects = $objects->select_multiple($info['options']['sql']);
+
+			foreach ($objects as $object) 
+			{
+				$value_field = $info['options']['value_field'];
+				$related_field = $info['options']['related_field'];
+				$display = array();
+
+				foreach ($display_fields as $display_field)
+				{
+					$display[] = $object->$display_field;
+				}
+
+				$out .= '<select value="' . $object->$value_field . '" class="sub_' . $object->$related_field . '">' . implode($info['options']['seperator'], $display) . '</select>';
+			}
 
 		$out .= '</select>';
-
-		if(Auth::getAuth()->user->level === 'admin')
-			$out .= '<div class="clearfix modal_add"><a href="' . WEB_ROOT . 'franchiser/default/modalForm/' . deslugify($info['options']['table'],'-') . '/?table=' . $info['options']['table'] . '&textField=' . $info['options']['text'] . '&valueField=' . $info['options']['val'] . '&idField=' . $info['id'] . '" rel="facebox[.modal_large]" class="add">Add Entry</a></div>';
 
 		if(isset($info['options']['extra']))
 			$out .= $info['options']['extra'];

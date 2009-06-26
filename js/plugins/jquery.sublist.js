@@ -1,5 +1,5 @@
 /*
-	When parent option is selected, makes visitable all child options with the class name sub_"select option value"
+	When parent option is selected, makes visible all child options with the class name sub_"select option value"
 	
 	Parameter List:
 	parent = parent select box
