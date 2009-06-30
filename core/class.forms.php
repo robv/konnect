@@ -403,18 +403,25 @@ class Forms {
 	
 ///////////////// FUNCTIONS THAT USE OTHER FORM TYPES ////////////////////////////////
 
-	public function tables($info){
+	public function tables($info)
+	{
     	$db = Database::get_instance();
 		
 		$result = $db->query('SHOW TABLES');
-		while($row = mysql_fetch_array($result)) $info['options'][$row['0']] = $row['0'];
-		$out = $this->dropdown($info);
-		
+		while ($row = mysql_fetch_array($result))
+		{
+			$obj_name = uc_slug($row[0], '_');
+			if(class_exists($obj_name))
+				$info['options'][$row[0]] = $row[0];
+		}
+	
+		$out = $this->dropdown($info);	
 		return $out;
 	}
 
 
-	public function states($info){
+	public function states($info)
+	{
 		$info['options'] = array('AL'=>"Alabama",
 		                'AK'=>"Alaska", 
 		                'AZ'=>"Arizona", 

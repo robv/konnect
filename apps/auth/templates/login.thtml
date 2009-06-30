@@ -7,10 +7,7 @@
 
 	<title>Konnect</title>
 	<?= Load::css('auth/screen'); ?>
-	
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" />
-	<?= Load::js('plugins/jquery.corners'); ?>
-	<?= Load::js('common'); ?>
+	<?= Load::js(array('jquery','plugins/jquery.corners','common')); ?>
 	
 </head>
 
