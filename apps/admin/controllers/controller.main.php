@@ -13,10 +13,14 @@ class Main_Controller extends Controller {
 	public function dashboard()
 	{
 		// Kick out user if already logged in
-		if (!Auth::get_auth()->logged_in()) {
+		if (!Auth::get_auth()->logged_in()) 
+		{
 			Flash::set('<p class="flash warning">You must be logged in to access admin.</p>');
 			Core_Helpers::redirect(WEB_ROOT . 'login/');
 		}
+		
+		$this->data['announcements'] = new Admin_Announcements;
+		$this->data['announcements'] = $this->data['announcements']->select_many('SELECT admin_announcements.*, users.username FROM users LEFT JOIN admin_announcements ON admin_announcements.author = users.id', array('username'));
 		
 		$this->load_template('dashboard');
 	}
@@ -29,13 +33,14 @@ class Main_Controller extends Controller {
 		$arrTables = array();
 		$db->query('SHOW TABLES');
 		
-		while($row = mysql_fetch_array($db->result)){
-			if(!class_exists(ucfirst($row[0]),false))
+		while($row = mysql_fetch_array($db->result))
+		{
+			if (!class_exists(ucfirst($row[0]),false))
 				$arrTables[] = $row[0];
 		}
 		
-		if(!empty($arrTables)){
-			foreach($arrTables as $table)
+		if (!empty($arrTables)){
+			foreach ($arrTables as $table)
 			{
 				$table = trim($table);
 				$uctable = String::uc_slug($table,'_');
@@ -54,7 +59,7 @@ class Main_Controller extends Controller {
 				if(!class_exists($uctable,false)){
 				
 				$out .= 'class '.$uctable.' extends Db_Object {'."\n\n";
-				$out .= '	function __construct($id = \'\')'."\n";
+				$out .= '	function __construct($id = NULL)'."\n";
 				$out .= '	{'."\n";
 				$out .= '		parent::__construct(\''.$table.'\', \''.$id_field.'\', array('.$fields.'), $id);'."\n";
 				$out .= '	}'."\n\n";

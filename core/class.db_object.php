@@ -181,7 +181,7 @@
         }
 
         // Grabs a large block of instantiated objects from the database using only one query.
-        public static function select_multiple($sql = NULL, $extra_columns = array())
+        public function select_many($sql = NULL, $extra_columns = array())
         {
             $db = Database::get_instance();
 

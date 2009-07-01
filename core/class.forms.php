@@ -319,7 +319,7 @@ class Forms {
 		$display_fields = explode(',', $info['options']['display_field']);
 
 		$objects = new $info['options']['object'];
-		$objects = $objects->select_multiple($info['options']['sql']);
+		$objects = $objects->select_many($info['options']['sql']);
 		
 		foreach ($objects as $object) 
 		{
@@ -376,7 +376,7 @@ class Forms {
 				$info['sql'] = '';
 
 			$objects = new $info['options']['object'];
-			$objects = $objects->select_multiple($info['options']['sql']);
+			$objects = $objects->select_many($info['options']['sql']);
 
 			foreach ($objects as $object) 
 			{

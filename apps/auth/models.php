@@ -2,7 +2,7 @@
 
 class Users extends Db_Object
 {
-	function __construct($id = null)
+	function __construct($id = NULL)
 	{
 		parent::__construct('users', 'id', array('username', 'password', 'level', 'email'), $id);
 	}

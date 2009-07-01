@@ -134,7 +134,7 @@ h1.warning, h2.warning, h3.warning {
 	width: 100%;
 	height: 1px;
 	background-color: #ddd;
-	margin-bottom: 15px;
+	margin: 10px 0 20px;
 }
 
 #content_container .hr hr {
@@ -261,11 +261,11 @@ h1.warning, h2.warning, h3.warning {
 }
 
 #right_column .column_box .inner {
-	padding: 10px 20px;
+	padding: 10px 20px 40px;
 }
 
 #right_column .column_box .inner h1, #right_column .column_box .inner h2, #right_column .column_box .inner h3, #right_column .column_box .inner h4, #right_column .column_box .inner h5, #right_column .column_box .inner p, #right_column .column_box .inner ul, #right_column .column_box .inner pre, #right_column .column_box .inner ol, #right_column .column_box .inner blockquote {
-	margin-bottom: 20px;
+	margin-bottom: 15px;
 }
 
 #right_column .column_box .inner h1 {
@@ -278,6 +278,12 @@ h1.warning, h2.warning, h3.warning {
 
 #right_column .column_box .inner h3 {
 	font-size: 1.5em;
+}
+
+#right_column .column_box .inner h3.meta {
+	font-size: .8em;
+	color: #888;
+	margin-top: -10px;
 }
 
 #right_column .column_box .inner pre {
