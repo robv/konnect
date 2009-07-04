@@ -50,6 +50,19 @@
 				<div class="hr"><hr/></div>
 				
 			<?php endforeach; ?>
+			
+				<div class="pagination">
+					
+					<?php if($pager->has_prev_page()) : ?>
+				    	<a href="?p=<?php echo $pager->prev_page(); ?>">Previous Page</a>
+					<?php endif; ?>
+					
+					<?php if($pager->has_next_page()) : ?>
+				    	<a href="?p=<?php echo $pager->next_page(); ?>">Next Page</a>
+					<?php endif; ?>
+					
+				</div>
+			
 			</div>
 		</div>
 		

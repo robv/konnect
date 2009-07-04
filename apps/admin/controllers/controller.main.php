@@ -19,8 +19,21 @@ class Main_Controller extends Controller {
 			Core_Helpers::redirect(WEB_ROOT . 'login/');
 		}
 		
+		// First off, how many items per page and what page are we on?
+	    $per_page = 4;
+		$current_page = (isset($_GET['p'])) ? intval($_GET['p']) : '1';
+
+	    // Next, get the total number of items in the database
+	    $num_entries = Database::get_instance()->get_value('SELECT COUNT(*) FROM admin_announcements');
+
+	    // Initialize the Pager object
+	    $pager = new Pagination($current_page, $per_page, $num_entries);		
+		
 		$this->data['announcements'] = new Admin_Announcements;
-		$this->data['announcements'] = $this->data['announcements']->select_many('SELECT admin_announcements.*, users.username FROM users LEFT JOIN admin_announcements ON admin_announcements.author = users.id', array('username'));
+		$query = 'SELECT admin_announcements.*, users.username FROM admin_announcements LEFT JOIN users ON admin_announcements.author = users.id LIMIT ' . $pager->first_record . ', ' . $pager->per_page;
+		$this->data['announcements'] = $this->data['announcements']->select_many($query, array('username'));
+		
+		$this->data['pager'] = $pager;
 		
 		$this->load_template('dashboard');
 	}
