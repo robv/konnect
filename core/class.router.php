@@ -53,7 +53,7 @@ class Router {
 			$uri = $_SERVER['REQUEST_URI'];
 
 		// Lowercase the entire string then strip http, https and ftp (just for fun) our of uri and then explode by "/"
-		self::$uri = explode('/', trim(str_replace(array('http://','https://','ftp://'), '', strtolower($uri), $count), '/'));
+		self::$uri = explode('/', trim(trim(preg_replace('/([.*^?])\??(.*)/', '$1', trim(str_replace(array('http://','https://','ftp://'), '', strtolower($uri), $count), '/')), '?'), '/'));
 
 		// We want to rebuild the array without the actual domain
 		if ($count > 0)
