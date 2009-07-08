@@ -13,13 +13,13 @@ class Main_Controller extends Controller {
 	public function login()
 	{
 		// Kick out user if already logged in
-		if (Auth::get_auth()->logged_in())
+		if (Auth::get_instance()->logged_in())
 			Core_Helpers::redirect(WEB_ROOT);
 
 		if (isset($_POST['username'])) {
-			Auth::get_auth()->login($_POST['username'], $_POST['password']);
+			Auth::get_instance()->login($_POST['username'], $_POST['password']);
 			
-			if (Auth::get_auth()->logged_in())
+			if (Auth::get_instance()->logged_in())
 				Core_Helpers::redirect(WEB_ROOT);
 			else
 				Flash::set('<p class="flash validation">Sorry, you have entered an incorrect username or password. Please try again.</p>');
@@ -61,7 +61,7 @@ class Main_Controller extends Controller {
 	public function logout()
 	{
 		
-		Auth::get_auth()->logout();
+		Auth::get_instance()->logout();
 		Core_Helpers::redirect(WEB_ROOT);
 	
 	}

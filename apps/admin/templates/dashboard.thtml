@@ -17,20 +17,10 @@
 	
 	<div id="left_column">
 		
-		<h3 class="title roundtop">Filters</h3>
-		<div class="column_box roundbottom">
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-		</div>
-		
-		<h3 class="title roundtop">Filters</h3>
+		<h3 class="title roundtop">Feeds</h3>
 		<div class="column_box roundbottom">
 			<ul>
-				<li>Test</li>
-				<li>Tester</li>
-				<li>test</li>
-				<li class="link"><a href="#">Link</a></li>
-				<li class="link"><a href="#">Link</a></li>
-				<li class="link"><a href="#">Link</a></li>
+				<li class="link"><a href="<?= WEB_ROOT . Router::uri(0); ?>/rss/announcements/<?= $api_token; ?>/">Latest Announcements</a></li>
 			</ul>
 		</div>
 		
@@ -44,7 +34,7 @@
 			
 			<?php foreach($announcements as $announcement): ?>
 				
-				<h2><?= $announcement->title; ?></h2>
+				<h3><?= $announcement->title; ?></h3>
 				<h3 class="meta">Posted by <?= $announcement->username; ?> at <?= String::format_date($announcement->date_posted, 'F j, g:i a'); ?></h3>
 				<?= $announcement->comments; ?>
 				<div class="hr"><hr/></div>

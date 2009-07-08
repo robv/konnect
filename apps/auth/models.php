@@ -9,7 +9,7 @@ class Users extends Db_Object
 
 	function insert()
 	{
-		$this->password = Auth::get_auth()->create_hashed_password($this->password);
+		$this->password = Auth::get_instance()->create_hashed_password($this->password);
 		parent::insert();
 	}
 
@@ -20,7 +20,7 @@ class Users extends Db_Object
 		
 		// Because passwords are stored hashed, we don't want to hash a hash
 		if($user->password !== $this->password)
-			$this->password = Auth::get_auth()->create_hashed_password($this->password);
+			$this->password = Auth::get_instance()->create_hashed_password($this->password);
 			
 		parent::update();
 	}
