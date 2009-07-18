@@ -5,17 +5,17 @@ class Rss
 	public $link;
 	public $description;
 	public $language = 'en-US';
-	public $pubDate;
+	public $pub_date;
 	public $url;
 	public $items;
 	public $tags;
-	public $useCDataTags;
+	public $use_cdata_tags;
 
 	public function __construct()
 	{
 	    $this->items = array();
 	    $this->tags  = array();
-	    $this->useCDataTags = true;
+	    $this->use_cdata_tags = true;
 	    $this->set_pub_date();
 	    $this->url = $this->full_url();
 	}
@@ -29,7 +29,7 @@ class Rss
 	{
 	    if(is_null($date)) $date = time();
 	    if(!ctype_digit($date)) $date = strtotime($date);
-	    $this->pubDate = date('D, d M Y H:i:s O', $date);
+	    $this->pub_date = date('D, d M Y H:i:s O', $date);
 	}
 
 	public function add_tag($tag, $value)
@@ -63,7 +63,7 @@ class Rss
 	    $out .= "<link>" . $this->link . "</link>\n";
 	    $out .= "<description>" . $description . "</description>\n";
 	    $out .= "<language>" . $this->language . "</language>\n";
-	    $out .= "<pubDate>" . $this->pubDate . "</pubDate>\n";
+	    $out .= "<pub_date>" . $this->pub_date . "</pub_date>\n";
 	    $out .= '<atom:link href="' . $this->url . '" rel="self" type="application/rss+xml" />' . "\n";
 
 	    foreach($this->tags as $k => $v)
@@ -108,7 +108,7 @@ class Rss
 
 	private function cdata($str)
 	{
-	    if($this->useCDataTags)
+	    if($this->use_cdata_tags)
 	    {
 	        $str = '<![CDATA[' . $str . ']]>';
 	    }
@@ -121,17 +121,17 @@ class Rss_Item
 	public $title;
 	public $link;
 	public $description;
-	public $pubDate;
+	public $pub_date;
 	public $guid;
 	public $tags;
-	public $enclosureUrl;
-	public $enclosureType;
+	public $enclosure_url;
+	public $enclosure_type;
 	public $enclosureLength;
-	public $useCDataTags;
+	public $use_cdata_tags;
 
 	public function __construct()
 	{
-	    $this->useCDataTags = true;
+	    $this->use_cdata_tags = true;
 	    $this->tags = array();
 	    $this->set_pub_date();
 	}
@@ -140,7 +140,7 @@ class Rss_Item
 	{
 	    if(is_null($date)) $date = time();
 	    if(!ctype_digit($date)) $date = strtotime($date);
-	    $this->pubDate = date('D, d M Y H:i:s O', $date);
+	    $this->pub_date = date('D, d M Y H:i:s O', $date);
 	}
 
 	public function add_tag($tag, $value)
@@ -158,15 +158,15 @@ class Rss_Item
 	    $out .= "<title>" . $title . "</title>\n";
 	    $out .= "<link>" . $this->link . "</link>\n";
 	    $out .= "<description>" . $this->cdata($this->description) . "</description>\n";
-	    $out .= "<pubDate>" . $this->pubDate . "</pubDate>\n";
+	    $out .= "<pub_date>" . $this->pub_date . "</pub_date>\n";
 
 	    if(is_null($this->guid))
 	        $this->guid = $this->link;
 
 	    $out .= "<guid>" . $this->guid . "</guid>\n";
 
-	    if(!is_null($this->enclosureUrl))
-	        $out .= "<enclosure url='{$this->enclosureUrl}' length='{$this->enclosureLength}' type='{$this->enclosureType}' />\n";
+	    if(!is_null($this->enclosure_url))
+	        $out .= "<enclosure url='{$this->enclosure_url}' length='{$this->enclosureLength}' type='{$this->enclosure_type}' />\n";
 
 	    foreach($this->tags as $k => $v)
 	        $out .= "<$k>$v</$k>\n";
@@ -177,14 +177,14 @@ class Rss_Item
 
 	public function enclosure($url, $type, $length)
 	{
-	    $this->enclosureUrl    = $url;
-	    $this->enclosureType   = $type;
+	    $this->enclosure_url    = $url;
+	    $this->enclosure_type   = $type;
 	    $this->enclosureLength = $length;
 	}
 
 	private function cdata($str)
 	{
-	    if($this->useCDataTags)
+	    if($this->use_cdata_tags)
 	        $str = '<![CDATA[' . $str . ']]>';
 	
 	    return $str;
