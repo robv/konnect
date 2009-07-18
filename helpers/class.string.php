@@ -6,15 +6,16 @@ class String
     // Creates a friendly URL slug from a 
 	public static function clean($str, $replacer = '-')
     {
+		$str = str_replace('%20', ' ', $str);
         $str = preg_replace('/[^a-z0-9 ' . $replacer . ']/i', ' ', $str);
         $str = strtolower(str_replace(' ', $replacer, trim($str)));
         $str = preg_replace('/\\' . $replacer . '+/', $replacer, $str);
         return $str;
     }
 
-	public static function uc_slug($str, $replacer = '-')
+	public static function uc_slug($str, $replacer = '-', $original_seperator = '-')
 	{
-		$str = explode($replacer, $str);
+		$str = explode($original_seperator, $str);
 		$str = array_map('ucwords', $str);
 		return implode($replacer, $str);
 	}
