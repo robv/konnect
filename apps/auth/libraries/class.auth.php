@@ -205,7 +205,8 @@ class Auth
 		return setcookie('s', $s, time()+60*60*24*30, '/', Config::$config['core']['basics']['cookie_domain']);
     }
 
-    private function create_hashed_password($pw)
+	// The only reason we need this public is so the db object can work with it
+    public function create_hashed_password($pw)
     {
         return sha1($pw . $this->auth_salt);
     }
