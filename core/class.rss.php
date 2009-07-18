@@ -16,28 +16,28 @@ class Rss
 	    $this->items = array();
 	    $this->tags  = array();
 	    $this->useCDataTags = true;
-	    $this->setPubDate();
-	    $this->url = $this->fullUrl();
+	    $this->set_pub_date();
+	    $this->url = $this->full_url();
 	}
 
-	public function addItem($item)
+	public function add_item($item)
 	{
 	    $this->items[] = $item;
 	}
 
-	public function setPubDate($date = null)
+	public function set_pub_date($date = null)
 	{
 	    if(is_null($date)) $date = time();
 	    if(!ctype_digit($date)) $date = strtotime($date);
 	    $this->pubDate = date('D, d M Y H:i:s O', $date);
 	}
 
-	public function addTag($tag, $value)
+	public function add_tag($tag, $value)
 	{
 	    $this->tags[$tag] = $value;
 	}
 
-	public function loadRecordset($result, $title, $link, $description, $pub_date)
+	public function load_recordset($result, $title, $link, $description, $pub_date)
 	{
 	    while($row = mysql_fetch_array($result, MYSQL_ASSOC))
 	    {
@@ -45,8 +45,8 @@ class Rss
 	        $item->title       = $row[$title];
 	        $item->link        = $row[$link];
 	        $item->description = $row[$description];
-	        $item->setPubDate($row[$pub_date]);
-	        $this->addItem($item);
+	        $item->set_pub_date($row[$pub_date]);
+	        $this->add_item($item);
 	    }
 	}
 
@@ -98,7 +98,7 @@ class Rss
 	    return '</rss>';
 	}
 
-	private function fullUrl()
+	private function full_url()
 	{
 	    $s = empty($_SERVER['HTTPS']) ? '' : ($_SERVER['HTTPS'] == 'on') ? 's' : '';
 	    $protocol = substr(strtolower($_SERVER['SERVER_PROTOCOL']), 0, strpos(strtolower($_SERVER['SERVER_PROTOCOL']), '/')) . $s;
@@ -133,17 +133,17 @@ class Rss_Item
 	{
 	    $this->useCDataTags = true;
 	    $this->tags = array();
-	    $this->setPubDate();
+	    $this->set_pub_date();
 	}
 
-	public function setPubDate($date = null)
+	public function set_pub_date($date = null)
 	{
 	    if(is_null($date)) $date = time();
 	    if(!ctype_digit($date)) $date = strtotime($date);
 	    $this->pubDate = date('D, d M Y H:i:s O', $date);
 	}
 
-	public function addTag($tag, $value)
+	public function add_tag($tag, $value)
 	{
 	    $this->tags[$tag] = $value;
 	}
@@ -185,9 +185,8 @@ class Rss_Item
 	private function cdata($str)
 	{
 	    if($this->useCDataTags)
-	    {
 	        $str = '<![CDATA[' . $str . ']]>';
-	    }
+	
 	    return $str;
 	}
 }

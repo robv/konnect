@@ -62,8 +62,8 @@ class Main_Controller extends Controller {
 			        $item->title = $announcement->title;
 			        $item->link = WEB_ROOT . Router::uri(0) . '/view/admin_announcements/' . $announcement->id . '/';
 			        $item->description = $announcement->comments;
-			        $item->setPubDate(String::format_date($announcement->date_posted, 'F j, g:i a'));
-			        $feed->addItem($item);
+			        $item->set_pub_date(String::format_date($announcement->date_posted, 'F j, g:i a'));
+			        $feed->add_item($item);
 				}
 			}
 	
@@ -80,40 +80,40 @@ class Main_Controller extends Controller {
 		$db = Database::get_instance();
 		
 		$out = '';
-		$arrTables = array();
+		$arr_tables = array();
 		$db->query('SHOW TABLES');
 		
 		while($row = mysql_fetch_array($db->result))
 		{
 			if (!class_exists(ucfirst($row[0]),false))
-				$arrTables[] = $row[0];
+				$arr_tables[] = $row[0];
 		}
 		
-		if (!empty($arrTables)){
-			foreach ($arrTables as $table)
+		if (!empty($arr_tables)){
+			foreach ($arr_tables as $table)
 			{
 				$table = trim($table);
 				$uctable = String::uc_slug($table,'_');
 
-				$arrFields = array();
+				$arr_fields = array();
 				$db->query('SHOW FIELDS FROM '.$table);
 				while($row = mysql_fetch_array($db->result, MYSQL_ASSOC))
 				{
 					if(!isset($id_field))
 						$id_field = current($row);
 					else
-						$arrFields[] = current($row);
+						$arr_fields[] = current($row);
 				}
-				$fields = '\'' . implode('\', \'', $arrFields) . '\'';
+				$fields = '\'' . implode('\', \'', $arr_fields) . '\'';
 			
 				if(!class_exists($uctable,false)){
 				
-				$out .= 'class '.$uctable.' extends Db_Object {'."\n\n";
-				$out .= '	function __construct($id = NULL)'."\n";
-				$out .= '	{'."\n";
-				$out .= '		parent::__construct(\''.$table.'\', \''.$id_field.'\', array('.$fields.'), $id);'."\n";
-				$out .= '	}'."\n\n";
-				$out .= '}'."\n";
+				$out .= 'class ' . $uctable . ' extends Db_Object {' . "\n\n";
+				$out .= '	function __construct($id = NULL)' . "\n";
+				$out .= '	{' . "\n";
+				$out .= '		parent::__construct(\'' . $table . '\', \'' . $id_field . '\', array(' . $fields . '), $id);' . "\n";
+				$out .= '	}' . "\n\n";
+				$out .= '}' . "\n";
 				$out .= "\n";
 			
 				}
