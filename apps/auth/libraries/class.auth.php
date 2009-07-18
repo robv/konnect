@@ -211,8 +211,4 @@ class Auth
         return sha1($pw . $this->auth_salt);
     }
 
-	public function api_token()
-	{
-		return sha1($this->id . $this->auth_salt);
-	}
 }

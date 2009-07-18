@@ -20,7 +20,7 @@
 		<h3 class="title roundtop">Feeds</h3>
 		<div class="column_box roundbottom">
 			<ul>
-				<li class="link"><a href="<?= WEB_ROOT . Router::uri(0); ?>/rss/announcements/<?= $api_token; ?>/">Latest Announcements</a></li>
+				<li class="link"><a href="<?= WEB_ROOT . Router::uri(0); ?>/rss/announcements/<?= Auth::get_instance()->user->api_token; ?>/">Latest Announcements</a></li>
 			</ul>
 		</div>
 		

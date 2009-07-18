@@ -35,42 +35,44 @@ class Main_Controller extends Controller {
 		
 		$this->data['pager'] = $pager;
 		
-		$this->data['api_token'] = Auth::get_instance()->api_token();
-		
 		$this->load_template('dashboard');
 	}
 	
+	// TODO: Implement cache system
 	public function rss()
 	{
 		$feed = new Rss;
 		$feed->title = 'Konnect';
 		
-		// TODO: Should not check against logged in user but should just check if it exists in the database..
-		if (Auth::get_instance()->api_token() !== Router::uri(4))
+		$api_check = new Users;
+		
+		if ($api_check->verify_api_token(Router::uri(4)))
 		{
+		
+			if (Router::uri(3) === 'announcements') 
+			{
+				$feed->title .= ' - Latest Announcements';
+				$this->data['announcements'] = new Admin_Announcements;
+				$query = 'SELECT admin_announcements.*, users.username FROM admin_announcements LEFT JOIN users ON admin_announcements.author = users.id LIMIT 0,10';
+				$this->data['announcements'] = $this->data['announcements']->select_many($query, array('username'));
+		
+				foreach ($this->data['announcements'] as $announcement) 
+				{
+					$item = new Rss_Item();
+			        $item->title = $announcement->title;
+			        $item->link = WEB_ROOT . Router::uri(0) . '/view/admin_announcements/' . $announcement->id . '/';
+			        $item->description = $announcement->comments;
+			        $item->setPubDate(String::format_date($announcement->date_posted, 'F j, g:i a'));
+			        $feed->addItem($item);
+				}
+			}
+	
+			$feed->serve();
+		}
+		else
+		{	
 			die('You are not authorized for this feed, please check that your api token is correct');
 		}
-		
-		if (Router::uri(3) === 'announcements') 
-		{
-			$feed->title .= ' - Latest Announcements';
-			$this->data['announcements'] = new Admin_Announcements;
-			$query = 'SELECT admin_announcements.*, users.username FROM admin_announcements LEFT JOIN users ON admin_announcements.author = users.id LIMIT 0,10';
-			$this->data['announcements'] = $this->data['announcements']->select_many($query, array('username'));
-		
-			foreach ($this->data['announcements'] as $announcement) 
-			{
-				$item = new Rss_Item();
-		        $item->title = $announcement->title;
-		        $item->link = WEB_ROOT . Router::uri(0) . '/view/admin_announcements/' . $announcement->id . '/';
-		        $item->description = $announcement->comments;
-		        $item->setPubDate(String::format_date($announcement->date_posted, 'F j, g:i a'));
-		        $feed->addItem($item);
-			}
-		}
-	
-		$feed->serve();
-		
 	}
 	
 	public function models()
