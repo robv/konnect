@@ -2,33 +2,14 @@
 	
 	<h2 class="page_title">Dashboard</h2>
 	
-	<div id="sub_menu" class="round">
-		<ul class="float_left">
-			<li><a href="#">Users</a></li>
-			<li><a href="#">Members</a></li>
-			<li><a href="#">Phone List</a></li>
-		</ul>
-		<ul class="float_right">
-			<li><a href="#">Users</a></li>
-			<li><a href="#">Members</a></li>
-			<li><a href="#">Phone List</a></li>
-		</ul>
-	</div>
-	
 	<div id="left_column">
 		
-		<h3 class="title roundtop">Feeds</h3>
-		<div class="column_box roundbottom">
-			<ul>
-				<li class="link"><a href="<?= WEB_ROOT . Router::uri(0); ?>/rss/announcements/<?= Auth::get_instance()->user->api_token; ?>/">Latest Announcements</a></li>
+		<h3 class="title roundtop">Latest Announcements</h3>
+		<div class="sub_menu clearfix">
+			<ul class="float_right">
+				<li class="link"><a href="<?= WEB_ROOT . Router::uri(0); ?>/add/admin-announcements/">Add Announcement</a></li>
 			</ul>
 		</div>
-		
-	</div>
-	
-	<div id="right_column">
-		
-		<h3 class="title roundtop">Latest Announcements</h3>
 		<div class="column_box roundbottom">
 			<div class="inner">
 			
@@ -54,6 +35,17 @@
 				</div>
 			
 			</div>
+		</div>
+		
+	</div>
+	
+	<div id="right_column">
+		
+		<h3 class="title roundtop">Feeds</h3>
+		<div class="column_box roundbottom">
+			<ul>
+				<li class="link"><a href="<?= WEB_ROOT . Router::uri(0); ?>/rss/announcements/<?= Auth::get_instance()->user->api_token; ?>/">Latest Announcements</a></li>
+			</ul>
 		</div>
 		
 	</div>
