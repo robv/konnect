@@ -294,6 +294,7 @@ h1.warning, h2.warning, h3.warning {
 
 #left_column .index table {
 	width: 100%;
+	margin-bottom: 20px;
 }
 
 #left_column .index table th {

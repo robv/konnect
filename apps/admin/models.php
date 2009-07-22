@@ -9,6 +9,15 @@ class Form_Information extends Db_Object {
 
 }
 
+class Index_information extends Db_Object {
+
+	function __construct($id = NULL)
+	{
+		parent::__construct('index_information', 'id', array('table', 'slug', 'template'), $id);
+	}
+
+}
+
 class Pages extends Db_Object {
 
 	function __construct($id = NULL)
