@@ -47,9 +47,9 @@
         }
 
 		// Returns an array containing columns and values in an array as opposed to object form
-        public function get_columns()
+        public function get_fields()
         {
-            return $this->columns;
+            return array_keys($this->columns);
         }
 		
 		
@@ -193,6 +193,9 @@
 
             if (is_null($sql))
                 $sql = "SELECT * FROM `{$tmp_obj->table_name}`";
+
+			// So you want to do select * but don't want to have to type it, just add %select%
+			$sql = str_replace('%select%', "SELECT * FROM `{$tmp_obj->table_name}`", $sql);
 
             $objs = array();
             $rows = $db->get_rows($sql);
