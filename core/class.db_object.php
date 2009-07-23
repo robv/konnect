@@ -191,7 +191,7 @@
             if (!is_subclass_of($tmp_obj, 'Db_Object'))
                 return FALSE;
 
-            if (is_null($sql))
+            if (is_null($sql) || empty($sql))
                 $sql = "SELECT * FROM `{$tmp_obj->table_name}`";
 
 			// So you want to do select * but don't want to have to type it, just add %select%

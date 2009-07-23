@@ -77,35 +77,45 @@ class Main_Controller extends Controller {
 	
 	public function index()
 	{
-		// Lets start with pagination
-		// First off, how many items per page and what page are we on?
-	    $per_page = 15;
-		$current_page = (isset($_GET['p'])) ? intval($_GET['p']) : '1';
-
-	    // Next, get the total number of items in the database
-	    $num_entries = Database::get_instance()->get_value('SELECT COUNT(*) FROM admin_announcements');
-
-	    // Initialize the Pager object
-	    $pager = new Pagination($current_page, $per_page, $num_entries);
+		// This is to check if the slug being given matches one in the index_information table, if not then we'll check later if it's even a table
+		$index_info = new Index_information;
 		
-		// Converting string in url to what should match a db object
-		$db_object_name = String::uc_slug(Router::uri(3), '_', '-');
-		
-		// If $db_object doesn't match a current class then something's wrong...
-		if (!class_exists($db_object_name))
-			die('<h2>Sorry, ' . $db_object_name . ' does not exist.</h2>');
+		if ($index_info->select(array('slug'=>strtolower(Router::uri(3)))))
+		{
+			$this->data['page_title'] = $index_info->title;
 			
-		$db_object = new $db_object_name;
-		
-		$this->data['fields'] = $db_object->get_fields();
-		$this->data['objects'] = $db_object->select_many('%select% ORDER BY ' . $db_object->id_column_name . ' DESC LIMIT ' . $pager->first_record . ', ' . $pager->per_page);
-
-		$this->data['index_info'] = new Index_Information;
-		
-		if ($this->data['index_info']->select(array('table'=>strtolower($db_object_name))))
-		{	
-			$this->data['page_title'] = $this->data['index_info']->title;
+			// If no custom sql is in the table then just use the default select * statement
+			if(is_null($index_info->sql) || empty($index_info->sql))
+				$index_info->sql = '%select%';
 			
+			// Lets start with pagination
+			// First off, how many items per page and what page are we on?
+		    $per_page = 15;
+			$current_page = (isset($_GET['p'])) ? intval($_GET['p']) : '1';
+
+		    // Next, get the total number of items in the database
+			// I know this isn't the most efficient count rows but because this can be a custom query, i don't know how else...
+		    $num_entries = Database::get_instance()->num_rows(str_replace('%select%', 'SELECT * FROM ' . $index_info->table, $index_info->sql));
+			if($num_entries == false)
+				$num_entries = 0;
+
+		    // Initialize the Pager object
+		    $pager = new Pagination($current_page, $per_page, $num_entries);
+		
+			// Converting string in url to what should match a db object
+			$db_object_name = String::uc_slug($index_info->table, '_', '_');
+		
+			// If $db_object doesn't match a current class then something's wrong...
+			if (!class_exists($db_object_name))
+				die('<h2>Sorry, ' . $db_object_name . ' does not exist.</h2>');
+			
+			$db_object = new $db_object_name;
+		
+			$this->data['fields'] = $db_object->get_fields();
+			
+			$this->data['objects'] = $db_object->select_many($index_info->sql . ' LIMIT ' . $pager->first_record . ', ' . $pager->per_page);
+			
+		
 			/*
 				TEMPLATE FIELD FORMAT:
 				<table>header html...
@@ -114,40 +124,63 @@ class Main_Controller extends Controller {
 				%endloop%
 				</table>footer html
 			*/
-			
-			$this->data['template']['header'] = preg_match('/(.*?)%startloop%/im', $this->data['index_info']->template, $matches);
+		
+			$this->data['template']['header'] = preg_match('/(.*?)%startloop%/im', $index_info->template, $matches);
 			$this->data['template']['header'] = $matches[1];
-			
-			$this->data['template']['loop'] = preg_match('/%startloop%(.*?)%endloop%/im', $this->data['index_info']->template, $matches);
+		
+			$this->data['template']['loop'] = preg_match('/%startloop%(.*?)%endloop%/im', $index_info->template, $matches);
 			$this->data['template']['loop'] = $matches[1];
-			
-			$this->data['template']['footer'] = preg_match('/%endloop%(.*?)/im', $this->data['index_info']->template, $matches);
+		
+			$this->data['template']['footer'] = preg_match('/%endloop%(.*?)/im', $index_info->template, $matches);
 			$this->data['template']['footer'] = $matches[1];
 			
 		}
 		else
 		{
-			$this->data['page_title'] = String::uc_slug(Router::uri(3), ' ', '-');
+			// Lets start with pagination
+			// First off, how many items per page and what page are we on?
+		    $per_page = 15;
+			$current_page = (isset($_GET['p'])) ? intval($_GET['p']) : '1';
+
+		    // Next, get the total number of items in the database
+		    $num_entries = Database::get_instance()->get_value('SELECT COUNT(*) FROM admin_announcements');
+
+		    // Initialize the Pager object
+		    $pager = new Pagination($current_page, $per_page, $num_entries);
+		
+			// Converting string in url to what should match a db object
+			$db_object_name = String::uc_slug(Router::uri(3), '_', '-');
+		
+			// If $db_object doesn't match a current class then something's wrong...
+			if (!class_exists($db_object_name))
+				die('<h2>Sorry, ' . $db_object_name . ' does not exist.</h2>');
 			
+			$db_object = new $db_object_name;
+		
+			$this->data['fields'] = $db_object->get_fields();
+			$this->data['objects'] = $db_object->select_many('%select% ORDER BY ' . $db_object->id_column_name . ' DESC LIMIT ' . $pager->first_record . ', ' . $pager->per_page);
+
+			$this->data['page_title'] = String::uc_slug(Router::uri(3), ' ', '-');
+		
 			$this->data['template']['footer'] = '</table>';
 			$this->data['template']['header'] = '<table><tr>';
 			$this->data['template']['loop'] = '<tr>';
-			
+		
 				// We only want to return the first 3 fields, more than that and it might be too long
 				if(count($this->data['fields']) > 3)
 					$this->data['fields'] = array_slice($this->data['fields'], 0, 3);
-					
+				
 				foreach ($this->data['fields'] as $field) 
 				{
 					$this->data['template']['header'] .= '<th>' . String::uc_slug($field, ' ', '_') . '</th>';
 					$this->data['template']['loop'] .= '<td>%' . $field . '%</td>';
 				}
-				
+			
 				// Final column for edit and delete buttons
 				$this->data['template']['header'] .= '<th colspan="2"></th></tr>';
 				$this->data['template']['loop'] .= '<td><a href="' . WEB_ROOT . Router::uri(0) . '/edit/' . Router::uri(3) . '/%id%/">Edit</a></td>';
 				$this->data['template']['loop'] .= '<td><a href="' . WEB_ROOT . Router::uri(0) . '/delete/' . Router::uri(3) . '/%id%/">Delete</a></td></tr>';
-			
+		
 			$this->data['template']['header'] .= '</tr>';
 		}
 		
