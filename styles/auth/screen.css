@@ -29,7 +29,7 @@ h2 {
 }
 
 #content a {
-	background-color: #efefef;
+	background-color: #eee;
 	color: #222;
 	padding: 5px 8px;
 	font-size: .8em;
@@ -66,6 +66,10 @@ form input.submit {
 	padding: 8px 12px;
 	float: right;
 	cursor: pointer;
+}
+
+form input.submit:hover {
+	background-color: #aaa;
 }
 
 /* @end */

@@ -70,13 +70,12 @@ h1.warning, h2.warning, h3.warning {
 }
 
 #header .submit {
-	background-color: #333;
+	background-color: #222;
 	margin-left: 10px;
 }
 
 #header .submit:hover {
-	background-color: #121212;
-	color: #fff;
+	background-color: #aaa;
 }
 
 /* @end */
