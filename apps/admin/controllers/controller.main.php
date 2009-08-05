@@ -92,6 +92,16 @@ class Main_Controller extends Controller {
 			// First off, how many items per page and what page are we on?
 		    $per_page = 15;
 			$current_page = (isset($_GET['p'])) ? intval($_GET['p']) : '1';
+			
+			// Check if we should do a search...
+			if (isset($_POST['search']))
+			{
+				// If there's already a where statement we need an AND
+				if (preg_match('/where/i', $index_info->sql))
+					$index_info->sql .= 'AND ';
+				
+				$index_info->sql .= '';
+			}
 
 		    // Next, get the total number of items in the database
 			// I know this isn't the most efficient count rows but because this can be a custom query, i don't know how else...
@@ -141,24 +151,39 @@ class Main_Controller extends Controller {
 			// First off, how many items per page and what page are we on?
 		    $per_page = 15;
 			$current_page = (isset($_GET['p'])) ? intval($_GET['p']) : '1';
-
-		    // Next, get the total number of items in the database
-		    $num_entries = Database::get_instance()->get_value('SELECT COUNT(*) FROM admin_announcements');
-
-		    // Initialize the Pager object
-		    $pager = new Pagination($current_page, $per_page, $num_entries);
 		
 			// Converting string in url to what should match a db object
 			$db_object_name = String::uc_slug(Router::uri(3), '_', '-');
+			
+			$db_object = new $db_object_name;
+		
+			$this->data['fields'] = $db_object->get_fields();
 		
 			// If $db_object doesn't match a current class then something's wrong...
 			if (!class_exists($db_object_name))
 				die('<h2>Sorry, ' . $db_object_name . ' does not exist.</h2>');
 			
-			$db_object = new $db_object_name;
-		
-			$this->data['fields'] = $db_object->get_fields();
-			$this->data['objects'] = $db_object->select_many('%select% ORDER BY ' . $db_object->id_column_name . ' DESC LIMIT ' . $pager->first_record . ', ' . $pager->per_page);
+			// This is where we'll store the WHERE info the sql statement
+			$where = '';
+			
+			// Check if we should do a search...
+			if (isset($_GET['search']))
+			{	
+				$where .= ' WHERE ';
+				foreach ($this->data['fields'] as $field)
+				{
+					$where .= '(`' . $field .'` LIKE \'%' . Database::get_instance()->escape($_GET['search']) . '%\') OR ';
+				}
+				$where = ' ' . trim($where, 'OR ');
+			}
+
+		    // Next, get the total number of items in the database
+		    $num_entries = Database::get_instance()->get_value('SELECT COUNT(*) FROM `admin_announcements`' . $where);
+
+		    // Initialize the Pager object
+		    $pager = new Pagination($current_page, $per_page, $num_entries);
+			
+			$this->data['objects'] = $db_object->select_many('%select%' . $where . ' ORDER BY ' . $db_object->id_column_name . ' DESC LIMIT ' . $pager->first_record . ', ' . $pager->per_page);
 
 			$this->data['page_title'] = String::uc_slug(Router::uri(3), ' ', '-');
 		

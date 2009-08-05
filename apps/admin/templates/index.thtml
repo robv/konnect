@@ -6,9 +6,10 @@
 		
 		<h3 class="title roundtop"><?= $page_title; ?></h3>
 		<div class="sub_menu clearfix">
-			<ul class="float_right">
-				<li class="link"><a href="<?= WEB_ROOT . Router::uri(0); ?>/add/admin-announcements/">Add Announcement</a></li>
-			</ul>
+			<form method="get" action="" class="float_right">
+				<input type="text" name="search" id="search" title="Search Entries..." class="hint" />
+				<input type="submit" class="submit round" name="submit" value="Go" />
+			</form>
 		</div>
 		<div class="column_box roundbottom">
 			<div class="inner index">
@@ -26,11 +27,11 @@
 				<div class="pagination">
 
 					<?php if($pager->has_prev_page()) : ?>
-				    	<a href="?p=<?php echo $pager->prev_page(); ?>">Previous Page</a>
+				    	<a href="?p=<?= $pager->prev_page(); ?><?= isset($_GET['search']) ? '&search=' . $_GET['search'] : ''; ?>">Previous Page</a>
 					<?php endif; ?>
 
 					<?php if($pager->has_next_page()) : ?>
-				    	<a href="?p=<?php echo $pager->next_page(); ?>">Next Page</a>
+				    	<a href="?p=<?= $pager->next_page(); ?><?= isset($_GET['search']) ? '&search=' . $_GET['search'] : ''; ?>">Next Page</a>
 					<?php endif; ?>
 
 				</div>
