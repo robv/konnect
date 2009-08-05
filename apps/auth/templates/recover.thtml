@@ -7,7 +7,7 @@
 
 	<title>Konnect</title>
 	<?= Load::css('auth/screen'); ?>
-	<?= Load::js(array('jquery','plugins/jquery.corners','common')); ?>
+	<?= Load::js(array('jquery','plugins/jquery.inputhint','common')); ?>
 	
 </head>
 

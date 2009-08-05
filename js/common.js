@@ -11,12 +11,13 @@ var Site = {
 
 		// On Dom Ready
 		jQuery(function($) {
+			
 			setTimeout(function(){
-				$('.flash').slideUp(function() {
-					$('.flash').remove();
-			  	});
-				$('.flash').fadeOut();
+				$('.flash').fadeTo('slow', 0).slideUp();
 			}, 2000);
+			
+			$('input.hint').input_hint();
+			
 		});
 		
 		// Load Immediately

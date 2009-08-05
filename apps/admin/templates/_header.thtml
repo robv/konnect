@@ -7,6 +7,7 @@
 
 	<title>Konnect</title>
 	<?= Load::css('admin/screen'); ?>
+	<?= Load::js(array('jquery','plugins/jquery.inputhint','common')); ?>
 	
 </head>
 
