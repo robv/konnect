@@ -94,7 +94,7 @@ class Main_Controller extends Controller {
 			$current_page = (isset($_GET['p'])) ? intval($_GET['p']) : '1';
 			
 			// Check if we should do a search...
-			if (isset($_POST['search']))
+			if (isset($_GET['search']))
 			{
 				// If there's already a where statement we need an AND
 				if (preg_match('/where/i', $index_info->sql))
@@ -169,16 +169,17 @@ class Main_Controller extends Controller {
 			// Check if we should do a search...
 			if (isset($_GET['search']))
 			{	
+				$this->data['search_value'] = htmlspecialchars($_GET['search']);
 				$where .= ' WHERE ';
 				foreach ($this->data['fields'] as $field)
 				{
-					$where .= '(`' . $field .'` LIKE \'%' . Database::get_instance()->escape($_GET['search']) . '%\') OR ';
+					$where .= '(`' . $field .'` LIKE \'%' . Database::get_instance()->escape($this->data['search_value']) . '%\') OR ';
 				}
 				$where = ' ' . trim($where, 'OR ');
 			}
 
 		    // Next, get the total number of items in the database
-		    $num_entries = Database::get_instance()->get_value('SELECT COUNT(*) FROM `admin_announcements`' . $where);
+		    $this->data['num_entries'] = $num_entries = Database::get_instance()->get_value('SELECT COUNT(*) FROM `admin_announcements`' . $where);
 
 		    // Initialize the Pager object
 		    $pager = new Pagination($current_page, $per_page, $num_entries);

@@ -19,21 +19,31 @@
 		<div class="column_box roundbottom">
 			<div class="inner index">
 			
-			<?php if(empty($objects)) : ?>
+			<?php if (isset($search_value) && $num_entries == 0) : ?>
+
+				<p class="warning">Your search for <strong><?= $search_value; ?></strong> returned no matches, sorry.</p>
+			
+			<?php elseif ($num_entries == 0) : ?>
 				
-				<p class="warning">Sorry no entries are available.</p>
+				<p class="warning">Sorry, no entries are available.</p>
 				
 			<?php else : ?>
 				
-			<?= $template['header']; ?>
-			
-				<?php foreach($objects as $object) : ?>
-					
-					<?= preg_replace('/%(.*?)%/ime', '$object->$1', $template['loop']); ?>
+				<?php if (isset($search_value)) : ?>
 				
-				<?php endforeach; ?>
+					<p class="info">Your search for <strong><?= $search_value; ?></strong> returned <?= $num_entries; ?> match<?= ($num_entries == 1) ? '' : 'es'; ?>.</p>
 			
-			<?= $template['footer']; ?>
+				<?php endif; ?>
+				
+				<?= $template['header']; ?>
+			
+					<?php foreach($objects as $object) : ?>
+					
+						<?= preg_replace('/%(.*?)%/ime', '$object->$1', $template['loop']); ?>
+				
+					<?php endforeach; ?>
+			
+				<?= $template['footer']; ?>
 
 				<div class="pagination">
 
