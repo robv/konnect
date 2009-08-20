@@ -6,6 +6,11 @@
 		
 		<h3 class="title roundtop"><?= $page_title; ?></h3>
 		<div class="sub_menu clearfix">
+			
+			<ul class="float_left">
+				<li><a href="#">Add Entry</a></li>
+			</ul>
+			
 			<form method="get" action="" class="float_right">
 				<input type="text" name="search" id="search" title="Search Entries..." class="hint" />
 				<input type="submit" class="submit round" name="submit" value="Go" />
@@ -14,6 +19,12 @@
 		<div class="column_box roundbottom">
 			<div class="inner index">
 			
+			<?php if(empty($objects)) : ?>
+				
+				<p class="warning">Sorry no entries are available.</p>
+				
+			<?php else : ?>
+				
 			<?= $template['header']; ?>
 			
 				<?php foreach($objects as $object) : ?>
@@ -35,6 +46,8 @@
 					<?php endif; ?>
 
 				</div>
+			
+			<?php endif; ?>
 			
 			</div>
 		</div>
