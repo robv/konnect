@@ -9,10 +9,17 @@ class Users extends Db_Object
 
 	function insert()
 	{
-		$this->password = Auth::get_instance()->create_hashed_password($this->password);
-		// TODO: This looks kind of strange, "create_hashed_password" method should be renamed more ambiguously
-		$this->api_token = Auth::get_instance()->create_hashed_password($this->username);
-		parent::insert();
+		if ($this->select(array('username' => $this->username)))
+		{
+			return false;
+		}
+		else
+		{
+			$this->password = Auth::get_instance()->create_hashed_password($this->password);
+			// TODO: This looks strange, "create_hashed_password" method should be renamed to encrypted string or something
+			$this->api_token = Auth::get_instance()->create_hashed_password($this->username);
+			return parent::insert();
+		}
 	}
 
 	function update()
