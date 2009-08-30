@@ -61,8 +61,8 @@ class Router {
 
 		$new_uri = array();			
 		foreach (self::$uri as $key => $singleton) {	
-			// String the string of all special characters
-			$new_uri[] = String::clean($singleton, '-');
+			// Strip the string of all special characters
+			$new_uri[] = String::clean($singleton, '_');
 		}
 
 		// Replace uri with the new modified version
