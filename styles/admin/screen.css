@@ -205,7 +205,7 @@ h1.warning, h2.warning, h3.warning {
 
 #left_column .sub_menu form {
 	display: block;
-	padding: 10px;
+	padding: 8px 10px 0;
 	font-size: 1.2em;
 }
 

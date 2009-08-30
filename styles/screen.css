@@ -54,11 +54,14 @@ body { font-size: 62.5%; }
  
 .info, .success, .warning, .error, .validation {
 	border: 1px solid;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 	padding: 10px;
 	background-repeat: no-repeat;
 	background-position: 10px center;
 	list-style-type: disc;
+}
+.info h3, .success h3, .warning h3, .error h3, .validation h3 {
+	font-weight: bold;
 }
 .info li, .success li, .warning li, .error li, .validation li {
 	margin: 0 0 0 16px;
