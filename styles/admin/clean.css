@@ -30,7 +30,7 @@ body {
 #header h1 a {
 	color: #fff !important;
 	text-decoration: none !important;
-	margin: 30px 0 0;
+	margin: 30px 0 0 20px;
 	display: block;
 	font: 3em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
 }
