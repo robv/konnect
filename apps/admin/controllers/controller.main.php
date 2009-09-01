@@ -77,6 +77,17 @@ class Main_Controller extends Controller {
 	
 	public function index()
 	{
+		// Universal variables we're going to need...
+		
+			// Lets start with pagination
+			// First off, how many items per page and what page are we on?
+		    $per_page = 15;
+			$current_page = (isset($_GET['p'])) ? intval($_GET['p']) : '1';
+			
+			// If there a search being done?
+			if (isset($_GET['search']))
+				$this->data['search_value'] = htmlspecialchars($_GET['search']);
+			
 		// This is to check if the slug being given matches one in the index_information table, if not then we'll check later if it's even a table
 		$index_info = new Index_information;
 		
@@ -85,16 +96,11 @@ class Main_Controller extends Controller {
 			$this->data['page_title'] = $index_info->title;
 			
 			// If no custom sql is in the table then just use the default select * statement
-			if(is_null($index_info->sql) || empty($index_info->sql))
+			if (is_null($index_info->sql) || empty($index_info->sql))
 				$index_info->sql = '%select%';
 			
-			// Lets start with pagination
-			// First off, how many items per page and what page are we on?
-		    $per_page = 15;
-			$current_page = (isset($_GET['p'])) ? intval($_GET['p']) : '1';
-			
 			// Check if we should do a search...
-			if (isset($_GET['search']))
+			if (isset($this->data['search_value']))
 			{
 				// If there's already a where statement we need an AND
 				if (preg_match('/where/i', $index_info->sql))
@@ -106,7 +112,7 @@ class Main_Controller extends Controller {
 		    // Next, get the total number of items in the database
 			// I know this isn't the most efficient count rows but because this can be a custom query, i don't know how else...
 		    $num_entries = Database::get_instance()->num_rows(str_replace('%select%', 'SELECT * FROM ' . $index_info->table, $index_info->sql));
-			if($num_entries == false)
+			if ($num_entries == false)
 				$num_entries = 0;
 
 		    // Initialize the Pager object
@@ -123,9 +129,9 @@ class Main_Controller extends Controller {
 		
 			$this->data['fields'] = $db_object->get_fields();
 			
+			// TODO: Parameter for added columns should be included, must add field to table and model
 			$this->data['objects'] = $db_object->select_many($index_info->sql . ' LIMIT ' . $pager->first_record . ', ' . $pager->per_page);
 			
-		
 			/*
 				TEMPLATE FIELD FORMAT:
 				<table>header html...
@@ -147,10 +153,6 @@ class Main_Controller extends Controller {
 		}
 		else
 		{
-			// Lets start with pagination
-			// First off, how many items per page and what page are we on?
-		    $per_page = 15;
-			$current_page = (isset($_GET['p'])) ? intval($_GET['p']) : '1';
 		
 			// Converting string in url to what should match a db object
 			$db_object_name = String::uc_slug(Router::uri(3), '_', '-');
@@ -167,9 +169,8 @@ class Main_Controller extends Controller {
 			$where = '';
 			
 			// Check if we should do a search...
-			if (isset($_GET['search']))
+			if (isset($this->data['search_value']))
 			{	
-				$this->data['search_value'] = htmlspecialchars($_GET['search']);
 				$where .= ' WHERE ';
 				foreach ($this->data['fields'] as $field)
 				{
@@ -193,7 +194,7 @@ class Main_Controller extends Controller {
 			$this->data['template']['loop'] = '<tr>';
 		
 				// We only want to return the first 3 fields, more than that and it might be too long
-				if(count($this->data['fields']) > 3)
+				if (count($this->data['fields']) > 3)
 					$this->data['fields'] = array_slice($this->data['fields'], 0, 3);
 				
 				foreach ($this->data['fields'] as $field) 
@@ -238,14 +239,14 @@ class Main_Controller extends Controller {
 				$db->query('SHOW FIELDS FROM '.$table);
 				while($row = mysql_fetch_array($db->result, MYSQL_ASSOC))
 				{
-					if(!isset($id_field))
+					if (!isset($id_field))
 						$id_field = current($row);
 					else
 						$arr_fields[] = current($row);
 				}
 				$fields = '\'' . implode('\', \'', $arr_fields) . '\'';
 			
-				if(!class_exists($uctable,false)){
+				if (!class_exists($uctable,false)){
 				
 				$out .= 'class ' . $uctable . ' extends Db_Object {' . "\n\n";
 				$out .= '	function __construct($id = NULL)' . "\n";
