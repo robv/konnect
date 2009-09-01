@@ -13,3 +13,6 @@
 	
 	$config['app_name'] = 'auth';
 	$config['default_controller'] = 'main';
+	$config['routes'] = array(
+							'(?:main/)?([^/]+)/?(.*)' => 'main/%1%/%2%' // if routed to index do nothing else reroute through index
+						);

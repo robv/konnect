@@ -75,10 +75,10 @@
             {
                 $row = $db->get_row();
                 $this->load($row);
-                return TRUE;
+                return true;
             }
 
-            return FALSE;
+            return false;
         }
 
         public function ok()
@@ -104,7 +104,7 @@
             $db = Database::get_instance();
 
             if (count($this->columns) == 0)
-				return FALSE;
+				return false;
 
             $data = array();
             
@@ -133,12 +133,12 @@
         public function update()
         {
             if (is_null($this->id))
-				return FALSE;
+				return false;
 
             $db = Database::get_instance();
 
             if (count($this->columns) == 0)
-				return FALSE;
+				return false;
 
             $sql = 'UPDATE ' . $this->table_name . ' SET ';
 
@@ -158,7 +158,7 @@
         public function delete()
         {
             if (is_null($this->id))
-				return FALSE;
+				return false;
             
 			$db = Database::get_instance();
             $db->query('DELETE FROM `' . $this->table_name . '` WHERE `' . $this->id_column_name . '` = :id LIMIT 1', array('id' => $this->id));
@@ -189,7 +189,7 @@
 
             // Also, it needs to be a subclass of Db_Object...
             if (!is_subclass_of($tmp_obj, 'Db_Object'))
-                return FALSE;
+                return false;
 
             if (is_null($sql) || empty($sql))
                 $sql = "SELECT * FROM `{$tmp_obj->table_name}`";

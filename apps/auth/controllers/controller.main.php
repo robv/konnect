@@ -16,7 +16,8 @@ class Main_Controller extends Controller {
 		if (Auth::get_instance()->logged_in())
 			Core_Helpers::redirect(WEB_ROOT);
 
-		if (isset($_POST['username'])) {
+		if (isset($_POST['username'])) 
+		{
 			Auth::get_instance()->login($_POST['username'], $_POST['password']);
 			
 			if (Auth::get_instance()->logged_in())
@@ -25,12 +26,21 @@ class Main_Controller extends Controller {
 				Flash::set('<p class="flash validation">Sorry, you have entered an incorrect username or password. Please try again.</p>');
 		}
 		
+		// If there are no users then let's create one.
+		$db = Database::get_instance();
+		$db->query('SELECT * FROM `users` LIMIT 1');
+		if (!$db->has_rows())
+		{
+			Core_Helpers::redirect(WEB_ROOT . 'auth/create-user/');
+		}
+		
 		$this->load_template('login');
 	}
 	
 	public function recover()
 	{
-		if(isset($_POST['email'])){
+		if (isset($_POST['email']))
+		{
 					
 			$recover = new Users();
 			
@@ -53,9 +63,7 @@ class Main_Controller extends Controller {
 		
 				}
 		}
-			
 		$this->load_template('recover');
-	
 	}
 	
 	public function logout()
@@ -63,6 +71,49 @@ class Main_Controller extends Controller {
 		
 		Auth::get_instance()->logout();
 		Core_Helpers::redirect(WEB_ROOT);
+	
+	}
+	
+	public function create_user()
+	{	
+		
+		// If there are no users then let's create one.
+		$db = Database::get_instance();
+		$db->query('SELECT * FROM `users` LIMIT 1');
+		if ($db->has_rows() && !Auth::get_instance()->logged_in())
+		{
+			Flash::set('<p class="flash validation">Sorry but to create new users, you must be logged in.</p>');
+			Core_Helpers::redirect(WEB_ROOT . 'login/');
+		}
+		
+		$validator = Error::instance();
+		
+		if (isset($_POST['email']))
+		{
+			$validator->email($_POST['email'], 'email');
+			$validator->blank($_POST['username'], 'username');
+			$validator->blank($_POST['password'], 'password');
+			$validator->passwords($_POST['password'], $_POST['confirm_password'], 'confirm_password');
+			
+			$user = new Users;
+			if ($user->select(array('username' => $_POST['username'])))
+			{
+				$validator->add('username', 'The username <strong>' . htmlspecialchars($_POST['username']) . '</strong> is already taken.');
+			}
+			
+			if ($validator->ok())
+			{
+				$user = new Users;
+				$user->load($_POST);
+				$user->level = 'admin';
+				$user->insert();
+				Flash::set('<p class="flash success">User created successfully.</p>');
+				Core_Helpers::redirect(WEB_ROOT . 'login/');
+			}
+		}
+		
+		$this->data['error'] = $validator;
+		$this->load_template('create_user');
 	
 	}
 	

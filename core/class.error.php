@@ -70,11 +70,12 @@ class Error
     }
 
     // Returns an unordered list of error messages
-    public function ul($class = 'warn')
+    public function ul($class = 'warning')
     {
         if(count($this->errors) == 0) return '';
 
-        $out = "<ul class='$class'>";
+		$out = self::$me->css();
+        $out .= "<ul class='$class'>";
         foreach($this->errors as $error)
             $out .= "<li>" . implode("</li><li>", $error) . "</li>";
         $out .= "</ul>";
