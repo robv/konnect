@@ -39,20 +39,21 @@ h1.warning, h2.warning, h3.warning {
 /* @group HEADER */
 
 #header {
-	background-color: #222;
+	background-color: #000;
 	color: #fff;
 	padding: 10px 0;
 }
 
 #header .inner {
 	width: 980px;
+	height: 60px;
 	margin: 0 auto;
 }
 
 #header h1 {
-	font: 2.5em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font: 3em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
 	float: left;
-	padding: 5px 0;
+	padding: 10px 0;
 }
 
 #header a {
@@ -70,12 +71,12 @@ h1.warning, h2.warning, h3.warning {
 }
 
 #header .submit {
-	background-color: #333;
+	background-color: #222;
 	margin-left: 10px;
 }
 
 #header .submit:hover {
-	background-color: #555;
+	background-color: #333;
 	color: #fff;
 }
 
@@ -84,7 +85,7 @@ h1.warning, h2.warning, h3.warning {
 /* @group NAVIGATION */
 
 #navigation {
-	background-color: #333;
+	background-color: #000;
 	font-size: 1.2em;
 }
 
@@ -93,23 +94,23 @@ h1.warning, h2.warning, h3.warning {
 	margin: 0 auto;
 }
 
-#navigation ul {
-	border-left: 1px dotted #444;
+#navigation li {
+	margin-right: 5px;
 }
 
-#navigation li,#navigation li a {
+#navigation li, #navigation li a {
 	float: left;
 }
 
 #navigation li a {
-	padding: 14px;
+	padding: 12px 15px;
 	color: #fff;
+	background-color: #222;
 	text-decoration: none;
-	border-right: 1px dotted #444;
 }
 
 #navigation li a:hover {
-	background-color: #555;
+	background-color: #323232;
 }
 
 /* @end */
@@ -148,6 +149,8 @@ h1.warning, h2.warning, h3.warning {
 	margin-bottom: 10px;
 }
 
+/* @group MAIN SUB MENU */
+
 #content_container #sub_menu {
 	width: 950px;
 	height: 40px;
@@ -180,6 +183,79 @@ h1.warning, h2.warning, h3.warning {
 
 /* @end */
 
+/* @group INNER SUB MENU */
+
+
+
+#content_container .sub_menu {
+	background-color: #eee;
+	font-size: .9em;
+	text-transform: uppercase;
+}
+
+#content_container .sub_menu form {
+	display: block;
+	padding: 8px 10px 0;
+	font-size: 1.2em;
+}
+
+#content_container .sub_menu form input {
+	padding: 6px 8px;
+	border: 1px solid #ccc;
+}
+
+#content_container .sub_menu form input.submit {
+	border: 0;
+}
+
+#content_container .sub_menu form.float_left input, #content_container .sub_menu form.float_left select {
+	margin-right: 5px;
+}
+
+#content_container .sub_menu form.float_right input, #content_container .sub_menu form.float_right select {
+	margin-left: 5px;
+}
+
+#content_container .sub_menu ul li {
+	padding: 15px;
+	float: left;
+}
+
+#content_container .sub_menu ul.float_left li {
+	border-right: 1px dotted #fff;
+}
+
+#content_container .sub_menu ul.float_right li {
+	border-left: 1px dotted #fff;
+}
+
+#content_container .sub_menu ul li.link {
+	float: left;
+	border-left: 1px dotted #fff;
+	padding: 0;
+}
+
+#content_container .sub_menu ul li.link a, #left_column .sub_menu ul li.link a:link {
+	padding: 15px;
+	display: block;
+	float: left;
+	color: #222;
+	text-decoration: none;
+}
+
+#content_container .sub_menu ul li.link a:hover {
+	background-color: #fff;
+	color: #999;
+}
+
+#content_container .sub_menu ul li:hover {
+	background-color: #fff;
+}
+
+/* @end */
+
+/* @end */
+
 /* @group LEFT */
 
 #left_column {
@@ -188,77 +264,10 @@ h1.warning, h2.warning, h3.warning {
 }
 
 #left_column h3.title {
-	background-color: #222;
+	background-color: #000;
 	color: #fff;
-	padding: 8px 12px;
-	font-size: 1.2em;
-	text-transform: uppercase;
-}
-
-#left_column .sub_menu {
-	width: 700px;
-	background-color: #eee;
-	font-size: .9em;
-	text-transform: uppercase;
-}
-
-#left_column .sub_menu form {
-	display: block;
-	padding: 8px 10px 0;
-	font-size: 1.2em;
-}
-
-#left_column .sub_menu form input {
-	padding: 6px 8px;
-	border: 1px solid #ccc;
-}
-
-#left_column .sub_menu form input.submit {
-	border: 0;
-}
-
-#left_column .sub_menu form.float_left input, #left_column .sub_menu form.float_left select {
-	margin-right: 5px;
-}
-
-#left_column .sub_menu form.float_right input, #left_column .sub_menu form.float_right select {
-	margin-left: 5px;
-}
-
-#left_column .sub_menu ul li {
-	padding: 15px;
-	float: left;
-}
-
-#left_column .sub_menu ul.float_left li {
-	border-right: 1px dotted #fff;
-}
-
-#left_column .sub_menu ul.float_right li {
-	border-left: 1px dotted #fff;
-}
-
-#left_column .sub_menu ul li.link {
-	float: left;
-	border-left: 1px dotted #fff;
-	padding: 0;
-}
-
-#left_column .sub_menu ul li.link a, #left_column .sub_menu ul li.link a:link {
-	padding: 15px;
-	display: block;
-	float: left;
-	color: #222;
-	text-decoration: none;
-}
-
-#left_column .sub_menu ul li.link a:hover {
-	background-color: #fff;
-	color: #999;
-}
-
-#left_column .sub_menu ul li:hover {
-	background-color: #fff;
+	padding: 18px 20px;
+	font-size: 1.6em;
 }
 
 #left_column .column_box {

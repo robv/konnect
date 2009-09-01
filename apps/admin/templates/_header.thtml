@@ -6,7 +6,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
 	<title>Konnect</title>
-	<?= Load::css('admin/screen'); ?>
+	<?= Load::css('admin/clean'); ?>
 	<?= Load::js(array('jquery','plugins/jquery.inputhint','common')); ?>
 	
 </head>
@@ -15,12 +15,19 @@
 	
 <div id="header">
 	
-	<div class="inner clearfix">
+	<div class="center clearfix">
 	
 		<h1><a href="<?= WEB_ROOT; ?>">Site Administration</a></h1>
 	
-		<div id="accounts">
-			<p>Logged in as <strong>robv</strong> <a href="<?= WEB_ROOT; ?>logout/" class="submit round">logout</a></p>
+		<div class="navigation">
+			<div class="meta">
+				<div class="float_left">Logged in as <strong><?= Auth::get_instance()->user->username; ?></strong></div>
+				<ul>
+					<li><a href="#">Settings</a></li>
+					<li><a href="/admin/models/">Models</a></li>
+				</ul>
+			</div>
+			<div class="logout"><a href="<?= WEB_ROOT; ?>logout/" class="round">logout</a></div>
 		</div>
 	
 	</div>
@@ -29,21 +36,17 @@
 
 <div id="navigation">
 	
-	<div class="inner clearfix">
+	<div class="center clearfix">
 	
-		<ul class="float_left">
-			<li><a href="<?= WEB_ROOT; ?>">Dashboard</a></li>
-			<li><a href="<?= WEB_ROOT; ?>">News</a></li>
-			<li><a href="<?= WEB_ROOT; ?>">Events</a></li>
-			<li><a href="<?= WEB_ROOT; ?>">Document Library</a></li>
-		</ul>
-		
 		<ul class="float_right">
-			<li><a href="<?= WEB_ROOT . Router::uri(0); ?>/models/">Settings</a></li>
+			<li class="active"><a href="<?= WEB_ROOT; ?>" class="roundtop">Dashboard</a></li>
+			<li><a href="<?= WEB_ROOT; ?>" class="roundtop">News</a></li>
+			<li><a href="<?= WEB_ROOT; ?>" class="roundtop">Events</a></li>
+			<li><a href="<?= WEB_ROOT; ?>" class="roundtop">Document Library</a></li>
 		</ul>
 	
 	</div>
 	
 </div>
 	
-<div id="content_container">
+<div id="content_container" class="clearfix">

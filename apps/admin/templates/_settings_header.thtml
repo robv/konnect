@@ -1,6 +1,4 @@
-<h2 class="page_title">Administration Settings</h2>
-
-<div id="sub_menu" class="round">
+<div id="sub_navigation" class="round clearfix">
 	<ul class="float_left">
 		<li><a href="<?= WEB_ROOT . Router::uri(0) . '/index/users/'; ?>">Users</a></li>
 		<li><a href="<?= WEB_ROOT . Router::uri(0) . '/models/'; ?>">Models</a></li>

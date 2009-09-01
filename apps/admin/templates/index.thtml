@@ -1,7 +1,5 @@
 <?php include DOC_ROOT . 'apps/' . Router::uri(0) . '/templates/_header.thtml'; ?>
 	
-	<h2 class="page_title">Dashboard</h2>
-	
 	<div id="left_column">
 		
 		<h3 class="title roundtop"><?= $page_title; ?></h3>

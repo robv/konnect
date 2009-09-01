@@ -4,6 +4,13 @@ class Main_Controller extends Controller {
 	
 	function __construct($data = '')
 	{		
+		// Kick out user if already logged in
+		if (!Auth::get_instance()->logged_in()) 
+		{
+			Flash::set('<p class="flash warning">You must be logged in to access admin.</p>');
+			Core_Helpers::redirect(WEB_ROOT . 'login/');
+		}
+		
 		$this->default_method = 'dashboard';
 
 		// Router uri = app/controller/method
@@ -12,12 +19,6 @@ class Main_Controller extends Controller {
 	
 	public function dashboard()
 	{
-		// Kick out user if already logged in
-		if (!Auth::get_instance()->logged_in()) 
-		{
-			Flash::set('<p class="flash warning">You must be logged in to access admin.</p>');
-			Core_Helpers::redirect(WEB_ROOT . 'login/');
-		}
 		
 		// First off, how many items per page and what page are we on?
 	    $per_page = 5;
@@ -36,43 +37,6 @@ class Main_Controller extends Controller {
 		$this->data['pager'] = $pager;
 		
 		$this->load_template('dashboard');
-	}
-	
-	// TODO: Implement cache system
-	public function rss()
-	{
-		$feed = new Rss;
-		$feed->title = 'Konnect';
-		
-		$api_check = new Users;
-		
-		if ($api_check->verify_api_token(Router::uri(4)))
-		{
-		
-			if (Router::uri(3) === 'announcements') 
-			{
-				$feed->title .= ' - Latest Announcements';
-				$this->data['announcements'] = new Admin_Announcements;
-				$query = 'SELECT admin_announcements.*, users.username FROM admin_announcements LEFT JOIN users ON admin_announcements.author = users.id LIMIT 0,10';
-				$this->data['announcements'] = $this->data['announcements']->select_many($query, array('username'));
-		
-				foreach ($this->data['announcements'] as $announcement) 
-				{
-					$item = new Rss_Item();
-			        $item->title = $announcement->title;
-			        $item->link = WEB_ROOT . Router::uri(0) . '/view/admin_announcements/' . $announcement->id . '/';
-			        $item->description = $announcement->comments;
-			        $item->set_pub_date(String::format_date($announcement->date_posted, 'F j, g:i a'));
-			        $feed->add_item($item);
-				}
-			}
-	
-			$feed->serve();
-		}
-		else
-		{	
-			die('You are not authorized for this feed, please check that your api token is correct');
-		}
 	}
 	
 	public function index()

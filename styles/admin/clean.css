@@ -1,0 +1,262 @@
+@import url("../screen.css");
+
+/* @group BASICS */
+
+body {
+	background-color: #eee;
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+.center {
+	width: 980px;
+	margin: 0 auto;
+}
+
+/* @end */
+
+
+/* @group HEADER */
+
+#header {
+	background-color: #000;
+	height: 60px;
+	overflow: hidden;
+}
+
+#header h1 {
+	position: absolute;
+}
+
+#header h1 a {
+	color: #fff !important;
+	text-decoration: none !important;
+	margin: 30px 0 0;
+	display: block;
+	font: 3em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+
+#header .navigation {
+	float: right;
+	color: #fff;
+	font-size: 1.2em;
+	margin-top: 10px;
+}
+
+#header .navigation .meta {
+	float: left;
+	margin-top: 8px;
+}
+
+#header .navigation ul {
+	margin-left: 20px;
+	float: right;
+}
+
+#header .navigation li, #header .navigation li a {
+	float: left;
+}
+
+#header .navigation li a {
+	color: #fff !important;
+	text-decoration: none !important;
+	margin-right: 20px;
+}
+
+#header .navigation .meta a:hover {
+	text-decoration: underline !important;
+}
+
+#header .navigation .logout {
+	float: right;
+}
+
+#header .navigation .logout a {
+	display: block;
+	float: right;
+	background-color: #222;
+	color: #fff !important;
+	text-decoration: none !important;
+	padding: 10px;
+	text-transform: uppercase;
+	font-size: .8em;
+}
+
+#header .navigation .logout a:hover {
+	background-color: #333 !important;
+}
+
+/* @end */
+
+/* @group NAVIGATION */
+
+#navigation {
+	background-color: #000;
+	font-size: 1.2em;
+}
+
+#navigation ul li, #navigation ul li a {
+	float: left;
+	display: block;
+}
+
+#navigation ul.float_left li {
+	margin-right: 5px;
+}
+
+#navigation ul.float_right li {
+	margin-left: 5px;
+}
+
+#navigation ul li a {
+	background-color: #222;
+	padding: 12px 18px;
+	text-decoration: none !important;
+	color: #fff !important;
+}
+
+#navigation ul li a:hover {
+	background-color: #333 !important;
+}
+
+#navigation ul li.active a {
+	background-color: #fff !important;
+	color: #000 !important;
+}
+
+/* @end */
+
+/* @group SUB_NAVIGATION */
+
+#sub_navigation {
+	background-color: #eee;
+	margin: -20px 0 20px 0;
+	padding: 0 10px;
+	font-weight: bold;
+}
+
+#sub_navigation ul li a {
+	color: #000 !important;
+	display: block;
+	float: left;
+	padding: 14px 20px;
+	font-size: 1.2em;
+}
+
+#sub_navigation ul li {
+	float: left;
+}
+
+/* @end */
+
+/* @group CONTENT BASICS */
+
+#content_container {
+	background-color: #fff;
+	padding: 40px;
+	width: 900px;
+	margin: 0 auto;
+}
+
+#content_container a {
+	color: #222 !important;
+	text-decoration: none !important;
+}
+
+#content_container a:hover {
+	color: #333 !important;
+	text-decoration: underline !important;
+}
+
+#left_column {
+	width: 630px;
+	float: left;
+}
+
+#right_column {
+	width: 234px;
+	float: right;
+}
+
+#full_column {
+}
+
+#content_container h3.title {
+	background-color: #000;
+	color: #fff;
+	padding: 18px 20px;
+	font-size: 1.5em;
+}
+
+#content_container .sub_menu {
+	background-color: #ddd;
+	border-bottom: 1px solid #ccc;
+	padding: 10px 20px;
+	font-size: 1.1em;
+}
+
+/* @end */
+
+/* @group GENERIC FORMAT */
+
+.generic_format {
+	margin: 20px;
+	font-size: 1.1em;
+	line-height: 1.5em;
+}
+
+#right_column .generic_format {
+	margin: 10px;
+}
+
+.generic_format h3 {
+	font-size: 1.8em;
+}
+
+.generic_format h3.meta {
+	font-size: 1em;
+	color: #777;
+	margin-bottom: 10px;
+}
+
+.generic_format p {
+	margin-bottom: 20px;
+}
+
+.hr {
+	margin-bottom: 20px;
+	height: 1px;
+	width: 100%;
+	overflow: hidden;
+	background-color: #eee;
+}
+
+.hr hr {
+	display: none;
+}
+
+/* @end */
+
+/* @group FORMS */
+
+textarea.full {
+	width: 95%;
+	padding: 10px;
+	height: 300px;
+}
+
+.default_form input {
+	border: 1px solid #ccc;
+	padding: 8px 10px;
+	margin-right: 10px;
+}
+
+.default_form input.submit {
+	background-color: #000;
+	border: 0;
+	padding: 8px 10px;
+	color: #fff;
+	text-transform: uppercase;
+}
+
+/* @end */
+

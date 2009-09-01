@@ -1,18 +1,20 @@
 <?php include DOC_ROOT . 'apps/' . Router::uri(0) . '/templates/_header.thtml'; ?>
 	
-	<h2 class="page_title">Dashboard</h2>
-	
-	<div id="left_column">
+	<div id="full_column">
 		
 		<h3 class="title roundtop">Latest Announcements</h3>
+		
 		<div class="sub_menu clearfix">
-			<ul class="float_right">
-				<li class="link"><a href="<?= WEB_ROOT . Router::uri(0); ?>/add/admin-announcements/">Add Announcement</a></li>
-			</ul>
-		</div>
-		<div class="column_box roundbottom">
-			<div class="inner">
 			
+			<form method="get" action="" class="float_left default_form">
+				<input type="text" name="search" id="search" title="Search Entries..." class="hint" />
+				<input type="submit" class="submit round" name="submit" value="Go" />
+			</form>
+		
+		</div>
+		
+		<div class="generic_format">
+				
 			<?php foreach($announcements as $announcement): ?>
 				
 				<h3><?= $announcement->title; ?></h3>
@@ -33,20 +35,8 @@
 					<?php endif; ?>
 				
 				</div>
-			
+				
 			</div>
-		</div>
-		
-	</div>
-	
-	<div id="right_column">
-		
-		<h3 class="title roundtop">Feeds</h3>
-		<div class="column_box roundbottom">
-			<ul>
-				<li class="link"><a href="<?= WEB_ROOT . Router::uri(0); ?>/rss/announcements/<?= Auth::get_instance()->user->api_token; ?>/">Latest Announcements</a></li>
-			</ul>
-		</div>
 		
 	</div>
 
