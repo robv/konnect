@@ -1,15 +1,15 @@
 <?php
 
-class Form_Information extends Db_Object {
+class Field_Information extends Db_Object {
 
 	function __construct($id = NULL)
 	{
-		parent::__construct('form_information', 'id', array('display_name', 'name', 'type', 'value', 'validation', 'class', 'layout', 'options'), $id);
+		parent::__construct('field_information', 'id', array('table', 'display_name', 'name', 'type', 'value', 'validation', 'class', 'layout', 'options'), $id);
 	}
 
 }
 
-class Index_information extends Db_Object {
+class Index_Information extends Db_Object {
 
 	function __construct($id = NULL)
 	{

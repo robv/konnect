@@ -7,7 +7,7 @@
 
 	<title>Konnect</title>
 	<?= Load::css('admin/clean'); ?>
-	<?= Load::js(array('jquery','plugins/jquery.inputhint','common')); ?>
+	<?= Load::js(array('jquery','plugins/jquery.inputhint','plugins/facebox/facebox','common')); ?>
 	
 </head>
 

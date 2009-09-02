@@ -45,19 +45,22 @@ class Main_Controller extends Controller {
 		
 			// Lets start with pagination
 			// First off, how many items per page and what page are we on?
-		    $per_page = 15;
+		    $per_page = 10;
 			$current_page = (isset($_GET['p'])) ? intval($_GET['p']) : '1';
 			
 			// If there a search being done?
 			if (isset($_GET['search']))
+			{
 				$this->data['search_value'] = htmlspecialchars($_GET['search']);
+			}
 			
 		// This is to check if the slug being given matches one in the index_information table, if not then we'll check later if it's even a table
-		$index_info = new Index_information;
+		$index_info = new Index_Information;
 		
 		if ($index_info->select(array('slug'=>strtolower(Router::uri(3)))))
 		{
 			$this->data['page_title'] = $index_info->title;
+			$this->data['table'] = $index_info->table;
 			
 			// If no custom sql is in the table then just use the default select * statement
 			if (is_null($index_info->sql) || empty($index_info->sql))
@@ -117,7 +120,8 @@ class Main_Controller extends Controller {
 		}
 		else
 		{
-		
+			$this->data['table'] = String::clean(Router::uri(3), '_');
+			
 			// Converting string in url to what should match a db object
 			$db_object_name = String::uc_slug(Router::uri(3), '_', '-');
 			
@@ -144,39 +148,57 @@ class Main_Controller extends Controller {
 			}
 
 		    // Next, get the total number of items in the database
-		    $this->data['num_entries'] = $num_entries = Database::get_instance()->get_value('SELECT COUNT(*) FROM `admin_announcements`' . $where);
+		    $this->data['num_entries'] = $num_entries = Database::get_instance()->get_value('SELECT COUNT(*) FROM `' . $this->data['table'] . '`' . $where);
 
 		    // Initialize the Pager object
 		    $pager = new Pagination($current_page, $per_page, $num_entries);
 			
 			$this->data['objects'] = $db_object->select_many('%select%' . $where . ' ORDER BY ' . $db_object->id_column_name . ' DESC LIMIT ' . $pager->first_record . ', ' . $pager->per_page);
 
-			$this->data['page_title'] = String::uc_slug(Router::uri(3), ' ', '-');
-		
+			$this->data['page_title'] = String::uc_slug(Router::uri(3), ' ', '_');
+			
+			$this->data['template']['header'] = '<table class="default_table"><tr><th class="entry_actions_wrapper"></th>';
 			$this->data['template']['footer'] = '</table>';
-			$this->data['template']['header'] = '<table><tr>';
-			$this->data['template']['loop'] = '<tr>';
+			$this->data['template']['loop'] = '<tr class="entry_row" id="entry_%id%"><td class="entry_actions_wrapper"><div class="entry_actions"><a href="' . WEB_ROOT . Router::uri(0) . '/delete/' . Router::uri(3) . '/%id%/" class="delete" rel="facebox.default_modal">Delete</a><a href="' . WEB_ROOT . Router::uri(0) . '/edit/' . Router::uri(3) . '/%id%/" class="edit">Edit</a></div></td>';
 		
-				// We only want to return the first 3 fields, more than that and it might be too long
-				if (count($this->data['fields']) > 3)
-					$this->data['fields'] = array_slice($this->data['fields'], 0, 3);
+				// We only want to return the first 4 fields, more than that and it might be too long
+				if (count($this->data['fields']) > 4)
+					$this->data['fields'] = array_slice($this->data['fields'], 0, 4);
 				
 				foreach ($this->data['fields'] as $field) 
 				{
 					$this->data['template']['header'] .= '<th>' . String::uc_slug($field, ' ', '_') . '</th>';
 					$this->data['template']['loop'] .= '<td>%' . $field . '%</td>';
 				}
+				
+				$object_filter = new Object_Filter();
+				$this->data['objects'] = $object_filter->for_display($this->data['table'], $this->data['fields'], $this->data['objects']);
 			
 				// Final column for edit and delete buttons
-				$this->data['template']['header'] .= '<th colspan="2"></th></tr>';
-				$this->data['template']['loop'] .= '<td><a href="' . WEB_ROOT . Router::uri(0) . '/edit/' . Router::uri(3) . '/%id%/">Edit</a></td>';
-				$this->data['template']['loop'] .= '<td><a href="' . WEB_ROOT . Router::uri(0) . '/delete/' . Router::uri(3) . '/%id%/">Delete</a></td></tr>';
+				$this->data['template']['header'] .= '</tr>';
+				$this->data['template']['loop'] .= '</tr>';
 		
 			$this->data['template']['header'] .= '</tr>';
 		}
 		
 		$this->data['pager'] = $pager;
 		$this->load_template('index');
+	}
+	
+	public function delete()
+	{	
+		$this->data['table'] = String::clean(Router::uri(3), '_');
+		
+		if (isset($_GET['confirm']))
+		{
+			$db_object_name = String::uc_slug($this->data['table'], '_', '-');
+			$object = new $db_object_name(array('id' => Router::uri(4)));
+			$object->delete();
+		}
+		else
+		{
+			$this->load_template('delete');
+		}
 	}
 	
 	public function models()

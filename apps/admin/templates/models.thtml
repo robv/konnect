@@ -6,7 +6,7 @@
 		
 		<h3 class="title roundtop">Models</h3>
 		
-		<div class="generic_format">
+		<div class="full_format">
 				<textarea class="full"><?= $object_out; ?></textarea>
 		</div>
 		

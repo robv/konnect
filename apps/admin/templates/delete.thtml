@@ -1,0 +1,6 @@
+<script type="text/javascript">Site.deleter();</script>
+<p>Are you sure you want to delete this entry?</p>
+<div id="output">
+	<a href="<?= WEB_ROOT . Router::uri(0) . '/delete/' . Router::uri(3) . '/' . Router::uri(4); ?>/" title="<?= Router::uri(4); ?>" class="yes round">Yup!</a>
+	<a href="#" class="no round">Nope.</a>
+</div>

@@ -1,35 +1,38 @@
 <?php include DOC_ROOT . 'apps/' . Router::uri(0) . '/templates/_header.thtml'; ?>
 	
-	<div id="left_column">
+	<script type="text/javascript">Site.indexer();</script>
+	
+	<div id="full_column">
 		
 		<h3 class="title roundtop"><?= $page_title; ?></h3>
+		
 		<div class="sub_menu clearfix">
-			
-			<ul class="float_left">
-				<li class="link"><a href="#">Add Entry</a></li>
-			</ul>
-			
-			<form method="get" action="" class="float_right">
+		
+			<form method="get" action="" class="float_left default_form">
 				<input type="text" name="search" id="search" title="Search Entries..." class="hint" />
 				<input type="submit" class="submit round" name="submit" value="Go" />
 			</form>
+			
+			<ul class="float_right">
+				<li class="link"><a href="#">Add Entry</a></li>
+			</ul>
+			
 		</div>
-		<div class="column_box roundbottom">
-			<div class="inner index">
+		
 			
 			<?php if (isset($search_value) && $num_entries == 0) : ?>
 
-				<p class="warning">Your search for <strong><?= $search_value; ?></strong> returned no matches, sorry.</p>
+				<div class="sub_menu_extension">Your search for <strong><?= $search_value; ?></strong> returned no matches, sorry.</div>
 			
 			<?php elseif ($num_entries == 0) : ?>
 				
-				<p class="warning">Sorry, no entries are available.</p>
+				<div class="sub_menu_extension">Sorry, no entries are available.</div>
 				
 			<?php else : ?>
 				
 				<?php if (isset($search_value)) : ?>
 				
-					<p class="info">Your search for <strong><?= $search_value; ?></strong> returned <?= $num_entries; ?> match<?= ($num_entries == 1) ? '' : 'es'; ?>.</p>
+					<div class="sub_menu_extension">Your search for <strong><?= $search_value; ?></strong> returned <?= $num_entries; ?> match<?= ($num_entries == 1) ? '' : 'es'; ?>.</div>
 			
 				<?php endif; ?>
 				
@@ -46,30 +49,18 @@
 				<div class="pagination">
 
 					<?php if($pager->has_prev_page()) : ?>
-				    	<a href="?p=<?= $pager->prev_page(); ?><?= isset($_GET['search']) ? '&search=' . $_GET['search'] : ''; ?>">Previous Page</a>
+				    	<a href="?p=<?= $pager->prev_page(); ?><?= isset($search_value) ? '&search=' . $search_value : ''; ?>">Previous Page</a>
 					<?php endif; ?>
 
 					<?php if($pager->has_next_page()) : ?>
-				    	<a href="?p=<?= $pager->next_page(); ?><?= isset($_GET['search']) ? '&search=' . $_GET['search'] : ''; ?>">Next Page</a>
+				    	<a href="?p=<?= $pager->next_page(); ?><?= isset($search_value) ? '&search=' . $search_value : ''; ?>">Next Page</a>
 					<?php endif; ?>
 
 				</div>
 			
 			<?php endif; ?>
-			
-			</div>
-		</div>
 		
 	</div>
-	
-	<div id="right_column">
-		
-		<h3 class="title roundtop">Feeds</h3>
-		<div class="column_box roundbottom">
-			<ul>
-				<li class="link"><a href="<?= WEB_ROOT . Router::uri(0); ?>/rss/announcements/<?= Auth::get_instance()->user->api_token; ?>/">Latest Announcements</a></li>
-			</ul>
-		</div>
 		
 	</div>
 

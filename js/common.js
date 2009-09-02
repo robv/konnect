@@ -9,7 +9,6 @@ var Site = {
 	// this method is called on every page
 	start : function() {
 
-		// On Dom Ready
 		jQuery(function($) {
 			
 			setTimeout(function(){
@@ -19,21 +18,46 @@ var Site = {
 			$('input.hint').input_hint();
 			
 		});
-		
-		// Load Immediately
-		(function($) {
-		
-		})(jQuery);
-
-
-		// On Window Load
-		jQuery(window).load(function($) {
-
-		});
 
 	},
 	
-	login : function() {
+	indexer : function() {
+
+		jQuery(function($) {
+	
+			$('.entry_row').bind('mouseover', function() {
+				$('.entry_actions', $(this)).show();
+			}).bind('mouseout', function() {
+				$('.entry_actions', $(this)).hide();
+			});
+		
+			$('a[rel*=facebox]').facebox();
+		
+		});
+		
+	},
+	
+	deleter : function() {
+
+		jQuery(function($) {
+	
+			$('.no').bind('click', function() {
+				$(document).trigger('close.facebox');
+				return false;
+			});
+			
+			$('.yes').bind('click', function() {
+				var entry_id = $(this).attr('title');
+				$(document).trigger('close.facebox');
+				$("#output").load($(this).attr('href') + '?confirm=yes');
+				setTimeout(function(){
+					$('#entry_' + entry_id).fadeOut('slow');
+				}, 800);
+				return false;
+			});
+		
+		});
+		
 	}
 	
 };

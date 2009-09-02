@@ -9,7 +9,7 @@ CREATE TABLE `admin_announcements` (
 
 #
 
-CREATE TABLE `form_information` (
+CREATE TABLE `field_information` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `display_name` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
