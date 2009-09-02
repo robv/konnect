@@ -142,7 +142,7 @@ class String
 		{
 			if (strlen($string) > $max)
 			{
-				$max -= strlen($moretext);
+				$max -= strlen($more_text);
 
 				$new_string = strrev(strstr(strrev(substr($string,0,$max)), ' '));
 
@@ -154,7 +154,7 @@ class String
 				$string = $new_string;
 			}
 
-			$string = balance_tags($string);
+			$string = String::balance_tags($string);
 
 			return $string;
 		}
