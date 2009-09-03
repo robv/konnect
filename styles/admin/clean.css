@@ -1,5 +1,6 @@
 @import url("../screen.css");
 @import url("../../js/plugins/facebox/facebox.css");
+@import url("../../js/plugins/datepicker/css/datepicker.css");
 
 /* @group BASICS */
 
@@ -285,13 +286,13 @@ textarea.full {
 	height: 300px;
 }
 
-.default_form input {
+.submenu_form input {
 	border: 1px solid #ccc;
 	padding: 8px 10px;
 	margin-right: 10px;
 }
 
-.default_form input.submit {
+.submenu_form input.submit, .manage_form input.submit {
 	background-color: #000;
 	border: 0;
 	padding: 8px 10px;
@@ -299,8 +300,50 @@ textarea.full {
 	text-transform: uppercase;
 }
 
-.default_form input.submit:hover {
+.submenu_form input.submit:hover, .manage_form input.submit:hover {
 	background-color: #222;
+}
+
+.manage_form {
+	font-size: 1.2em;
+}
+
+.manage_form .input_row {
+	margin-bottom: 20px;
+	clear: both;
+}
+
+.manage_form label {
+	width: 150px;
+	padding-top: 5px;
+	float: left;
+}
+
+.manage_form .input_field {
+	width: 700px;
+	float: right;
+}
+
+.manage_form .input_default {
+	border: 1px solid #ccc;
+	padding: 6px 8px;
+	width: 500px;
+}
+
+.manage_form textarea {
+	border: 1px solid #ccc;
+	padding: 6px 8px;
+	width: 650px;
+	height: 200px;
+}
+
+.manage_form select {
+	font-size: 1.2em;
+}
+
+.manage_form input.submit {
+	float: right;
+	padding: 10px 14px;
 }
 
 /* @end */
@@ -329,9 +372,9 @@ textarea.full {
 	margin: -19px 0 0 -65px;
 	padding: 10px;
 	position: absolute;
-	-moz-border-bottom-left-radius:18px;
+	-moz-border-radius-bottomleft:18px;
 	-webkit-border-bottom-left-radius:18px;
-	-moz-border-top-left-radius:18px;
+	-moz-border-radius-topleft:18px;
 	-webkit-border-top-left-radius:18px;
 	display: none;
 }
