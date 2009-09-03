@@ -7,7 +7,7 @@ class Forms {
 	
 	public $name;
 	public $form_wrapper = '<div id="%group%">%body%</div>';
-	public $row_wrapper = "<div><label for=\"%id%\">%name%:</label><div class=\"input_field\">%field%</div></div>\n";
+	public $row_wrapper = "<div class=\"input_row clearfix\"><label for=\"%id%\">%name%:</label><div class=\"input_field\">%field%</div></div>\n";
 	public $row_seperator = '<div class="hr"><hr /></div>';
 	
 	public $output;
@@ -56,6 +56,8 @@ class Forms {
 		
 		// If value is set then use it
 		$this->fields['0'][$name]['value'] = (isset($info['value'])) ? $info['value'] : '';
+		
+		$this->fields['0'][$name]['type'] = (isset($info['type'])) ? $info['type'] : 'text';
 		
 	}
 	
@@ -173,6 +175,22 @@ class Forms {
 	// OTHER FUNCTIONS SUCH AS TEXT,HIDDEN, AND CHECKBOX ARE BASED OFF OF THIS
 	public function basic_input($info)
 	{
+		// Pretty basic, just about every input type can include these...
+		$info['attributes'] = '';
+		$info['attributes'] .= isset($info['id']) ? ' id="' . $info['id'] . '"' : '';
+		$info['attributes'] .= isset($info['name']) ? ' name="' . $info['name'] . '"' : '';
+		$info['attributes'] .= isset($info['type']) ? ' type="' . $info['type'] . '"' : '';
+		$info['attributes'] .= isset($info['class']) ? ' class="' . $info['class'] . '"' : ' class="input_default"';	
+
+		$info['attributes'] .= isset($info['value']) ? ' value="' . $info['value'] . '"' : '';
+
+		// These are more than likely specific to one input type or another
+		$info['attributes'] .= isset($info['options']['size']) ? ' size="' . $info['options']['size'] . '"' : '';
+		$info['attributes'] .= isset($info['options']['src']) ? ' src="' . $info['options']['src'] . '"' : '';
+		$info['attributes'] .= isset($info['options']['title']) ? ' title="' . $info['options']['title'] . '"' : '';
+		$info['attributes'] .= isset($info['options']['cols']) ? ' cols="' . $info['options']['cols'] . '"' : '';
+		$info['attributes'] .= isset($info['options']['rows']) ? ' rows="' . $info['options']['rows'] . '"' : '';
+		
 		$out = '<input' . $info['attributes'] . ' />';
 		return $out;
 	}
@@ -310,15 +328,16 @@ class Forms {
 		if(isset($info['options']['default']))
 			$out .= '<option value="">' . $info['options']['default'] . '</option>';
 
-		if(!isset($info['options']['sql']))
-			$info['options']['sql'] = '';
+		if(!isset($info['options']['sql']) || empty($info['options']['sql']))
+			$info['options']['sql'] = NULL;
 
 		if(!isset($info['options']['seperator']))
-			$info['options']['seperator'] = '';
+			$info['options']['seperator'] = ' ';
 			
 		$display_fields = explode(',', $info['options']['display_field']);
-
-		$objects = new $info['options']['object'];
+		
+		$table_obj_name = String::uc_slug($info['options']['table'], '_', '_');
+		$objects = new $table_obj_name;
 		$objects = $objects->select_many($info['options']['sql']);
 		
 		foreach ($objects as $object) 
@@ -331,7 +350,7 @@ class Forms {
 				$display[] = $object->$display_field;
 			}
 			
-			$out .= '<select value="' . $object->$value_field . '">' . implode($info['options']['seperator'], $display) . '</select>';
+			$out .= '<option value="' . $object->$value_field . '">' . implode($info['options']['seperator'], $display) . '</option>';
 		}
 
 		$out .= '</select>';
@@ -522,7 +541,7 @@ class Forms {
 		$info['options']['class'] = 'input_date';
 		
 		if(isset($info['value']) && !empty($info['value']))
-			$info['value'] = dater($info['value'],'m/d/Y');
+			$info['value'] = String::format_date($info['value'], 'm/d/Y');
 		else
 			$info['value'] = date('m/d/Y');
 	

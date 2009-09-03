@@ -1,0 +1,19 @@
+<?php include DOC_ROOT . 'apps/' . Router::uri(0) . '/templates/_header.thtml'; ?>
+	
+	<div id="full_column">
+		
+		<h3 class="title roundtop">Add</h3>
+		
+		<div class="generic_format">
+			<form action="" method="post" enctype="multipart/form-data" class="manage_form">
+				<?= $form; ?>
+				<input type="hidden" name="submit" value="submit" />
+				<p class="clearfix"><input type="submit" name="submit" class="submit round" value="Add Entry"></p>
+			</form>
+		</div>
+		
+	</div>
+		
+	</div>
+
+<?php include DOC_ROOT . 'apps/' . Router::uri(0) . '/templates/_footer.thtml'; ?>

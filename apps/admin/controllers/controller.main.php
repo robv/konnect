@@ -12,6 +12,9 @@ class Main_Controller extends Controller {
 		}
 		
 		$this->default_method = 'dashboard';
+		
+		$links_object = new Admin_Links;
+		$data['header_links'] = $links_object->get_links();
 
 		// Router uri = app/controller/method
 		parent::__construct($data);
@@ -201,6 +204,24 @@ class Main_Controller extends Controller {
 		}
 	}
 	
+	public function add()
+	{
+		$this->data['table'] = String::clean(Router::uri(3), '_');
+		$scaffolder = new Scaffolder($this->data['table']);
+		$scaffolder->iterate();
+		$this->data['form'] = $scaffolder->display();
+		
+		if (isset($_POST['submit']))
+		{
+			if ($scaffolder->save_object())
+			{
+				//redirect
+			}
+		}
+		
+		$this->load_template('add');
+	}
+	
 	public function models()
 	{
 		$db = Database::get_instance();
@@ -219,7 +240,7 @@ class Main_Controller extends Controller {
 			foreach ($arr_tables as $table)
 			{
 				$table = trim($table);
-				$uctable = String::uc_slug($table,'_');
+				$uctable = String::uc_slug($table, '_', '_');
 
 				$arr_fields = array();
 				$db->query('SHOW FIELDS FROM '.$table);
@@ -235,7 +256,7 @@ class Main_Controller extends Controller {
 				if (!class_exists($uctable,false)){
 				
 				$out .= 'class ' . $uctable . ' extends Db_Object {' . "\n\n";
-				$out .= '	function __construct($id = NULL)' . "\n";
+				$out .= '	public function __construct($id = NULL)' . "\n";
 				$out .= '	{' . "\n";
 				$out .= '		parent::__construct(\'' . $table . '\', \'' . $id_field . '\', array(' . $fields . '), $id);' . "\n";
 				$out .= '	}' . "\n\n";

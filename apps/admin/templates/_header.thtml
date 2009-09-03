@@ -7,7 +7,14 @@
 
 	<title>Konnect</title>
 	<?= Load::css('admin/clean'); ?>
-	<?= Load::js(array('jquery','plugins/jquery.inputhint','plugins/facebox/facebox','common')); ?>
+	<?= Load::js(array(
+						'jquery',
+						'plugins/jquery.inputhint',
+						'plugins/facebox/facebox',
+						'plugins/datepicker/datepicker',
+						'common',
+						'plugins/tiny_mce/tiny_mce'
+						)); ?>
 	
 </head>
 
@@ -39,10 +46,9 @@
 	<div class="center clearfix">
 	
 		<ul class="float_right">
-			<li class="active"><a href="<?= WEB_ROOT; ?>" class="roundtop">Dashboard</a></li>
-			<li><a href="<?= WEB_ROOT; ?>" class="roundtop">News</a></li>
-			<li><a href="<?= WEB_ROOT; ?>" class="roundtop">Events</a></li>
-			<li><a href="<?= WEB_ROOT; ?>" class="roundtop">Document Library</a></li>
+			<?php foreach ($header_links as $link) : ?>
+				<li<?= ('/' . $link->link === $_SERVER['REQUEST_URI']) ? ' class="active"' : '' ?>><a href="<?= WEB_ROOT . $link->link; ?>" class="roundtop"><?= $link->display; ?></a></li>
+			<?php endforeach; ?>
 		</ul>
 	
 	</div>
