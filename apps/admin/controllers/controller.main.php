@@ -222,6 +222,24 @@ class Main_Controller extends Controller {
 		$this->load_template('add');
 	}
 	
+	public function edit()
+	{
+		$this->data['table'] = String::clean(Router::uri(3), '_');
+		$scaffolder = new Scaffolder($this->data['table'], intval(Router::uri(4)));
+		$scaffolder->iterate();
+		$this->data['form'] = $scaffolder->display();
+		
+		if (isset($_POST['submit']))
+		{
+			if ($scaffolder->save_object())
+			{
+				//redirect
+			}
+		}
+		
+		$this->load_template('edit');
+	}
+	
 	public function models()
 	{
 		$db = Database::get_instance();

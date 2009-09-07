@@ -14,7 +14,7 @@
 			</form>
 			
 			<ul class="float_right">
-				<li class="link"><a href="#">Add Entry</a></li>
+				<li class="link"><a href="/<?= Router::uri(0); ?>/add/<?= Router::uri(3); ?>/">Add Entry</a></li>
 			</ul>
 			
 		</div>

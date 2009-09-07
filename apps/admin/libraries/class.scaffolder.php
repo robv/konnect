@@ -101,7 +101,7 @@ class Scaffolder extends Forms {
 				for ($i = 0; $i < $this->iterations; $i++)
 				{
 					$object_copy = $this->current_object;
-						foreach($this->fields[$i] as $field)
+						foreach($this->fields[$i] as $object_name => $field)
 						{
 							// Make directories, TODO: Find more efficient way to do this
 							@mkdir('./files/uploads/');
@@ -123,7 +123,7 @@ class Scaffolder extends Forms {
 									$gd = new Gd_Image;
 								
 									// Check if file is already existing and start deleting
-									if (strlen($object_copy->$field['name']) > 0){
+									if (strlen($object_copy->$object_name) > 0){
 										@unlink('./files/uploads/original/'.$object_copy->$field['name']);
 											@unlink('./files/uploads/large/'.$object_copy->$field['name']);
 											@unlink('./files/uploads/medium/'.$object_copy->$field['name']);
@@ -134,11 +134,11 @@ class Scaffolder extends Forms {
 									if (file_exists('./files/uploads/original/'.$_FILES[$field['name']]['name']))
 									{
 										// rand_string() is located in core/extfunctions.inc.php
-										$newname = $object_copy->$field['name'] = str_replace(' ', '', rand_string().'_'.$_FILES[$field['name']]['name']);
+										$newname = $object_copy->$object_name = str_replace(' ', '', rand_string().'_'.$_FILES[$field['name']]['name']);
 									}
 									else
 									{	
-										$newname = $object_copy->$field['name'] = str_replace(' ', '', $_FILES[$field['name']]['name']);
+										$newname = $object_copy->$object_name = str_replace(' ', '', $_FILES[$field['name']]['name']);
 									}
 								
 									$newname = str_replace(' ', '', $newname);
@@ -170,19 +170,17 @@ class Scaffolder extends Forms {
 							}
 							elseif ($field['type'] === 'timestamp')
 							{
-								$object_copy->$field['name'] = date('Y-m-d H:i:s', strtotime(str_replace('@', '', $field['value'])));
+								$object_copy->$object_name = date('Y-m-d H:i:s', strtotime(str_replace('@', '', $field['value'])));
 							}
 							elseif ($field['type'] === 'time_range')
 							{
-								$object_copy->$field['name'] = $field['value'] . ' to ' . $_POST['second_' . $field['name']];
+								$object_copy->$object_name = $field['value'] . ' to ' . $_POST['second_' . $field['name']];
 							}
 							else  // Any other type
 							{
-								$object_copy->$field['name'] = $field['value'];
+								$object_copy->$object_name = $field['value'];
 							}
-
 						}
-					var_dump($object_copy);
 					$this->current_id = $object_copy->save();
 					$this->current_object = $object_copy;
 					unset($object_copy);

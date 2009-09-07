@@ -55,7 +55,7 @@ class Forms {
 		$this->fields['0'][$name]['id'] = (isset($info['id'])) ? str_replace(' ', '_', $info['id']) : $this->fields['0'][$name]['name'];
 		
 		// If value is set then use it
-		$this->fields['0'][$name]['value'] = (isset($info['value'])) ? $info['value'] : '';
+		$this->fields['0'][$name]['value'] = (empty($info['value'])) ? '' : $info['value'];
 		
 		$this->fields['0'][$name]['type'] = (isset($info['type'])) ? $info['type'] : 'text';
 		
@@ -78,7 +78,7 @@ class Forms {
 				$this->fields[$i][$name]['name'] = $info['name'] . '_' . $i;
 				$this->fields[$i][$name]['value'] = isset($_POST[$name.'_' . $i]) ? $_POST[$name.'_' . $i] : $info['value'];
 				$this->fields[$i][$name]['iteration'] = $i;
-	
+		
 				if (isset($value['options']['title'])) // This is specifically for slug as of now because it needs to replace %n% with iteration
 					$this->fields[$i][$name]['options']['title'] = str_replace('%n%',$i,$info['options']['title']);
 			}
@@ -503,7 +503,7 @@ class Forms {
 		$info['options']['class'] = 'input_timestamp';
 		
 		if(isset($info['value']) && !empty($info['value']))
-				$info['value'] = (preg_match('#^\d+/\d+/\d+ @ \d+:\d+ \w\w$#',$info['value']) == 0) ? dater($info['value'],'m/d/Y @ h:i a') : $info['value'];
+				$info['value'] = (preg_match('#^\d+/\d+/\d+ @ \d+:\d+ \w\w$#',$info['value']) == 0) ? String::format_date($info['value'],'m/d/Y @ h:i a') : $info['value'];
 		else
 			$info['value'] = date('m/d/Y @ h:i a');
 	
@@ -513,17 +513,18 @@ class Forms {
 	    '	<script type="text/javascript">
 		    	$(function()
 	            	{
-						$(\'#' . $info['name'] . '\').DatePicker({
-							date: $(\'#' . $info['name'] . '\').val(),
-							current: $(\'#' . $info['name'] . '\').val(),
+						$(\'#' . $info['id'] . '\').DatePicker({
+							date: $(\'#' . $info['id'] . '\').val(),
+							current: $(\'#' . $info['id'] . '\').val(),
 							starts: 1,
 							format: \'m/d/Y\',
-							position: \'right\',
+							position: \'bottom\',
 							onBeforeShow: function(){
 								$(\'#' . $info['name'] . '\').DatePickerSetDate($(\'#' . $info['name'] . '\').val(), true);
 							},
 							onChange: function(formated, dates){
-								$(\'#' . $info['name'] . '\').val(formated + " @ '.date('h:i a').'");
+								$(\'#' . $info['id'] . '\').val(formated + " @ '.date('h:i a').'");
+								$(\'#' . $info['id'] . '\').DatePickerHide();
 							}
 						});
 
@@ -562,6 +563,7 @@ class Forms {
 							},
 							onChange: function(formated, dates){
 								$(\'#' . $info['id'] . '\').val(formated);
+								$(\'#' . $info['id'] . '\').DatePickerHide();
 							}
 						});
 
