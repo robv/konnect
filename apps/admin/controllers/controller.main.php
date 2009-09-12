@@ -215,7 +215,16 @@ class Main_Controller extends Controller {
 		{
 			if ($scaffolder->save_object())
 			{
-				//redirect
+				if (empty($_POST['redirect']))
+				{
+					Flash::set('<div class="sub_menu_extension"><strong>Your entry was added succefully! You can edit it below.</strong></div>');
+					Core_Helpers::redirect('/admin/edit/' . Router::uri(3) . '/' . $scaffolder->current_id . '/');
+				}
+				else
+				{
+					Flash::set('<div class="sub_menu_extension"><strong>Your entry was added succefully!</strong></div>');
+					Core_Helpers::redirect($_POST['redirect']);
+				}
 			}
 		}
 		
@@ -233,7 +242,16 @@ class Main_Controller extends Controller {
 		{
 			if ($scaffolder->save_object())
 			{
-				//redirect
+				if (empty($_POST['redirect']))
+				{
+					Flash::set('<div class="sub_menu_extension"><strong>Your entry was added succefully! You can edit it below.</strong></div>');
+					Core_Helpers::redirect('/admin/edit/' . Router::uri(3) . '/' . $scaffolder->current_id . '/');
+				}
+				else
+				{
+					Flash::set('<div class="sub_menu_extension"><strong>Your entry was added succefully!</strong></div>');
+					Core_Helpers::redirect($_POST['redirect']);
+				}
 			}
 		}
 		

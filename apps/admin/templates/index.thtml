@@ -19,6 +19,7 @@
 			
 		</div>
 		
+			<?= Flash::show(); ?>
 			
 			<?php if (isset($search_value) && $num_entries == 0) : ?>
 
