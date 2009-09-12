@@ -30,8 +30,7 @@
 			<div class="meta">
 				<div class="float_left">Logged in as <strong><?= Auth::get_instance()->user->username; ?></strong></div>
 				<ul>
-					<li><a href="#">Settings</a></li>
-					<li><a href="/admin/models/">Models</a></li>
+					<li><a href="/admin/models/">System Tools</a></li>
 				</ul>
 			</div>
 			<div class="logout"><a href="<?= WEB_ROOT; ?>logout/" class="round">logout</a></div>

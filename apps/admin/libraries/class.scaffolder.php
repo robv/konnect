@@ -49,11 +49,11 @@ class Scaffolder extends Forms {
 			// If value can not be NULL lets add blank as a error check
 			if ($notnullsearch === false)
 			{ 
-				$options['validate'] = ''; 
+				$options['validation'] = ''; 
 			}
 			else 
 			{
-				$options['validate'] = 'blank';
+				$options['validation'] = 'blank';
 			}
 			
 			$options['type'] = ($type === 'blob') ? 'htmleditor' : 'text';
@@ -67,7 +67,7 @@ class Scaffolder extends Forms {
 			{
 				$options['type'] = $value_info->type;
 				if ($options['type'] === 'file') // shouldn't validate for blank if it's a file.... TODO: Come up with a way to validate files
-					$options['validate'] = '';
+					$options['validation'] = '';
 			}
 			
 			if ($value_info->options !== NULL)
