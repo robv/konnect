@@ -216,6 +216,11 @@ body {
 	font-weight: bold;
 }
 
+#content_container .sub_menu ul li.add_button a {
+	background: url(../../files/add_black.png) no-repeat right center;
+	padding: 8px 30px 8px 0;
+}
+
 #content_container .sub_menu_extension {
 	background-color: #eee;
 	border-bottom: 1px solid #ddd;
@@ -434,7 +439,7 @@ textarea.full {
 
 .default_modal p {
 	font-weight: bold;
-	margin-bottom: 40px;
+	margin-bottom: 30px;
 }
 
 .default_modal a {
