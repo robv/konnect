@@ -216,9 +216,18 @@ body {
 	font-weight: bold;
 }
 
+#content_container .sub_menu ul li.add_button {
+	background: #fff url(../../files/light_gradient.png) repeat-x right bottom;
+	-moz-border-radius:18px;
+	-webkit-border-radius:18px;
+	border: 2px solid #ccc;
+	margin-top: -10px;
+}
+
 #content_container .sub_menu ul li.add_button a {
-	background: url(../../files/add_black.png) no-repeat right center;
-	padding: 8px 30px 8px 0;
+	display: block;
+	padding: 8px 15px 8px 32px;
+	background: url(../../files/add_small.png) no-repeat 8px center;
 }
 
 #content_container .sub_menu_extension {
