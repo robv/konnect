@@ -7,6 +7,7 @@ class Error
 
     public $errors; // Array of errors
     public $style;  // CSS rules to apply to error elements
+	public $list_class = 'warning';
 
     private function __construct($style = "border:1px solid red;")
     {
@@ -70,12 +71,12 @@ class Error
     }
 
     // Returns an unordered list of error messages
-    public function ul($class = 'warning')
+    public function ul()
     {
         if(count($this->errors) == 0) return '';
 
 		$out = self::$me->css();
-        $out .= "<ul class='$class'>";
+        $out .= "<ul class='{$this->list_class}'>";
         foreach($this->errors as $error)
             $out .= "<li>" . implode("</li><li>", $error) . "</li>";
         $out .= "</ul>";
