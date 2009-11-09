@@ -19,7 +19,7 @@ class App_Init {
 	{
 		// Pulls $config in
 		include DOC_ROOT . 'apps/' . $dir . '/settings.php';
-		$this->app_name = $this->data['app']['name'] = $this->data['app']['name'];
+		$this->app_name = $this->data['app']['name'] = $config['app_name'];
 		Config::set($config, $this->app_name);
 	}
 
