@@ -9,22 +9,18 @@ class App_Init {
 	// $dir is the directory the app sits in
 	public function __construct($dir)
 	{
-		// Pulls $config in
-		include DOC_ROOT . 'apps/' . $dir . '/settings.php';
-		
-		$this->data['app']['name'] = $config['app_name'];
-		
-		$this->install();
-		
-		include DOC_ROOT . 'apps/' . $dir . '/settings.php';
-		
-		Config::set($config, $this->data['app']['name']);
-		
-		$this->app_name = $this->data['app']['name'];
-		
+		$this->set_config($dir);
 		$this->route();
 		$this->load_controller();
 		
+	}
+	
+	private function set_config($dir)
+	{
+		// Pulls $config in
+		include DOC_ROOT . 'apps/' . $dir . '/settings.php';
+		$this->app_name = $this->data['app']['name'] = $this->data['app']['name'];
+		Config::set($config, $this->app_name);
 	}
 
 	private function load_controller()
@@ -59,8 +55,10 @@ class App_Init {
 		Router::uri_rewrite(Config::$config[$this->data['app']['name']]['routes']);
 	}
 	
-	private function install()
+	public static function install($dir)
 	{
+		$this->set_config($dir);
+		
 		if (file_exists(DOC_ROOT . 'apps/' . $this->data['app']['name'] . '/tables.sql')) {
 			if(is_writable(DOC_ROOT . 'apps/' . $this->data['app']['name'] . '/tables.sql')) {
 				// Create tables
@@ -77,7 +75,7 @@ class App_Init {
 				rename(DOC_ROOT . 'apps/' . $this->data['app']['name'] . '/tables.sql',DOC_ROOT . 'apps/' . $this->data['app']['name'] . '/tables.sql.bak');
 				
 			} else {
-				die('<h1>You have no installed this app, either run <strong>' . DOC_ROOT . 'apps/' . $this->data['app']['name'] . '/tables.sql' . 
+				die('<h1>You have not installed this app, either run <strong>' . DOC_ROOT . 'apps/' . $this->data['app']['name'] . '/tables.sql' . 
 					'</strong> manually and delete the file or change chmod this file so that it is writable by PHP.</h1>');
 			}
 		}

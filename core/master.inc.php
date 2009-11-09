@@ -14,9 +14,12 @@ if (!Config::set_core()) {
 		<p><code>$_SERVER[\'HTTP_HOST\']</code> reported <code>' . $_SERVER['HTTP_HOST'] . '</code></p>');
 }
 
-// Load all the models
+// Load all the models and sql dumps
 foreach (Config::$config['core']['installed_apps'] as $app)
+{
 	include DOC_ROOT . 'apps/' . $app . '/models.php';
+	App_Init::install($app);
+}
 
 // Class Autoloader
 function __autoload($class_name)
