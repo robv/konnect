@@ -55,14 +55,12 @@ class App_Init {
 		Router::uri_rewrite(Config::$config[$this->data['app']['name']]['routes']);
 	}
 	
-	public static function install($dir)
+	public static function install($app)
 	{
-		$this->set_config($dir);
-		
-		if (file_exists(DOC_ROOT . 'apps/' . $this->data['app']['name'] . '/tables.sql')) {
-			if(is_writable(DOC_ROOT . 'apps/' . $this->data['app']['name'] . '/tables.sql')) {
+		if (file_exists(DOC_ROOT . 'apps/' . $app . '/tables.sql')) {
+			if(is_writable(DOC_ROOT . 'apps/' . $app . '/tables.sql')) {
 				// Create tables
-				$sql = file_get_contents(DOC_ROOT . 'apps/' . $this->data['app']['name'] . '/tables.sql');
+				$sql = file_get_contents(DOC_ROOT . 'apps/' . $app . '/tables.sql');
 
 				// Do this to split up creations to one per query.
 				$queries = explode('#',$sql);
@@ -72,10 +70,10 @@ class App_Init {
 					foreach($queries as $query)
 						$db->query($query);
 				
-				rename(DOC_ROOT . 'apps/' . $this->data['app']['name'] . '/tables.sql',DOC_ROOT . 'apps/' . $this->data['app']['name'] . '/tables.sql.bak');
+				rename(DOC_ROOT . 'apps/' . $app . '/tables.sql',DOC_ROOT . 'apps/' . $app . '/tables.sql.bak');
 				
 			} else {
-				die('<h1>You have not installed this app, either run <strong>' . DOC_ROOT . 'apps/' . $this->data['app']['name'] . '/tables.sql' . 
+				die('<h1>You have not installed this app, either run <strong>' . DOC_ROOT . 'apps/' . $app . '/tables.sql' . 
 					'</strong> manually and delete the file or change chmod this file so that it is writable by PHP.</h1>');
 			}
 		}
