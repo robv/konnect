@@ -73,7 +73,6 @@ body {
 #header .navigation li a {
 	color: #fff !important;
 	text-decoration: none !important;
-	margin-right: 20px;
 }
 
 #header .navigation .meta a:hover {
@@ -82,6 +81,7 @@ body {
 
 #header .navigation .logout {
 	float: right;
+	margin-left: 20px;
 }
 
 #header .navigation .logout a {
@@ -142,7 +142,11 @@ body {
 /* @group SUB_NAVIGATION */
 
 #sub_navigation {
-	background-color: #eee;
+	background: #fdfdfd url(../../files/light_gradient.png) repeat-x right bottom;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border: 1px solid #ccc;
+	margin-top: -10px;
 	margin: -10px 0 20px 0;
 	padding: 0 10px;
 	font-weight: bold;
@@ -150,10 +154,16 @@ body {
 
 #sub_navigation ul li a {
 	color: #000 !important;
+	text-decoration: none !important;
 	display: block;
 	float: left;
 	padding: 14px 20px;
 	font-size: 1.2em;
+	text-shadow: #fff 2px 2px 0;
+}
+
+#sub_navigation ul li a:hover {
+	color: #555 !important;
 }
 
 #sub_navigation ul li {
@@ -172,13 +182,13 @@ body {
 }
 
 #content_container a:link, #content_container a:active, #content_container a:visited {
-	color: #222 !important;
-	text-decoration: none !important;
+	color: #222;
+	text-decoration: none;
 }
 
 #content_container a:hover {
-	color: #333 !important;
-	text-decoration: underline !important;
+	color: #333;
+	text-decoration: underline;
 }
 
 #left_column {
@@ -217,7 +227,7 @@ body {
 }
 
 #content_container .sub_menu ul li.add_button {
-	background: #fff url(../../files/light_gradient.png) repeat-x right bottom;
+	background: #fdfdfd url(../../files/light_gradient.png) repeat-x right bottom;
 	-moz-border-radius:18px;
 	-webkit-border-radius:18px;
 	border: 2px solid #ccc;
@@ -225,9 +235,16 @@ body {
 }
 
 #content_container .sub_menu ul li.add_button a {
+	color: #000 !important;
+	text-decoration: none !important;
+	text-shadow: #fff 2px 2px 0;
 	display: block;
 	padding: 8px 15px 8px 32px;
 	background: url(../../files/add_small.png) no-repeat 8px center;
+}
+
+#content_container .sub_menu ul li.add_button a:hover {
+	color: #555 !important;
 }
 
 #content_container .sub_menu_extension {

@@ -29,9 +29,11 @@
 		<div class="navigation">
 			<div class="meta">
 				<div class="float_left">Logged in as <strong><?= Auth::get_instance()->user->username; ?></strong></div>
+				<?php if (in_array(Auth::get_instance()->user->level, array('admin', 'owner'))) : ?>
 				<ul>
 					<li><a href="/admin/models/">System Tools</a></li>
 				</ul>
+				<?php endif; ?>
 			</div>
 			<div class="logout"><a href="<?= WEB_ROOT; ?>logout/" class="round">logout</a></div>
 		</div>
