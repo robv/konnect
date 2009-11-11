@@ -2,5 +2,8 @@
 	<ul class="float_left">
 		<li><a href="<?= WEB_ROOT . Router::uri(0) . '/index/users/'; ?>">Users</a></li>
 		<li><a href="<?= WEB_ROOT . Router::uri(0) . '/models/'; ?>">Models</a></li>
+		<li><a href="<?= WEB_ROOT . Router::uri(0) . '/index/field-information/'; ?>">Field Info</a></li>
+		<li><a href="<?= WEB_ROOT . Router::uri(0) . '/index/index-information/'; ?>">Index Info</a></li>
+		<li><a href="<?= WEB_ROOT . Router::uri(0) . '/index/admin-links/'; ?>">Admin Links</a></li>
 	</ul>
 </div>
