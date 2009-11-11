@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS `users`;
+
+#
+
 CREATE TABLE `users` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `username` varchar(255) NOT NULL,

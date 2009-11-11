@@ -1,3 +1,23 @@
+DROP TABLE IF EXISTS `admin_links`;
+
+#
+
+DROP TABLE IF EXISTS `admin_announcements`;
+
+#
+
+DROP TABLE IF EXISTS `field_information`;
+
+#
+
+DROP TABLE IF EXISTS `index_information`;
+
+#
+
+DROP TABLE IF EXISTS `pages`;
+
+#
+
 CREATE TABLE `admin_links` (
   `id` int(11) NOT NULL auto_increment,
   `order` int(11) NOT NULL default '1',
