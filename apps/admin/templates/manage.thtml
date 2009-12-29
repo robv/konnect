@@ -1,0 +1,179 @@
+<?php include DOC_ROOT . '/apps/'.$app_name.'/templates/_header.thtml'; ?>
+
+	<div id="full" class="match">
+		
+		<?php if(is_null($show_add_entry->id)): ?>
+			<div id="header_button"><a href="<?= WEB_ROOT.$app_name; ?>/add/<?= $url_structure['2']; ?>/">Add Entry</a></div>
+		<?php endif; ?>
+		
+		<h2><?= $pageTitle; ?></h2>
+		
+		<?php if((isset($current_link) && isset($header_sub_links[$current_link]) && !empty($header_sub_links[$current_link])) || !is_null($search_module->id)): ?>
+			<div id="modules">
+				
+				<?php if(isset($current_link) && isset($header_sub_links[$current_link]) && !empty($header_sub_links[$current_link])): ?>
+					<ul>
+						<?php foreach($header_sub_links[$current_link] as $sub_link): ?>
+							<li><a href="<?= WEB_ROOT.$app_name.'/'.$sub_link->link ?>"><?= $sub_link->name; ?></a></li>
+						<?php endforeach; ?>
+					</ul>
+				<?php endif; ?>
+			
+				<?php if(!is_null($search_module->id)): ?>
+				<form action="" method="post" enctype="multipart/form-data" class="search">
+					<input type="text" name="search" id="search" />
+					<select name="search_field" id="search_field">
+						<option value="all">All</option>
+						<?php foreach($search_module->options as $opt): ?>
+							<option value="<?= $opt; ?>"><?= ucwords($opt); ?></option>
+						<?php endforeach; ?>
+					</select>
+					<input class="submit" type="submit" name="submit" value="Search">
+				</form>
+				<?php endif; ?>
+				
+			</div>
+		<?php endif; ?>
+		
+		<?php 
+			Flash::show();
+		?>
+			
+		<?php if(empty($entries)): ?>
+			
+			<p class="info">Sorry, no entries exist.</p>
+			
+		<?php else: ?>
+			
+			<table class="manage_table" cellspacing="0">
+		
+		<?php		
+					$seperators = array('-','+','_',' '); // used later when uppercasing field names
+		?>
+				
+				<tr>
+					
+		<?php	
+			foreach($columns as $name => $value):
+				
+				if(isset($field_info[$name])): //view info exists
+					if($field_info[$name]->type !== 'hidden'):
+		?>
+				
+					<th><?= ucfirst(str_replace($seperators,' ',$name)); ?></th>
+				
+		<?php
+					endif;
+				else:
+		?>
+					
+					<th><?= ucfirst(str_replace($seperators,' ',$name)); ?></th>
+				
+		<?php			
+				endif;
+				
+			endforeach;
+		?>
+				
+					<th colspan="2"></th>
+				</tr>
+				
+		<?php
+			
+			foreach($entries as $entry):
+		?>
+	
+				<tr>
+			
+		<?php		
+	
+		foreach($columns as $name => $value):
+		
+			if($name === 'timestamp')
+				$entry->$name = dater($entry->$name,'m/d/Y @ h:i a');
+		
+			if(isset($field_info[$name])): //no view information exists
+			/*
+				TODO: Add special views for different type of information
+			*/
+				
+				if($field_info[$name]->type === 'image'):
+		?>
+					<td><a href="<?= WEB_ROOT; ?>files/uploads/large/<?= $entry->$name; ?>" rel="facebox"><img src="<?= WEB_ROOT; ?>files/uploads/small/<?= $entry->$name; ?>" alt="<?= $entry->$name; ?>" /></a></td>
+		<?php
+				elseif($field_info[$name]->type === 'file'):
+		?>
+					<td><a href="<?= WEB_ROOT; ?>files/uploads/original/<?= $entry->$name; ?>" target="new"><?= $entry->$name; ?></a></td>
+		<?php
+				elseif($field_info[$name]->type === 'timestamp'):
+		?>
+					<td><?= dater($entry->$name,'m/d/Y @ h:i a'); ?></td>
+		<?php			
+				elseif($field_info[$name]->type === 'related' || $field_info[$name]->type === 'related_dependent'):
+						// TODO: Remove logic from template, this sucks.
+						$opt_builder = $field_info[$name]->options;
+						$opt_builder = explode('|',$opt_builder);
+							foreach($opt_builder as $option):
+								if(!empty($option)){
+									$option_explode = explode(',',$option);
+									$options[$option_explode['0']] = $option_explode['1'];
+								}
+							endforeach;
+							
+					$fclass = ucfirst($options['table']);
+					$finfo = new $fclass();
+					$finfo->select($entry->$name,$options['val']);
+		?>
+					<td><?= $finfo->$options['text']; ?></td>
+		<?php										
+				unset($finfo,$fclass,$options,$option);
+				elseif($field_info[$name]->type !== 'hidden'):
+		?>
+					<td><?= strip_tags($entry->$name); ?></td>
+		<?php
+				endif;
+							
+			else :
+		?>
+		
+					<td><?= truncate_string(str_replace('|',' ',strip_tags($entry->$name)),'300','[...]'); ?></td>
+		
+		<?php
+							
+						endif;
+						
+					endforeach;
+					
+		?>
+		
+				<td class="edit_delete"><a href="<?= WEB_ROOT.$app_name; ?>/edit/<?= $table_name; ?>/<?= $entry->id; ?>/">Edit</a></td>
+				<td class="edit_delete"><a href="<?= WEB_ROOT.$app_name; ?>/confirm/?delete=<?= $entry->id; ?>&table_name=<?= $table_name; ?>" rel="facebox[.modal_center]">Delete</a></td>
+				</tr>
+				
+		<?php
+			endforeach;
+	
+		?>
+		
+			</table>
+			
+		<?php 
+			$pager->calculate();
+					if($pager->numPages > 1):
+		?>
+		
+				<div id="pager" class="clearfix">
+			
+					<?= $pager->advanced(); ?>
+			
+				</div>
+	
+		<?php
+				endif;
+			endif;
+		?>
+		
+
+	</div>
+				
+<?php include DOC_ROOT . '/apps/'.$app_name.'/templates/_footer.thtml'; ?>

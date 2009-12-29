@@ -1,0 +1,6 @@
+<h3>Are you sure?</h3>
+<p>This action cannot be undone, so be careful.</p>
+<p class="block_links">
+	<a href="<?= WEB_ROOT.$app_name; ?>/delete/<?= $_GET['table_name']; ?>/<?= isset($_GET['delete']) ? $_GET['delete'] : 0; ?>/">Yup!</a>
+	<a href="<?= WEB_ROOT.$app_name; ?>/manage/<?= $_GET['table_name']; ?>/" onclick="javascript: $(document).trigger('close.facebox'); return false;">Cancel</a>
+</p>

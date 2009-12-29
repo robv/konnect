@@ -3,41 +3,40 @@
 class Controller {
 	
 	public $data;
-	protected $default_method;
 	
-	// TODO: Can private functions be extended?
-	public function __construct($data)
+	function __construct($method='',$data = '')
 	{
+		$defaultMethod = $this->defaultMethod;
 		$this->data = $data;
-		$method = Router::uri(2);
-		$dm = $this->default_method;
 		
-		 // If no method is set go to default
-		if (is_null($method))
-			$this->$dm();
+		if(empty($method)) // If no controller is set go to default
+			$this->$defaultMethod();
 		else
 			$this->$method();
+		
 	}
 	
 	// Loads view file and converts $data array to key => value form.
 	// This is the best I could come up with...
-	public function load_template($file)
-	{	
+	public function loadView($file)
+	{
+		global $Auth,$Error;
+			
 			// Run through data array for access in view
-		if (!empty($this->data)) {
-			foreach ($this->data as $key => $value) {
-				$$key = $value;
+			if(!empty($this->data)){
+				foreach($this->data as $key => $value):
+					$$key = $value;
+				endforeach;
 			}
-		}
-		
-		include DOC_ROOT . '/apps/' . $this->data['app']['name'] . '/templates/' . $file . '.thtml';
+			
+		include DOC_ROOT.'/apps/'.$this->app_name.'/templates/'.$file.'.thtml';
 		
 	}
 	
 	public function install()
 	{
 		// Create tables
-		$sql = file_get_contents(DOC_ROOT . '/apps/' . $this->data['app']['name'] . '/db.sql');
+		$sql = file_get_contents(DOC_ROOT . '/apps/' . $this->app_name . '/db.sql');
 
 		// Do this to split up creations to one per query.
 		$queries = explode('#',$sql);

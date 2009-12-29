@@ -1,51 +1,41 @@
 <?php
+    // Application flag
+    define('kt', true);
 
-// Application flag
-define('KONNECT', true);
+    // Determine our absolute document root
+    define('DOC_ROOT', realpath(dirname(__FILE__) . '/../'));
 
-// Determine our absolute document root, includes trailing slash
-define('DOC_ROOT', realpath(dirname(__FILE__) . '/../') . '/');
+    // Global include files
+    require DOC_ROOT . '/core/functions.inc.php'; // __autoload() is contained in this file
+    require DOC_ROOT . '/core/class.dbobject.php';
+    require DOC_ROOT . '/config/rewrites.php'; // These are the paths you wish to have rewritten
+    require DOC_ROOT . '/config/config.php'; // These are the paths you wish to have rewritten
+	
+	// Load all objects for installed apps
+	foreach($core['installed_apps'] as $app){
+		require DOC_ROOT . '/apps/' . $app . '/models.php';
+	}	
+	
+    // Fix magic quotes
+    if(get_magic_quotes_gpc())
+    {
+        $_POST    = fix_slashes($_POST);
+        $_GET     = fix_slashes($_GET);
+        $_REQUEST = fix_slashes($_REQUEST);
+        $_COOKIE  = fix_slashes($_COOKIE);
+    }
 
-include DOC_ROOT . 'core/class.config.php';
 
-// Setting core configuration variables.
-if (!Config::set_core()) {
-	die('<h1>Where am I?</h1> <p>You need to setup your server names in <code>class.config.php</code></p>
-		<p><code>$_SERVER[\'HTTP_HOST\']</code> reported <code>' . $_SERVER['HTTP_HOST'] . '</code></p>');
-}
+/*
+	TODO: Refactor so namespace is not polluted, should call these methods every time you need to use them
+*/
 
-// Load all the models and sql dumps
-foreach (Config::$config['core']['installed_apps'] as $app)
-{
-	include DOC_ROOT . 'apps/' . $app . '/models.php';
-	App_Init::install($app);
-}
+    // Store session info in the database if table exists
+    if(Config::getConfig()->useDBSessions === true && mysql_is_table('sessions'))
+        DBSession::register();
 
-// Class Autoloader
-function __autoload($class_name)
-{
-	$folders = array();
+    // Initialize our session
+    session_start();
 
-	foreach (Config::$config['core']['installed_apps'] as $app) {
-		$folders[] = 'apps/' . $app . '/libraries';
-	}
-
-	$folders = array_merge($folders, array('core', 'helpers', 'libraries'));
-	foreach ($folders as $folder) {
-		if (file_exists(DOC_ROOT . $folder . '/class.' . strtolower($class_name) . '.php')) {
-			require DOC_ROOT .  $folder . '/class.' . strtolower($class_name) . '.php';
-			break;
-		}
-	}
-}
-
-// Fix magic quotes
-if (get_magic_quotes_gpc()) {
-	$_POST    = String::strip_slashes($_POST);
-	$_GET     = String::strip_slashes($_GET);
-	$_REQUEST = String::strip_slashes($_REQUEST);
-	$_COOKIE  = String::strip_slashes($_COOKIE);
-}
-
-// Initialize our session
-session_start();
+    // Object for tracking and displaying error messages
+    $Error = Error::getError();

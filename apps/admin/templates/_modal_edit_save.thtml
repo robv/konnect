@@ -1,0 +1,15 @@
+<script type="text/javascript">Site.modal_edit_save_start();</script>
+
+<?= isset($jscript) ? $jscript : ''; ?>
+
+		<h2 class="modal"><?= $pageTitle; ?></h2>
+		
+		<?php 
+			echo $Error;
+		?>
+		
+<form action="<?= WEB_ROOT.$app_name; ?>/modalForm/<?= deslugify(addslashes(mysql_real_escape_string($_GET['table'])),'-'); ?>/?table=<?= $_GET['table']; ?>&valueField=<?= $_GET['valueField']; ?>&textField=<?= $_GET['textField']; ?>&idField=<?= $_GET['idField']; ?>" target="iframeform" method="post" enctype="multipart/form-data">				
+<?= $form; ?>
+<p><input type="submit" name="submit" value="Save" class="submit" onclick="javascript: $(document).trigger('close.facebox');" /> or <a href="<?= WEB_ROOT.$app_name; ?>/manage/<?= $_GET['table_name']; ?>/" onclick="javascript: $(document).trigger('close.facebox'); return false;">Cancel</a></p>
+</form>
+<div style="display:none;"><iframe src="<?= WEB_ROOT.$app_name; ?>/" id="iframeform" width="1" height="1"></iframe></div>

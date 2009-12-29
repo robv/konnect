@@ -1,0 +1,20 @@
+<?php include DOC_ROOT . '/apps/'.$app_name.'/templates/_header.thtml'; ?>
+
+	<div id="left" class="match">
+			
+		<h2><?= $pageTitle; ?></h2>
+		
+		<p class="info">Just insert this into your "core/class.objects.php" file. Notice this will only create dbobject structure for tables that don\'t already have database object information in that file.</p>
+		
+			<textarea class="objects"><?= $object_out; ?></textarea>
+	
+
+	</div>
+
+	<div id="right" class="match">
+
+
+
+	</div>
+				
+<?php include DOC_ROOT . '/apps/'.$app_name.'/templates/_footer.thtml'; ?>

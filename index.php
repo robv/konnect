@@ -1,16 +1,24 @@
 <?php
-	
-	require 'core/master.inc.php';
-	
-	// Remap URI with routes if needed
-	Router::new_uri(Config::$config['core']['routes']);
-	
-	// If no app is set through the uri array then set it to default
-	if (is_null(Router::uri(0)))
-		Router::uri(0, Config::$config['core']['default_app']);
 
-	// If app doesn't exist then show error
-	if (!in_array(Router::uri(0), Config::$config['core']['installed_apps']))
-		die ('<h1>Opps</h1> <p>The app <strong>"' . Router::uri(0) . '"</strong> does not exist.</p>');
-
-	$init = new App_Init(Router::uri(0)); // initiate init class
+    ini_set('display_errors', '1');
+    ini_set('error_reporting', E_ALL);
+	require 'core/master.inc.php'; // loads rewrites and installed arrays into $core
+		
+	$data['konnect']['config'] = Config::getConfig();
+	
+	// This is just putting some useful variables together that will be available everywhere
+	$ap = new AlterPath($core['rewrites']); 
+	$ap->return_paths();
+	
+	if(!isset($data['konnect']['rewritten_path']['0']) || empty($data['konnect']['rewritten_path']['0']))
+		$data['konnect']['rewritten_path']['0'] = $data['konnect']['config']->defaultApp;
+	
+	// TODO: Error management if app isn't in install list
+	if(in_array($data['konnect']['rewritten_path']['0'],$core['installed_apps']))
+		$core['app'] = $data['konnect']['rewritten_path']['0'];
+	else
+		die ('<h1>Opps</h1> <p>The app you\'re trying to use doesn\'t exist.</p>');
+		
+	require DOC_ROOT . '/apps/' . $core['app'] . '/init.php'; // import init class
+	$init_class = ucfirst($core['app']) . '_init'; // first letters in classes should always be capital followed by lowercase
+	$init_class_obj = new $init_class(); // initiate init class

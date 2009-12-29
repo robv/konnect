@@ -1,47 +1,49 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-	<title>Konnect</title>
-	<?= Load::css('auth/screen'); ?>
-	<?= Load::js(array('jquery','plugins/jquery.inputhint','common')); ?>
-	
+	<title>Login</title>
+	<?= cssFile('admin/screen'); ?>
 </head>
-
 <body>
 	
-<h2 class="roundtop">konnect</h2>
-
-<div id="content" class="roundbottom">
+	<div id="header">
+		<h1>Website Administration</h1>
+	</div>
 	
-	<?php Flash::show(); ?>
-
-	<form action="" method="post" >
-
-		<div>
-			<label for"username">Username:</label>
-			<input type="text" name="username" id="username" />
+	<div id="container">
+	
+		<div id="full">
+			
+			<h2>Login</h2>
+			
+			<div class="inner">
+			
+				<form action="" method="post">
+				
+					<?php Flash::show(); ?>
+				
+					<p>
+						<label for="username">Username:</label>
+						<input type="text" name="username" value="<?php echo$username;?>" id="username" />
+					</p>
+					<p>
+						<label for="password">Password:</label>
+						<input type="password" name="password" value="" id="password" />
+					</p>
+					<p><a href="<?php WEBROOT(); ?>recover/">Help! I forgot my password!</a></p>
+					<p><input type="submit" value="Login" class="submit" /></p>
+			
+				</form>
+				
+			</div>
+			
 		</div>
-
-		<div>
-			<label for"password">Password:</label>
-			<input type="password" name="password" id="password" />
-		</div>
-
-		<p>
-			<a href="<?= WEB_ROOT; ?>recover/">Help! I forgot my password!</a>
-		</p>
-
-		<div class="clearfix">
-			<input type="submit" name="submit" value="Login" class="submit round" />
-		</div>
-
-	</form>
-
-</div>
+		
+	</div>
+	
 
 </body>
 </html>

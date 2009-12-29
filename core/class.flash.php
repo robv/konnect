@@ -1,29 +1,45 @@
 <?php
 
 /*
-	SAMPLE USAGE:	
-	
-	Flash::set('What to say!'); // set
-	Flash::show(); // display
 
-	// Advanced
-	Flash::set('What to say!','error_one'); // set
-	Flash::show('error_one'); // display
+	Sample Usage: 
+		
+		// SET SOMETHING TO FLASH
+		$flash->set('What to say!');
+		
+		// DISPLAY FLASH MESSAGE
+		$flash->show();
+		
+		// ADVANCED :
+		$flash->set('What to say!','error_one');
+		$flash->show('error_one');
+		
 */
 
 class Flash {
 	
-	public static function set($message, $name='flasher')
+	function __construct(){
+		
+		if(!isset($_SESSION['flasher'])){
+			$_SESSION['flasher'] = array();
+		}
+		
+	}
+	
+	function set($message,$name='flasher')
 	{
+	
 		$_SESSION['flasher'][$name] = $message;
 	}
 	
-	public static function show($name='flasher')
+	function show($name='flasher')
 	{
+		
 		echo isset($_SESSION['flasher'][$name]) ? $_SESSION['flasher'][$name] : '';
-	
+		
 		if(isset($_SESSION['flasher'][$name]))
-			unset($_SESSION['flasher'][$name]);		
+			unset($_SESSION['flasher'][$name]);
+		
 	}
 	
 }

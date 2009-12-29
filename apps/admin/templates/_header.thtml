@@ -1,59 +1,48 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-	<title>Konnect</title>
-	<?= Load::css('admin/clean'); ?>
-	<?= Load::js(array(
-						'jquery',
-						'plugins/jquery.inputhint',
-						'plugins/facebox/facebox',
-						'plugins/datepicker/datepicker',
-						'common',
-						'plugins/tiny_mce/tiny_mce'
-						)); ?>
-	
+	<title><?= isset($pageTitle) ? $pageTitle.' - ' : ''; ?>Website Administration</title>
+	<?= cssFile('admin/screen'); ?>
+	<?= jquery('equalHeight,wymeditor,datepicker,slug,facebox,jcrop,selectboxes,adminjcommon,tinymce'); ?>
 </head>
-
 <body>
 	
-<div id="header">
-	
-	<div class="center clearfix">
-	
-		<h1><a href="<?= WEB_ROOT; ?>">Site Administration</a></h1>
-	
-		<div class="navigation">
-			<div class="meta">
-				<div class="float_left">Logged in as <strong><?= Auth::get_instance()->user->username; ?></strong></div>
-				<?php if (in_array(Auth::get_instance()->user->level, array('admin', 'owner'))) : ?>
-				<ul>
-					<li><a href="/admin/models/">System Tools</a></li>
-				</ul>
-				<?php endif; ?>
-			</div>
-			<div class="logout"><a href="<?= WEB_ROOT; ?>logout/" class="round">logout</a></div>
-		</div>
-	
+	<div id="header">
+		<h1>Website Administration</h1>
+		<ul>
+			<?php if(Auth::getAuth()->level === 'admin'){ ?>
+				<li><a href="<?= WEB_ROOT.$app_name; ?>/manage/Konnect-Links/">Links</a></li>
+				<li><a href="<?= WEB_ROOT.$app_name; ?>/manage/Konnect-Field-Information/">Forms</a></li>
+				<li><a href="<?= WEB_ROOT.$app_name; ?>/manage/Konnect-View-Information/">Views</a></li>
+				<li><a href="<?= WEB_ROOT.$app_name; ?>/Database-Objects/">DB Objects</a></li>
+			<?php 
+				}
+				if(Auth::getAuth()->level === 'admin' || Auth::getAuth()->level === 'owner'){
+			?>
+				<li><a href="<?= WEB_ROOT.$app_name; ?>/manage/Users/">Users</a></li>
+			<?php } ?>
+			<li class="highlight"><a href="<?= WEB_ROOT; ?>logout/">Logout</a></li>
+		</ul>
 	</div>
 	
-</div>	
-
-<div id="navigation">
+	<div id="navigation" class="clearfix">
 	
-	<div class="center clearfix">
-	
-		<ul class="float_right">
-			<?php foreach ($header_links as $link) : ?>
-				<li<?= ('/' . $link->link === $_SERVER['REQUEST_URI']) ? ' class="active"' : '' ?>><a href="<?= WEB_ROOT . $link->link; ?>" class="roundtop"><?= $link->display; ?></a></li>
-			<?php endforeach; ?>
+		<ul id="main">
+			<li<?php if(implode('/',$konnect['rewritten_path']).'/' === $app_name.'/'){ echo ' class="active"'; } ?>><a href="<?= WEB_ROOT.$app_name; ?>/">Dashboard</a></li>
+			<?php
+				foreach($header_links as $header_link):
+					if(implode('/',deslugify($konnect['rewritten_path'],'-')).'/' === $app_name.'/index/'.strtolower($header_link->link)){
+						$active_insert = ' class="active"';
+						$current_link = $header_link->id;
+					} else { $active_insert = ''; }
+					echo '<li'.$active_insert.'><a href="'.WEB_ROOT.$app_name.'/'.$header_link->link.'">'.$header_link->name.'</a></li>';
+				endforeach;
+			?>
 		</ul>
 	
 	</div>
 	
-</div>
-	
-<div id="content_container" class="clearfix">
+	<div id="container" class="clearfix">
