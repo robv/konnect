@@ -9,6 +9,7 @@ if (!defined('KONNECT'))
 
 $core['default_app'] = 'admin';
 $core['installed_apps'] = array('auth','admin');
+$core['auto_install'] = false;
 
 $core['routes'] = array(
 	'login' => 'auth/main/login/',

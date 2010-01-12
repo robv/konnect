@@ -18,7 +18,10 @@ if (!Config::set_core()) {
 foreach (Config::$config['core']['installed_apps'] as $app)
 {
 	include DOC_ROOT . 'apps/' . $app . '/models.php';
-	App_Init::install($app);
+	if (Config::$config['core']['auto_install'])
+	{
+		App_Init::install($app);
+	}
 }
 
 // Class Autoloader
