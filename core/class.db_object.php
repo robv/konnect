@@ -221,4 +221,73 @@
                 $this->columns[$key] = $val;
 			}
         }
+
+		/*
+		Example Usage: 
+		// values are auto escaped and quoted, it also supports operators
+		$where = array('col1' => 'value1', 'col2 >=' => 'value2')
+		$orderby = array('col1' => 'DESC', 'col2' => 'ASC')
+		$items_per_page and $offset are used with limit like so - LIMIT $offset, $items_per_page or if you only pass $items per page it will do LIMIT $items_per_page
+		*/
+
+		public function get($where = array(), $orderby = array(), $items_per_page = NULL, $offset = NULL, $fetch_objects = FALSE)
+		{
+		 	$db = Database::get_instance();
+
+			$fields = isset($this->fields) && count($this->fields) ? implode(', ', $this->fields) : '*';
+
+			if (is_numeric($where))
+			{
+				$result = $db->query("SELECT $fields FROM $this->table_name WHERE $this->id_column_name = $where ");
+				return $result->result ? ($fetch_objects ? mysql_fetch_object($result->result) : mysql_fetch_assoc($result->result)) : NULL;
+			}
+
+			$sql_where = array();
+			foreach ($where as $field => $value)
+			{
+				$operator = '=';
+				// If there is a space we assume there is an operator override
+				if (strpos($k, ' '))
+				{
+					list($field, $operator) = explode(' ', $k);
+				}
+				
+				$value = $db->quote($value);
+				
+				$sql_where[] = "$field $operator $value";
+			}
+
+			$sql_where = count($sql_where) ? ('WHERE ' . implode(' AND ', $sql_where)) : '';
+
+			$sql_orderby = array();
+			foreach ($orderby as $field => $value)
+			{
+				$sql_orderby[] = "$field $value";
+			}
+
+			$sql_orderby = count($sql_orderby) ? ('ORDER BY ' . implode(', ', $sql_orderby)) : '';
+
+			$sql_limit = '';
+			if (is_numeric($items_per_page))
+			{
+				$sql_limit = 'LIMIT ';
+				if (is_numeric($offset))
+					$sql_limit .= "$offset, ";
+
+				$sql_limit .= "$items_per_page";
+			}
+
+			$mysql_fetch_method = $fetch_objects ? 'mysql_fetch_object' : 'mysql_fetch_assoc';
+			$rows = array();
+
+			$result = $db->query("SELECT $fields FROM $this->table_name $sql_where $sql_orderby $sql_limit");
+
+			if ($result->result)
+			{
+				while ($row = $mysql_fetch_method($result->result))
+					$rows[] = $row;				
+			}
+
+			return $rows;
+		}
     }
