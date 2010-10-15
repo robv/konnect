@@ -29,7 +29,7 @@
 		<div class="navigation">
 			<div class="meta">
 				<div class="float_left">Logged in as <strong><?= Auth::get_instance()->user->username; ?></strong></div>
-				<?php if (in_array(Auth::get_instance()->user->level, array('admin', 'owner'))) : ?>
+				<?php if (in_array(Auth::get_instance()->user->level, array('superadmin'))) : ?>
 				<ul>
 					<li><a href="/admin/models/">System Tools</a></li>
 				</ul>

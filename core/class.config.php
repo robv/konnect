@@ -14,7 +14,7 @@ class Config {
 	public static function set_core($host = NULL) {
 		// Allows testing outside of browser by being able to pass host
 		if (is_null($host))
-			$host = $_SERVER['HTTP_HOST'];
+			$host = $_SERVER['SERVER_NAME'];
 
 		// Returns the array $config and also $core so that we don't have to define all those settings here
 		include DOC_ROOT . 'config/settings.php';
