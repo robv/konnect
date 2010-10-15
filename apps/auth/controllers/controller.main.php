@@ -107,7 +107,7 @@ class Main_Controller extends Controller {
 			{
 				$user = new Users;
 				$user->load($_POST);
-				$user->level = 'admin';
+				$user->level = 'superadmin';
 				$user->insert();
 				Flash::set('<p class="flash success">User created successfully.</p>');
 				Core_Helpers::redirect(WEB_ROOT . 'login/');
