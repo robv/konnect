@@ -3,11 +3,11 @@ DROP TABLE IF EXISTS `users`;
 #
 
 CREATE TABLE `users` (
-  `id` int(11) unsigned NOT NULL auto_increment,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `level` enum('admin','owner','editor','user','guest') NOT NULL default 'user',
-  `email` varchar(255) default NULL,
-  `api_token` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `level` enum('superadmin','admin','user') DEFAULT 'user',
+  `email` varchar(255) NOT NULL,
+  `api_token` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;

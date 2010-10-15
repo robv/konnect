@@ -18,18 +18,23 @@ DROP TABLE IF EXISTS `pages`;
 
 #
 
-CREATE TABLE `admin_links` (
-  `id` int(11) NOT NULL auto_increment,
-  `order` int(11) NOT NULL default '1',
-  `display` varchar(255) NOT NULL,
-  `link` varchar(255) NOT NULL,
-  `authorized_groups` text,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `admin_links`;
 
 #
 
-INSERT INTO `admin_links` (`id`,`order`,`display`,`link`,`authorized_groups`) VALUES (2,2,'Announcements','admin/index/admin-announcements/',NULL), (1,1,'Dashboard','admin/',NULL);
+CREATE TABLE `admin_links` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sort_order` int(11) NOT NULL DEFAULT '1',
+  `display` varchar(255) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `link` varchar(255) NOT NULL,
+  `authorized_groups` text,
+  `sub_links` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+INSERT INTO `admin_links` (`id`,`sort_order`,`display`,`name`,`link`,`authorized_groups`,`sub_links`) VALUES (2,1,'Dashboard','dashboard','admin/dashboard',NULL,NULL);
 	
 #
 
