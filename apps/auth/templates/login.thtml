@@ -32,7 +32,7 @@
 		</div>
 
 		<p>
-			<a href="<?= WEB_ROOT; ?>recover/">Help! I forgot my password!</a>
+			<a href="javascript:;">Help! I forgot my password!</a>
 		</p>
 
 		<div class="clearfix">

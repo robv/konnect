@@ -39,6 +39,8 @@ class Main_Controller extends Controller {
 	
 	public function recover()
 	{
+		return FALSE;
+		
 		if (isset($_POST['email']))
 		{
 					
@@ -53,7 +55,7 @@ class Main_Controller extends Controller {
 					$msg = 'Your new password is: ' . $recover->password . '<br /><br />';
 					$msg .= 'Try logging in at <a href="' . WEB_ROOT . 'login/">' . WEB_ROOT . 'login/</a>';
 					
-					Core_Helpers::send_html_mail($recover->email, 'Password Recovery', $msg,$data['config']->email_address);
+					Core_Helpers::send_html_mail($recover->email, 'Password Recovery', $msg, $data['config']->email_address);
 					
 					Flash::set('<p class="flash success">Password has been reset and will be emailed to you shortly.</p>');
 					
