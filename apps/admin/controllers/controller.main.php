@@ -46,21 +46,23 @@ class Main_Controller extends Controller {
 	{
 		// Universal variables we're going to need...
 		
-			// Lets start with pagination
-			// First off, how many items per page and what page are we on?
-		    $per_page = 10;
-			$current_page = (isset($_GET['p'])) ? intval($_GET['p']) : '1';
-			
-			// If there a search being done?
-			if (isset($_GET['search']))
-			{
-				$this->data['search_value'] = htmlspecialchars($_GET['search']);
-			}
-			
+		// Lets start with pagination
+		// First off, how many items per page and what page are we on?
+	    $per_page = 10;
+		$current_page = (isset($_GET['p'])) ? intval($_GET['p']) : '1';
+		
+		// If there a search being done?
+		if (isset($_GET['search']))
+		{
+			$this->data['search_value'] = htmlspecialchars($_GET['search']);
+		}
+
+		$this->data['table'] = strtolower(String::clean(Router::uri(3), '_'));
+	
 		// This is to check if the slug being given matches one in the index_information table, if not then we'll check later if it's even a table
 		$index_info = new Index_Information;
 		
-		if ($index_info->select(array('slug'=>strtolower(Router::uri(3)))))
+		if ($index_info->select(array('slug' => $this->data['table'])))
 		{
 			$this->data['page_title'] = $index_info->title;
 			$this->data['table'] = $index_info->table;
@@ -190,7 +192,7 @@ class Main_Controller extends Controller {
 	
 	public function delete()
 	{	
-		$this->data['table'] = String::clean(Router::uri(3), '_');
+		$this->data['table'] = strtolower(String::clean(Router::uri(3), '_'));
 		
 		if (isset($_GET['confirm']))
 		{
@@ -206,7 +208,7 @@ class Main_Controller extends Controller {
 	
 	public function add()
 	{
-		$this->data['table'] = String::clean(Router::uri(3), '_');
+		$this->data['table'] = strtolower(String::clean(Router::uri(3), '_'));
 		$scaffolder = new Scaffolder($this->data['table']);
 		$scaffolder->iterate();
 		$this->data['form'] = $scaffolder->display();
@@ -233,7 +235,7 @@ class Main_Controller extends Controller {
 	
 	public function edit()
 	{
-		$this->data['table'] = String::clean(Router::uri(3), '_');
+		$this->data['table'] = strtolower(String::clean(Router::uri(3), '_'));
 		$scaffolder = new Scaffolder($this->data['table'], intval(Router::uri(4)));
 		$scaffolder->iterate();
 		$this->data['form'] = $scaffolder->display();
