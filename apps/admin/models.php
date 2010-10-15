@@ -40,13 +40,44 @@ class Admin_Links extends Db_Object {
 
 	public function __construct($id = NULL)
 	{
-		parent::__construct('admin_links', 'id', array('order', 'display', 'link', 'authorized_groups'), $id);
+		parent::__construct('admin_links', 'id', array('sort_order', 'display', 'name', 'link', 'sub_links', 'authorized_groups'), $id);
 	}
 	
-	public function get_links()
+	public function nav()
 	{
-		// TODO: Only return links the user is authorized for
-		return $this->select_many('%select% ORDER BY `order` ASC');
+		$links = $this->get(array(), array('sort_order' => 'ASC'));
+		
+		foreach ($links as $k => $v)
+		{
+			$v['sub_links'] = $this->parse_sub_links($v['sub_links']);
+			$links[$k] = $v;
+		}
+		
+		$links = arr::reindex($links, 'name');
+
+		return $links;
+	}
+	
+	private function parse_sub_links($links)
+	{
+		$sub_links = array();
+		
+		foreach (explode("\n", trim($links)) as $link)
+		{
+			$pieces = explode(',', $link);
+			if ($pieces && count($pieces) == 3)
+			{
+				$arr = array(
+					'display' => $pieces[0],
+					'name' => $pieces[1],
+					'link' => $pieces[2]
+				);
+
+				$sub_links[$pieces[1]] = $arr;
+			}
+		}
+		
+		return $sub_links;
 	}
 
 }

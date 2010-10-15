@@ -47,8 +47,12 @@
 	<div class="center clearfix">
 	
 		<ul class="float_right">
-			<?php foreach ($header_links as $link) : ?>
-				<li<?= ('/' . $link->link === $_SERVER['REQUEST_URI']) ? ' class="active"' : '' ?>><a href="<?= WEB_ROOT . $link->link; ?>" class="roundtop"><?= $link->display; ?></a></li>
+			<?php $primary_nav = array(); foreach ($nav as $v) : ?>
+				<?php if (isset($table) && ($table == $v['name'] || isset($v['sub_links'][$table]))) : $primary_nav = $v ?>
+					<li class="active"><a href="<?= WEB_ROOT . $v['link'] ?>" class="roundtop"><?= htmlspecialchars($v['display']) ?></a></li>
+				<?php else : ?>
+					<li><a href="<?= WEB_ROOT . $v['link'] ?>" class="roundtop"><?= htmlspecialchars($v['display']) ?></a></li>
+				<?php endif; ?>
 			<?php endforeach; ?>
 		</ul>
 	
@@ -57,3 +61,13 @@
 </div>
 	
 <div id="content_container" class="clearfix">
+	
+	<?php if ($primary_nav && isset($primary_nav['sub_links']) && count($primary_nav['sub_links']) > 1) : ?>
+	<div id="sub_navigation" class="round clearfix">
+		<ul class="float_left">
+			<?php foreach ($primary_nav['sub_links'] as $v) : ?>
+				<li><a href="<?= WEB_ROOT . $v['link'] ?>" class="<?= $table == $v['name'] ? 'on' : '' ?>"><?= htmlspecialchars($v['display']) ?></a></li>
+			<?php endforeach; ?>
+		</ul>
+	</div>
+	<?php endif; ?>

@@ -153,7 +153,7 @@ body {
 }
 
 #sub_navigation ul li a {
-	color: #000 !important;
+	color: #888 !important;
 	text-decoration: none !important;
 	display: block;
 	float: left;
@@ -162,8 +162,13 @@ body {
 	text-shadow: #fff 2px 2px 0;
 }
 
-#sub_navigation ul li a:hover {
-	color: #555 !important;
+#sub_navigation ul li a.on {
+	text-decoration: underline !important;
+}
+
+
+#sub_navigation ul li a.on:link, #sub_navigation ul li a.on:visited, #sub_navigation ul li a:hover {
+	color: #000 !important;
 }
 
 #sub_navigation ul li {

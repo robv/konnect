@@ -13,8 +13,8 @@ class Main_Controller extends Controller {
 		
 		$this->default_method = 'dashboard';
 		
-		$links_object = new Admin_Links;
-		$data['header_links'] = $links_object->get_links();
+		$links_model = new Admin_Links;
+		$data['nav'] = $links_model->nav();
 
 		// Router uri = app/controller/method
 		parent::__construct($data);
@@ -22,7 +22,7 @@ class Main_Controller extends Controller {
 	
 	public function dashboard()
 	{
-		
+		$this->data['table'] = 'dashboard';
 		// First off, how many items per page and what page are we on?
 	    $per_page = 5;
 		$current_page = (isset($_GET['p'])) ? intval($_GET['p']) : '1';
