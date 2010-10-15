@@ -22,8 +22,8 @@ class Scaffolder extends Forms {
 		}
 		else
 		{
-			echo '<p class="error"><strong>Framework Error:</strong><br/>Database object does not exist for table: ' . $this->table . '</p>';
-			die;
+			Flash::set('<div class="notice_errrors"><p>We could not find this recordset.</p></div>');
+			Core_Helpers::redirect(WEB_ROOT . 'admin/');
 		}
 		
 		parent::__construct($this->table, $iterations);
@@ -190,7 +190,7 @@ class Scaffolder extends Forms {
 		}
 		else 
 		{
-			Flash::set('<div class="form_errros"><p>' . implode('<br />', $validator->errors()) . '</p></div>');
+			Flash::set('<div class="notice_warnings"><p>' . implode('<br />', $validator->errors()) . '</p></div>');
 			return FALSE; // didn't pass validation
 		}
 	}

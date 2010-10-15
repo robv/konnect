@@ -255,7 +255,7 @@ body {
 	font-size: 1.2em;
 }
 
-.form_errros {
+.notice_errors, .notice_warnings {
 	background-color: #FEEFB3;
 	color: #9F6000;
 	padding: 14px 20px;
@@ -263,7 +263,12 @@ body {
 	font-size: 1.2em;
 }
 
-.form_errros {
+.notice_errors {
+	color: #D8000C;
+	background-color: #FFBABA;
+}
+
+.notice_errors p, .notice_warnings p {
 	line-height: 1.2;
 }
 

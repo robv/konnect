@@ -13,10 +13,18 @@ class Controller {
 		$dm = $this->default_method;
 		
 		 // If no method is set go to default
-		if (is_null($method))
-			$this->$dm();
+		if ($method && method_exists($this, $method))
+		{
+			$this->$method();	
+		}
 		else
-			$this->$method();
+		{
+			if ($method)
+			{
+				Flash::set('<div class="notice_errors"><p>We could not find this method.</p></div>');				
+			}
+			$this->$dm();	
+		}
 	}
 	
 	// Loads view file and converts $data array to key => value form.

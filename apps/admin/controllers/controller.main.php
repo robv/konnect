@@ -93,9 +93,11 @@ class Main_Controller extends Controller {
 			// Converting string in url to what should match a db object
 			$db_object_name = String::uc_slug($index_info->table, '_', '_');
 		
-			// If $db_object doesn't match a current class then something's wrong...
 			if (!class_exists($db_object_name))
-				die('<h2>Sorry, ' . $db_object_name . ' does not exist.</h2>');
+			{
+				Flash::set('<div class="notice_errors"><p>We could not find this recordset.</p></div>');
+				Core_Helpers::redirect(WEB_ROOT . 'admin/');
+			}
 			
 			$db_object = new $db_object_name;
 		
@@ -129,14 +131,16 @@ class Main_Controller extends Controller {
 			
 			// Converting string in url to what should match a db object
 			$db_object_name = String::uc_slug(Router::uri(3), '_', '-');
-			
+
+			if (!class_exists($db_object_name))
+			{
+				Flash::set('<div class="notice_errors"><p>We could not find this recordset.</p></div>');
+				Core_Helpers::redirect(WEB_ROOT . 'admin/');
+			}
+
 			$db_object = new $db_object_name;
 		
 			$this->data['fields'] = $db_object->get_fields();
-		
-			// If $db_object doesn't match a current class then something's wrong...
-			if (!class_exists($db_object_name))
-				die('<h2>Sorry, ' . $db_object_name . ' does not exist.</h2>');
 			
 			// This is where we'll store the WHERE info the sql statement
 			$where = '';
@@ -197,6 +201,13 @@ class Main_Controller extends Controller {
 		if (isset($_GET['confirm']))
 		{
 			$db_object_name = String::uc_slug($this->data['table'], '_', '-');
+
+			if (!class_exists($db_object_name))
+			{
+				Flash::set('<div class="notice_errors"><p>We could not find this recordset.</p></div>');
+				Core_Helpers::redirect(WEB_ROOT . 'admin/');
+			}
+
 			$object = new $db_object_name(array('id' => Router::uri(4)));
 			$object->delete();
 		}
