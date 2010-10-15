@@ -33,6 +33,7 @@ CREATE TABLE `admin_links` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+#
 
 INSERT INTO `admin_links` (`id`,`sort_order`,`display`,`name`,`link`,`authorized_groups`,`sub_links`) VALUES (2,1,'Dashboard','dashboard','admin/dashboard',NULL,NULL);
 	
