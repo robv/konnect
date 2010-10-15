@@ -29,6 +29,17 @@ class Error
         return $this->ul();
     }
 
+	public function errors()
+	{
+		$errors = array();
+		foreach ($this->errors as $error)
+		{
+			$errors = array_merge($errors, $error);
+		}
+		
+		return $errors;
+	}
+
     // Returns true if there are no errors
     public function ok()
     {

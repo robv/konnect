@@ -95,8 +95,8 @@ class Scaffolder extends Forms {
 		
 		$validator = Error::instance();
 		
-		if ($validator->ok()){		
-
+		if ($validator->ok())
+		{		
 				// Loop through iterations and build new field names
 				for ($i = 0; $i < $this->iterations; $i++)
 				{
@@ -186,11 +186,12 @@ class Scaffolder extends Forms {
 					unset($object_copy);
 				}
 				
-			return true; // passed validation
+			return TRUE; // passed validation
 		}
 		else 
 		{
-			return false; // didn't pass validation
+			Flash::set('<div class="form_errros"><p>' . implode('<br />', $validator->errors()) . '</p></div>');
+			return FALSE; // didn't pass validation
 		}
 	}
 

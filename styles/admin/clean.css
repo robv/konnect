@@ -255,6 +255,18 @@ body {
 	font-size: 1.2em;
 }
 
+.form_errros {
+	background-color: #FEEFB3;
+	color: #9F6000;
+	padding: 14px 20px;
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
+.form_errros {
+	line-height: 1.2;
+}
+
 /* @end */
 
 /* @group GENERIC FORMAT */
