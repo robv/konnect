@@ -76,7 +76,28 @@ class Scaffolder extends Forms {
 		}
 		
 	}
-	
+
+	/**
+	 * Get scaffolder field type
+	 * 
+	 * @param string $table 
+	 * @param string $field 
+	 * @return array $field
+	 * @author Dave Salazar
+	 */
+	public function get_field($table = '', $field = '')
+	{
+		
+		$db = Database::instance();
+		$field_info = new field_information;
+		$field = @array_shift($field_info->get(array('`table`' => $table, '`name`' => $field), array(), NULL, NULL, FALSE));
+		
+		$field['options'] = $field ? $field['options'] : '';
+		$field['options'] = self::parse_options($field['options'], $field['type']);
+
+		return $field;
+	}
+
 	/**
 	 * Parse options string into a key value array
 	 *

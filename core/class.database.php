@@ -44,6 +44,13 @@ class Database
         return self::$me;
     }
 
+    public static function instance($config = NULL, $connect = TRUE)
+    {
+        if (is_null(self::$me))
+            self::$me = new Database($config, $connect);
+        return self::$me;
+    }
+
     // Do we have a valid database connection?
     public function is_connected()
     {

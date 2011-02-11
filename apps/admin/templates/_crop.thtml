@@ -1,0 +1,52 @@
+<script src="<?= WEB_ROOT ?>js/plugins/jcrop/jquery.Jcrop.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" href="<?= WEB_ROOT ?>js/plugins/jcrop/jquery.Jcrop.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+
+
+<script language="Javascript">
+    jQuery(function($) {
+		$('#submit_crop_form').click(function() {
+			$('#crop_form').submit();
+		});
+		$('#cancel_crop_from').click(function() {
+			$(document).trigger('close.facebox');
+			
+		});
+	
+		function update_coords(c)
+		{
+			$('#x').val(c.x);
+			$('#y').val(c.y);
+			$('#width').val(c.w);
+			$('#height').val(c.h);
+		}
+		
+		var config = {onSelect: update_coords, onChange: update_coords};
+		<?php if (isset($aspect_ratio)) : ?>
+			config['aspectRatio'] = <?= $aspect_ratio ?>;
+		<?php endif; ?>
+		
+        $('#cropper').Jcrop(config);
+    });
+</script>
+
+<div class="cropper_wrapper">
+	<p style="font-size: 14px;">Draw the bounding box for your crop directly on the image.</p>
+	<div class="">
+		<img src="<?= WEB_ROOT ?><?= htmlspecialchars($dir) ?>original/<?= htmlspecialchars($filename) ?>" id="cropper" />
+	</div>
+
+	<form method="get" action="<?= SITE_URL ?>crop" name="crop_form" id="crop_form">
+		<input type="hidden" name="x" id="x" />
+		<input type="hidden" name="y" id="y" />
+		<input type="hidden" name="width" id="width" />
+		<input type="hidden" name="height" id="height" />
+		<input type="hidden" name="table" id="table"  value="<?= htmlspecialchars($table) ?>"/>
+		<input type="hidden" name="field" id="field"  value="<?= htmlspecialchars($field) ?>"/>
+		<input type="hidden" name="id" id="id" value="<?= (int) $id ?>"/>
+	</form>
+
+	<div id="output" style="margin-top: 30px">
+		<a href="javascript:;" id="submit_crop_form" class="yes round">Done</a>
+		<a href="javascript:;" id="cancel_crop_from" class="no round">Cancel</a>
+	</div>
+</div>

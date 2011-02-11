@@ -194,6 +194,59 @@ class Main_Controller extends Controller {
 		$this->load_template('index');
 	}
 	
+	
+	public function crop()
+	{
+		$resize_methods = array('scale_crop', 'scale');
+		$resize_method = isset($value['options']['resize_method']) && in_array($value['options']['resize_method'], $resize_methods) ? $value['options']['resize_method'] : current($resize_methods);
+		$field_def_required = array('crop');
+		$id = (int) input::get('id');
+		$table = input::get('table');
+		$field = input::get('field');
+		$field_def = Scaffolder::get_field($table, $field);
+		(isset($field_def) && isset($field_def['options']['crop']) && isset($field_def['options']['dir'])) or die('Invalid Crop Request!');
+		
+		$model = new $table;
+		$row = $model->get($id);
+		$row or die('Could not find record to crop.');
+		isset($row[$field]) or die("Could not find $field in $table table.");		
+		$filename = $row[$field];
+		$dir = $field_def['options']['dir'];
+		$aspect_ratio = isset($field_def['options']['aspect_ratio']) ? $field_def['options']['aspect_ratio'] : NULL;
+		$resize_width = isset($field_def['options']['width']) ? $field_def['options']['width'] : NULL;
+		$resize_height = isset($field_def['options']['height']) ? $field_def['options']['height'] : NULL;
+		$resize_method = isset($value['options']['resize_method']) && in_array($value['options']['resize_method'], $resize_methods) ? $value['options']['resize_method'] : current($resize_methods);
+
+		$x = (int) input::get('x');
+		$y = (int) input::get('y');
+		$width = (int) input::get('width');
+		$height = (int) input::get('height');
+
+
+		if ($x && $y && $width && $height)
+		{
+			$gd = new Gd_Image($dir . 'original/' . $filename);
+			$gd->crop($x, $y, $width, $height);
+			
+			$gd->save_as($dir . 'cropped/' . $filename);
+			if ($resize_width && $resize_height)
+			{
+				$gd->$resize_method($resize_width, $resize_height);
+				$gd->save_as($dir . 'resized/' . $filename);
+			}
+
+			
+			Core_Helpers::redirect(SITE_URL . "edit/$table/$id/");
+		}
+
+		foreach (array('aspect_ratio', 'table', 'field', 'id', 'filename', 'dir') as $v)
+		{
+			$this->data[$v] = $$v;
+		}
+
+		$this->load_template('_crop');
+	}
+
 	public function delete()
 	{	
 		$this->data['table'] = strtolower(String::clean(Router::uri(3), '_'));

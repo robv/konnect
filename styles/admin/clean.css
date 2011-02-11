@@ -401,7 +401,7 @@ textarea.full {
 
 .manage_form input.submit {
 	padding: 10px 14px;
-	margin-left: 160px;
+	margin-left: 10px;
 }
 
 /* @end */
@@ -531,4 +531,7 @@ p.file_tip a:hover {
 	text-decoration: none !important;
 }
 
+.cropper_img_wrapper {
+	margin-bottom: 10px;
+}
 /* @end */

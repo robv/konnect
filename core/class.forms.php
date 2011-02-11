@@ -237,15 +237,33 @@ class Forms {
 	public function file($info)
 	{
 		$out = $this->basic_input($info);
-		$dir = $info['options']['dir'];
-		// Check if there is already and image / file in place and display it to the user
-		if (@getimagesize($dir . 'original/' . $info['value']))
+
+		if ($info['value'])
 		{
-			$out .= '<p class="file_tip"><span class="current">Current Image: <a href="' . WEB_ROOT . $dir . 'original/' . htmlspecialchars($info['value']) . '" rel="facebox">' . htmlspecialchars($info['value']) . '</a></span></p>';
-		}
-		else
-		{
-			$out .= '<p class="file_tip"><span class="current">Current File: <a href="' . WEB_ROOT . $dir . 'original/' . htmlspecialchars($info['value']) . '" rel="external">' . htmlspecialchars($info['value']) . '</a></span></p>';
+			$table = $this->table;
+			$field = explode('_', $info['name']);
+			array_pop($field);
+			$field = implode('_', $field);
+
+			$id = $this->current_id;
+			$dir = $info['options']['dir'];
+			// Check if there is already and image / file in place and display it to the user
+			$out .= '<p class="file_tip">';
+			if (@getimagesize($dir . 'original/' . $info['value']))
+			{
+
+				$out .= '<span class="current">Current Image: <a href="' . WEB_ROOT . $dir . 'original/' . htmlspecialchars($info['value']) . '" rel="facebox">' . htmlspecialchars($info['value']) . '</a></span>';
+	            if (isset($info['options']['crop']))
+				{
+					
+					$out .= '&nbsp; &nbsp; <a href="' . SITE_URL . 'crop/?field=' . htmlspecialchars($field) . '&amp;table=' . htmlspecialchars($table) . '&amp;id=' . $id . '" rel="facebox.default_modal">[Crop]</a>';
+	            }
+			}
+			else
+			{
+				$out .= '<span class="current">Current File: <a href="' . WEB_ROOT . $dir . 'original/' . htmlspecialchars($info['value']) . '" rel="external">' . htmlspecialchars($info['value']) . '</a></span>';
+			}
+			$out .= '</p>';
 		}
 		
 		return $out;

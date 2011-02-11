@@ -193,6 +193,21 @@ class Gd_Image
 		return $this->resize($new_width, $new_height, $dst_x, $dst_y, $dst_w, $dst_h);
 	}
 
+    public function crop($x, $y, $w, $h)
+    {
+        $dest = imagecreatetruecolor($w, $h);
+
+        if (imagecopyresampled($dest, $this->im, 0, 0, $x, $y, $w, $h, $w, $h))
+        {
+            $this->im = $dest;
+            $this->width = $w;
+            $this->height = $h;
+            return TRUE;
+        }
+
+        return FALSE;
+    }
+
 	private function resize($new_width, $new_height, $dst_x = 0, $dst_y = 0, $dst_w = 0, $dst_h = 0)
 	{
 		$dest = imagecreatetruecolor($new_width, $new_height);
