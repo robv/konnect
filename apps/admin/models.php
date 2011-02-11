@@ -64,9 +64,10 @@ class Admin_Links extends Db_Object {
 		
 		foreach (explode("\n", trim($links)) as $link)
 		{
-			$pieces = explode(',', $link);
+			$pieces = explode(',', trim($link));
 			if ($pieces && count($pieces) == 3)
 			{
+				$pieces = array_map('trim', $pieces);
 				$arr = array(
 					'display' => $pieces[0],
 					'name' => $pieces[1],
