@@ -360,8 +360,6 @@ class Forms {
 	Options for related type:
 	default = default value to be shown, value is empty
 	sql = this will be appended to the sql statement which by default is SELECT * FROM table
-	seperator = if display is comma seperated then use this to seperate the values (ie FirstName LastName or FirstName and LastName)
-	display_field = field to display to end user can be multiple fields comma seperated
 	value_field = field to pass through the form
 	*/
 	public function related($info)
@@ -378,29 +376,18 @@ class Forms {
 		{
 			$info['options']['sql'] = NULL;			
 		}
-
-		if (!isset($info['options']['seperator']))
-		{
-			$info['options']['seperator'] = ' ';			
-		}
-			
-		$display_fields = explode(',', $info['options']['display_field']);
 		
 		$table_obj_name = String::uc_slug($info['options']['table'], '_', '_');
 		$objects = new $table_obj_name;
 		$objects = $objects->select_many($info['options']['sql']);
-		
+
+		$value_field = isset($info['options']['value_field']) ? $info['options']['value_field'] : 'id';
+		$name_field = isset($info['options']['name_field']) ? $info['options']['name_field'] : 'name';
+
+
 		foreach ($objects as $object) 
-		{
-			$value_field = $info['options']['value_field'];
-			$display = array();
-			
-			foreach ($display_fields as $display_field)
-			{
-				$display[] = $object->$display_field;
-			}
-			
-			$out .= '<option value="' . htmlspecialchars($object->$value_field) . '">' . htmlspecialchars(implode($info['options']['seperator'], $display)) . '</option>';
+		{			
+			$out .= '<option value="' . htmlspecialchars($object->$value_field) . '"' . ($info['value'] == $object->$value_field ? ' selected="selected"' : '') . '>' . htmlspecialchars($object->$name_field) . '</option>';
 		}
 
 		$out .= '</select>';

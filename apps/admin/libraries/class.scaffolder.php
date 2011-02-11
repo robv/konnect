@@ -71,7 +71,8 @@ class Scaffolder extends Forms {
 			}
 			
 			$options['options'] = $this->parse_options($value_info->options, $value_info->type);
-			$options['value'] = $this->current_object->$value;
+			$options['value'] = $this->current_id ? $this->current_object->$value : (isset($options['options']['value']) ? $options['options']['value'] : '');
+
 			$this->add_field($value, $options);	
 		}
 		
