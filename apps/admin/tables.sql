@@ -35,7 +35,7 @@ CREATE TABLE `admin_links` (
 
 #
 
-INSERT INTO `admin_links` (`id`,`sort_order`,`display`,`name`,`link`,`authorized_groups`,`sub_links`) VALUES (2,1,'Dashboard','dashboard','admin/dashboard',NULL,NULL);
+INSERT INTO `admin_links` (`id`,`sort_order`,`display`,`name`,`link`,`authorized_groups`,`sub_links`) VALUES (2,1,'Dashboard','dashboard','dashboard',NULL,NULL);
 	
 #
 
