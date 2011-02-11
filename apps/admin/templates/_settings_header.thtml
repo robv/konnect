@@ -1,7 +1,7 @@
 <div id="sub_navigation" class="round clearfix">
 	<ul class="float_left">
 		<li><a href="<?= WEB_ROOT . Router::uri(0) . '/index/users/'; ?>">Users</a></li>
-		<?php if (in_array(Auth::get_instance()->user->level, array('admin'))) : ?>
+		<?php if (in_array(Auth::get_instance()->user->level, array('superadmin'))) : ?>
 		<li><a href="<?= WEB_ROOT . Router::uri(0) . '/models/'; ?>">Models</a></li>
 		<li><a href="<?= WEB_ROOT . Router::uri(0) . '/index/field-information/'; ?>">Field Info</a></li>
 		<li><a href="<?= WEB_ROOT . Router::uri(0) . '/index/index-information/'; ?>">Index Info</a></li>

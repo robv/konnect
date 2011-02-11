@@ -31,11 +31,11 @@
 				<div class="float_left">Logged in as <strong><?= Auth::get_instance()->user->username; ?></strong></div>
 				<?php if (in_array(Auth::get_instance()->user->level, array('superadmin'))) : ?>
 				<ul>
-					<li><a href="/admin/models/">System Tools</a></li>
+					<li><a href="/admin/models">System Tools</a></li>
 				</ul>
 				<?php endif; ?>
 			</div>
-			<div class="logout"><a href="<?= WEB_ROOT; ?>logout/" class="round">logout</a></div>
+			<div class="logout"><a href="<?= WEB_ROOT; ?>admin/logout" class="round">logout</a></div>
 		</div>
 	
 	</div>
@@ -49,9 +49,9 @@
 		<ul class="float_right">
 			<?php $primary_nav = array(); foreach ($nav as $v) : ?>
 				<?php if (isset($table) && ($table == $v['name'] || isset($v['sub_links'][$table]))) : $primary_nav = $v ?>
-					<li class="active"><a href="<?= WEB_ROOT . $v['link'] ?>" class="roundtop"><?= htmlspecialchars($v['display']) ?></a></li>
+					<li class="active"><a href="<?= WEB_ROOT . 'admin/' . $v['link'] ?>" class="roundtop"><?= htmlspecialchars($v['display']) ?></a></li>
 				<?php else : ?>
-					<li><a href="<?= WEB_ROOT . $v['link'] ?>" class="roundtop"><?= htmlspecialchars($v['display']) ?></a></li>
+					<li><a href="<?= WEB_ROOT . 'admin/' . $v['link'] ?>" class="roundtop"><?= htmlspecialchars($v['display']) ?></a></li>
 				<?php endif; ?>
 			<?php endforeach; ?>
 		</ul>
@@ -66,7 +66,7 @@
 	<div id="sub_navigation" class="round clearfix">
 		<ul class="float_left">
 			<?php foreach ($primary_nav['sub_links'] as $v) : ?>
-				<li><a href="<?= WEB_ROOT . $v['link'] ?>" class="<?= $table == $v['name'] ? 'on' : '' ?>"><?= htmlspecialchars($v['display']) ?></a></li>
+				<li><a href="<?= WEB_ROOT . 'admin/' . $v['link'] ?>" class="<?= $table == $v['name'] ? 'on' : '' ?>"><?= htmlspecialchars($v['display']) ?></a></li>
 			<?php endforeach; ?>
 		</ul>
 	</div>

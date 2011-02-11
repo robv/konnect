@@ -24,7 +24,7 @@ class Object_Filter
 						}
 					}
 				}
-				if ($info->type !== NULL)
+				if ($info->type !== NULL && method_exists($this, $info->type))
 				{
 					$field_type = $info->type;
 					$object->$name = $this->$field_type($object->$name, $options);
