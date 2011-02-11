@@ -106,7 +106,7 @@ class Scaffolder extends Forms {
 	 * @return array $options
 	 * @author Dave Salazar
 	 */
-	private function parse_options($options_str = '', $type = '')
+	public function parse_options($options_str = '', $type = '')
 	{
 		$options = array();
 		$pairs = array_map('trim', explode("\n", $options_str));

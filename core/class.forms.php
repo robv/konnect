@@ -382,12 +382,12 @@ class Forms {
 		$objects = $objects->select_many($info['options']['sql']);
 
 		$value_field = isset($info['options']['value_field']) ? $info['options']['value_field'] : 'id';
-		$name_field = isset($info['options']['name_field']) ? $info['options']['name_field'] : 'name';
+		$display_field = isset($info['options']['display_field']) ? $info['options']['display_field'] : 'name';
 
 
 		foreach ($objects as $object) 
 		{			
-			$out .= '<option value="' . htmlspecialchars($object->$value_field) . '"' . ($info['value'] == $object->$value_field ? ' selected="selected"' : '') . '>' . htmlspecialchars($object->$name_field) . '</option>';
+			$out .= '<option value="' . htmlspecialchars($object->$value_field) . '"' . ($info['value'] == $object->$value_field ? ' selected="selected"' : '') . '>' . htmlspecialchars($object->$display_field) . '</option>';
 		}
 
 		$out .= '</select>';

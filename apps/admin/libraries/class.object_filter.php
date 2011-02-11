@@ -12,18 +12,8 @@ class Object_Filter
 		{
 			foreach($field_info as $name => $info)
 			{
-				if ($info->options !== NULL)
-				{
-					$exploded_options = explode("\n", $info->options);
-					foreach ($exploded_options as $option)
-					{
-						if (!empty($option))
-						{
-							$option_temp = explode(',', $option);
-							$options[$option_temp[0]] = $option_temp[1];
-						}
-					}
-				}
+				$options = Scaffolder::parse_options($info->options, $info->type);
+
 				if ($info->type !== NULL && method_exists($this, $info->type))
 				{
 					$field_type = $info->type;
@@ -40,12 +30,15 @@ class Object_Filter
 	
 	private function related($value, $options)
 	{
-		if(isset($options['table']) && isset($options['display_field']) && isset($options['value_field']))
+		$value_field = isset($info['options']['value_field']) ? $info['options']['value_field'] : 'id';
+		$display_field = isset($info['options']['display_field']) ? $info['options']['display_field'] : 'name';
+
+		if (isset($options['table']))
 		{
 			$options['table'] = String::uc_slug($options['table'], '_', '_');
-			$related_object = new $options['table'](array($options['value_field'] => $value));
+			$related_object = new $options['table'](array($value_field => $value));
 			// TODO: Accept template for display
-			return $related_object->$options['display_field'];
+			return $related_object->$display_field;
 		}
 		return $value;
 	}
