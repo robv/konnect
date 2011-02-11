@@ -400,8 +400,8 @@ textarea.full {
 }
 
 .manage_form input.submit {
-	float: right;
 	padding: 10px 14px;
+	margin-left: 160px;
 }
 
 /* @end */
