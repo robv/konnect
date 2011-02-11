@@ -70,23 +70,43 @@ class Scaffolder extends Forms {
 					$options['validation'] = '';
 			}
 			
-			if ($value_info->options !== NULL)
-			{
-				$exploded_options = explode("\n", $value_info->options);
-				foreach ($exploded_options as $option)
-				{
-					if (!empty($option))
-					{
-						$option_temp = explode(',', $option);
-						$options['options'][$option_temp[0]] = $option_temp[1];
-					}
-				}
-			}
-				
+			$options['options'] = $this->parse_options($value_info->options, $value_info->type);
 			$options['value'] = $this->current_object->$value;
 			$this->add_field($value, $options);	
 		}
 		
+	}
+	
+	/**
+	 * Parse options string into a key value array
+	 *
+	 * @param string $options_str 
+	 * @return array $options
+	 * @author Dave Salazar
+	 */
+	private function parse_options($options_str = '', $type = '')
+	{
+		$options = array();
+		$pairs = array_map('trim', explode("\n", $options_str));
+		foreach ($pairs as $pair_str)
+		{
+			$pair = array_map('trim', explode(',', $pair_str, 2));
+
+			// If this is a valid name value pair
+			if (count($pair) == 2)
+			{
+				list($name, $value) = $pair;
+				$options[$name] = $value;
+			}
+		}
+		
+		if ($type == 'file')
+		{
+			if (!isset($options['dir']) || !is_dir($options['dir']))
+				$options['dir'] = 'files/uploads/';
+		}
+
+		return $options;
 	}
 	
 	public function save_object() // This method adds / updates field entries into database
@@ -97,94 +117,76 @@ class Scaffolder extends Forms {
 		
 		if ($validator->ok())
 		{		
-				// Loop through iterations and build new field names
-				for ($i = 0; $i < $this->iterations; $i++)
+			// Loop through iterations and build new field names
+			for ($i = 0; $i < $this->iterations; $i++)
+			{
+				$object_copy = $this->current_object;
+				foreach($this->fields[$i] as $object_name => $field)
 				{
-					$object_copy = $this->current_object;
-						foreach($this->fields[$i] as $object_name => $field)
+					if ($field['type'] === 'file')
+					{
+						if (!empty($_FILES[$field['name']]['name']))
 						{
-							// Make directories, TODO: Find more efficient way to do this
-							@mkdir('./files/uploads/');
-							@mkdir('./files/uploads/original/');
-							@mkdir('./files/uploads/large/');
-							@mkdir('./files/uploads/medium/');
-							@mkdir('./files/uploads/small/');
-							@mkdir('./files/uploads/cropped/');
-						
-							if ($field['type'] === 'file')
-							{
-								// Check if a session of images to crop already exists, if so we need to overwrite it
-								if (isset($_SESSION['crop_images']))
-									unset($_SESSION['crop_images']);
+							$dir = $field['options']['dir'];
+							$width = isset($field['options']['width']) ? $field['options']['width'] : 150;
+							$height = isset($field['options']['height']) ? $field['options']['height'] : 150;
 
-								if (!empty($_FILES[$field['name']]['name']))
-								{
-								
-									$gd = new Gd_Image;
-								
-									// Check if file is already existing and start deleting
-									if (strlen($object_copy->$object_name) > 0){
-										@unlink('./files/uploads/original/'.$object_copy->$field['name']);
-											@unlink('./files/uploads/large/'.$object_copy->$field['name']);
-											@unlink('./files/uploads/medium/'.$object_copy->$field['name']);
-											@unlink('./files/uploads/small/'.$object_copy->$field['name']);
-									}
-								
-									// If a file of that name already exists add random string to begining else keep same name
-									if (file_exists('./files/uploads/original/'.$_FILES[$field['name']]['name']))
-									{
-										// rand_string() is located in core/extfunctions.inc.php
-										$newname = $object_copy->$object_name = str_replace(' ', '', rand_string().'_'.$_FILES[$field['name']]['name']);
-									}
-									else
-									{	
-										$newname = $object_copy->$object_name = str_replace(' ', '', $_FILES[$field['name']]['name']);
-									}
-								
-									$newname = str_replace(' ', '', $newname);
+							$filename = $_FILES[$field['name']]['name'];
+
+							if (preg_match('#.*\.(php.?|cgi|pl)#i', $filename))
+							{
+								$filename = preg_replace('#\.(php.?|cgi|pl)#', '.bak', $filename);
+							}
 							
-									// TODO: There should be a way in options to pass multiple image locations and sizes
-									if ($gd->loadFile($_FILES[$field['name']]['tmp_name']))
-									{
-										$gd->scale_safe('1800', '1800');
-											$gd->save_as('./files/uploads/original/' . $newname);
-										$gd->scale_safe('700', '700');
-											$gd->save_as('./files/uploads/large/' . $newname);
-										$gd->scale_safe('300', '300');
-											$gd->save_as('./files/uploads/medium/' . $newname);
-										$gd->scale_crop('200', '200');
-											$gd->save_as('./files/uploads/cropped/' . $newname);
-										$gd->load_file($_FILES[$field['name']]['tmp_name']);
-											$gd->scale_safe('150', '150');
-											$gd->save_as('./files/uploads/small/' . $newname);
-				
-										$_SESSION['crop_images'][str_replace(array('.',' '), '', $newname)] = $newname;
-									}
-									else
-									{
-										move_uploaded_file($_FILES[$field['name']]['tmp_name'], './files/uploads/original/' . $newname);
-									}
-									
+
+							// If a file of that name already exists and it's not the same field, we rename it otherwise we replace.
+							if (file_exists($dir . 'original/' . $filename) && ($object_copy->$object_name != $filename))
+							{
+								$filename = format::rename_if_exists($dir . 'original/', $filename);
+							}
+
+							$object_copy->$object_name = $filename;
+
+							copy($_FILES[$field['name']]['tmp_name'], $dir . 'original/' . $filename);
+
+							$resize_methods = array('scale_crop', 'scale');
+							$resize_method = isset($value['options']['resize_method']) && in_array($value['options']['resize_method'], $resize_methods) ? $value['options']['resize_method'] : current($resize_methods);
+
+							if (preg_match('#.+\.(png|jp(e)?g|gif)#i', $filename))
+							{
+								if (@getimagesize($_FILES[$field['name']]['tmp_name']))
+								{
+									$gd = new Gd_Image($_FILES[$field['name']]['tmp_name']);
+
+									$gd->$resize_method($width, $height);
+									$gd->save_as($dir . 'resized/' . $filename);									
 								}
-						
-							}
-							elseif ($field['type'] === 'timestamp')
-							{
-								$object_copy->$object_name = date('Y-m-d H:i:s', strtotime(str_replace('@', '', $field['value'])));
-							}
-							elseif ($field['type'] === 'time_range')
-							{
-								$object_copy->$object_name = $field['value'] . ' to ' . $_POST['second_' . $field['name']];
-							}
-							else  // Any other type
-							{
-								$object_copy->$object_name = $field['value'];
-							}
+								else
+								{
+									Flash::set('<div class="notice_warnings"><p>An error was encountered when trying to resize this file.</p></div>');
+								}
+
+							}						
+
 						}
-					$this->current_id = $object_copy->save();
-					$this->current_object = $object_copy;
-					unset($object_copy);
+					}
+					elseif ($field['type'] === 'timestamp')
+					{
+						$object_copy->$object_name = date('Y-m-d H:i:s', strtotime(str_replace('@', '', $field['value'])));
+					}
+					elseif ($field['type'] === 'time_range')
+					{
+						$object_copy->$object_name = $field['value'] . ' to ' . $_POST['second_' . $field['name']];
+					}
+					else  // Any other type
+					{
+						$object_copy->$object_name = $field['value'];
+					}
 				}
+				$this->current_id = $object_copy->save();
+				$this->current_object = $object_copy;
+				unset($object_copy);
+			}
 				
 			return TRUE; // passed validation
 		}
