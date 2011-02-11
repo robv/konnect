@@ -2,41 +2,16 @@
 	
 	<div id="full_column">
 		
-		<h3 class="title roundtop">Latest Announcements</h3>
+		<h3 class="title roundtop">Dashboard</h3>
 		
 		<div class="sub_menu clearfix">
-			
-			<form method="get" action="" class="float_left submenu_form">
-				<input type="text" name="search" id="search" title="Search Entries..." class="hint" />
-				<input type="submit" class="submit round" name="submit" value="Go" />
-			</form>
+
 		
 		</div>
-		
+		<?= Flash::show(); ?>
 		<div class="generic_format">
-				
-			<?php foreach($announcements as $announcement): ?>
-				
-				<h3><?= $announcement->title; ?></h3>
-				<h3 class="meta">Posted by <?= $announcement->username; ?> at <?= String::format_date($announcement->date_posted, 'F j, g:i a'); ?></h3>
-				<?= $announcement->comments; ?>
-				<div class="hr"><hr/></div>
-				
-			<?php endforeach; ?>
-			
-				<div class="pagination">
-				
-					<?php if($pager->has_prev_page()) : ?>
-				    	<a href="?p=<?php echo $pager->prev_page(); ?>">Previous Page</a>
-					<?php endif; ?>
-				
-					<?php if($pager->has_next_page()) : ?>
-				    	<a href="?p=<?php echo $pager->next_page(); ?>">Next Page</a>
-					<?php endif; ?>
-				
-				</div>
-				
-			</div>
+				<p>Coming Soon</p>
+		</div>
 		
 	</div>
 
