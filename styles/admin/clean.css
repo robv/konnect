@@ -260,7 +260,7 @@ body {
 	font-size: 1.2em;
 }
 
-.notice_errors, .notice_warnings {
+.notice_errors, .notice_warnings, .notice_success {
 	background-color: #FEEFB3;
 	color: #9F6000;
 	padding: 14px 20px;
@@ -273,7 +273,12 @@ body {
 	background-color: #FFBABA;
 }
 
-.notice_errors p, .notice_warnings p {
+.notice_success {
+	color: #4F8A10;
+	background-color: #DFF2BF;
+}
+
+.notice_errors p, .notice_warnings p, .notice_success p {
 	line-height: 1.2;
 }
 
@@ -505,3 +510,25 @@ textarea.full {
 
 /* @end */
 
+
+/* @group Forms */
+
+p.file_tip {
+	line-height: 1;
+	padding: 4px 0;
+	font-size: 10px;
+}
+
+p.file_tip a {
+	text-decoration: underline !important;
+}
+
+p.file_tip a:link, p.file_tip a:visited {
+	font-weight: bold !important;
+}
+
+p.file_tip a:hover {
+	text-decoration: none !important;
+}
+
+/* @end */

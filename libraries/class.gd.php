@@ -51,7 +51,7 @@ class Gd
         return ob_get_clean();
     }
 
-	private function load_resource($im)
+	public function load_resource($im)
 	{	
 		if (!is_resource($im) || !get_resource_type($im) == 'gd')
 			return false;
@@ -63,7 +63,7 @@ class Gd
 		return true;
 	}
 
-	private function load_file($filename)
+	public function load_file($filename)
 	{
 		if (!file_exists($filename) || !is_readable($filename))
 			return false;

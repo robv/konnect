@@ -16,7 +16,7 @@ var Site = {
 			}, 2000);
 			
 			$('input.hint').input_hint();
-			
+			$('a[rel*=facebox]').facebox();			
 		});
 
 	},
@@ -31,7 +31,6 @@ var Site = {
 				$('.entry_actions', $(this)).hide();
 			});
 		
-			$('a[rel*=facebox]').facebox();
 		
 		});
 		

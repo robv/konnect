@@ -236,21 +236,16 @@ class Forms {
 
 	public function file($info)
 	{
-		$info['options']['extra'] = '<p class="form_inner_form"><input type="checkbox" name="' . htmlspecialchars($name) . '_crop" id="' . htmlspecialchars($name) .'_crop" checked="checked" value="yes" /><label for="' . htmlspecialchars($name) . '_crop">Crop After Upload</label></p>';
-
 		$out = $this->basic_input($info);
-		
-		// Located in libraries folder
-		$gd = new Gd();
-		
+		$dir = $info['options']['dir'];
 		// Check if there is already and image / file in place and display it to the user
-		if ($gd->load_file('./files/uploads/large/' . $info['value']))
+		if (@getimagesize($dir . 'original/' . $info['value']))
 		{
-			$out .= '<span class="current">Current Image: <a href="' . WEB_ROOT . 'files/uploads/large/' . htmlspecialchars($info['value']) . '" rel="facebox">' . htmlspecialchars($info['value']) . '</a></span>';
+			$out .= '<p class="file_tip"><span class="current">Current Image: <a href="' . WEB_ROOT . $dir . 'original/' . htmlspecialchars($info['value']) . '" rel="facebox">' . htmlspecialchars($info['value']) . '</a></span></p>';
 		}
 		else
 		{
-			$out .= '<span class="current">Current File: <a href="' . WEB_ROOT . 'files/uploads/original/' . htmlspecialchars($info['value']) . '" rel="external">' . htmlspecialchars($info['value']) . '</a></span>';
+			$out .= '<p class="file_tip"><span class="current">Current File: <a href="' . WEB_ROOT . $dir . 'original/' . htmlspecialchars($info['value']) . '" rel="external">' . htmlspecialchars($info['value']) . '</a></span></p>';
 		}
 		
 		return $out;
