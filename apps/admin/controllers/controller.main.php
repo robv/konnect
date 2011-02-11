@@ -235,7 +235,7 @@ class Main_Controller extends Controller {
 				$gd->save_as($dir . 'resized/' . $filename);
 			}
 
-			
+			Flash::set('<div class="notice_success"><p>Your image was cropped successfully.</p></div>');
 			Core_Helpers::redirect(SITE_URL . "edit/$table/$id/");
 		}
 
